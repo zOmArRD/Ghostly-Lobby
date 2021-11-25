@@ -1,0 +1,6 @@
+name: LobbyServer
+version: 1.0.0
+author: zOmArRD
+main: core\ghostly\Ghostly
+api: 3.23.1
+description: LobbyServer
