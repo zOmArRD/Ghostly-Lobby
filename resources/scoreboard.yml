@@ -1,0 +1,16 @@
+################################
+# This was written by zOmArRD  #
+################################
+---
+display.name: "{bold}{red}Ghostly {white}Network"
+
+lines:
+  - "{gray}"
+  - "{dark.gray}{date} {gray}{time}"
+  - "{white}Network:"
+  - "{network.get.players}"
+  - "{white}Rank: {player.get.rank}"
+  - ""
+  - "{gray} GhostlyMC.live"
+  - "{red}{gray}"
+...
