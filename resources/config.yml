@@ -1,0 +1,13 @@
+################################
+# This was written by zOmArRD  #
+################################
+---
+prefix: "{bold}{red}Ghostly {white}»{reset} "
+
+# Credentials for the MYSQL database.
+database:
+  user: root
+  password: omar
+  host: localhost
+  database: minecraft
+...
