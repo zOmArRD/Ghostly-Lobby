@@ -1,0 +1,16 @@
+{
+  "name": "zomarrd/lobbyserver",
+  "description": "Ghostly MCPE Lobby System",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Omar",
+      "email": "omarsena25@gmail.com"
+    }
+  ],
+  "require": {
+    "pocketmine/pocketmine-mp": "3.25.4",
+    "ext-mysqli": "*"
+  }
+}
