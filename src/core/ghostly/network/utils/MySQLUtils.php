@@ -16,7 +16,7 @@ use core\ghostly\modules\mysql\query\UpdateRowQuery;
 
 final class MySQLUtils
 {
-    public static function UpdateRowQuery(array $updates, string $conditionValue, string $table, string $conditionKey = "player")
+    public static function UpdateRowQuery(array $updates, string $conditionKey, string $conditionValue, string $table)
     {
         AsyncQueue::submitQuery(new UpdateRowQuery($updates, $conditionKey, $conditionValue, $table));
     }

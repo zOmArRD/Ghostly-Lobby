@@ -14,7 +14,7 @@ namespace core\ghostly\modules\scoreboard;
 use pocketmine\utils\TextFormat;
 
 /**
- * @todo: finalize this
+ * @todo finalize this
  */
 final class Scoreboard extends ScoreboardAPI
 {

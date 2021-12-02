@@ -6,10 +6,10 @@ prefix: "{bold}{red}Ghostly {white}»{reset} "
 
 # Credentials for the MySQL Database.
 database:
-  user: root
-  password: omar
-  host: localhost
-  database: minecraft
+  user: ghostly
+  password: dbghostly25
+  host: ghostlymc.live
+  database: ghostlymc
 
 
 #####################################################################################

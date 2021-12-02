@@ -9,7 +9,8 @@
  */
 declare(strict_types=1);
 
-namespace zomarrd\core\task;
+namespace core\ghostly\task;
+
 
 final class TaskManager extends TaskBase
 {

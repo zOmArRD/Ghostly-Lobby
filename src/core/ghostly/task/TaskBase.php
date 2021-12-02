@@ -9,9 +9,9 @@
  */
 declare(strict_types=1);
 
-namespace zomarrd\core\task;
+namespace core\ghostly\task;
 
-use core\ghostly\network\GExtension;
+use core\ghostly\GExtension;
 use pocketmine\scheduler\Task;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\scheduler\TaskScheduler;

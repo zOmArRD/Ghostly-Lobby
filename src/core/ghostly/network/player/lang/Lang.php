@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace core\ghostly\network\player\lang;
 
+use core\ghostly\GExtension;
 use core\ghostly\modules\form\SimpleForm;
-use core\ghostly\network\GExtension;
 use core\ghostly\network\player\GhostlyPlayer;
 use core\ghostly\network\player\IPlayer;
 use core\ghostly\network\utils\MySQLUtils;

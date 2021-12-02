@@ -22,7 +22,7 @@ use pocketmine\utils\Config;
 final class ResourcesManager
 {
     /** @var array|string[] */
-    private array $listFiles = ['config.yml', 'scoreboard.yml'];
+    private array $listFiles = ['config.yml', 'scoreboard.yml', 'network.data.yml'];
 
     /**
      * @param string $file
@@ -30,7 +30,7 @@ final class ResourcesManager
      *
      * @return Config The config file
      */
-    public function getFile(string $file, int $type = Config::YAML): Config
+    public static function getFile(string $file, int $type = Config::YAML): Config
     {
         return new Config(Ghostly::getGhostly()->getDataFolder() . "$file", $type);
     }
@@ -44,7 +44,7 @@ final class ResourcesManager
             self::getGhostly()->saveResource($file);
         }
 
-        $cFile = $this->getFile("config.yml");
+        $cFile = self::getFile("config.yml");
 
         define("PREFIX", TextUtils::colorize($cFile->get("prefix")));
         define("MySQL", $cFile->get("database"));
@@ -54,7 +54,7 @@ final class ResourcesManager
         foreach (Lang::$config as $lang) {
             $iso = $lang["ISOCode"];
             self::getGhostly()->saveResource("lang/$iso.yml");
-            Lang::$lang[$iso] = $this->getFile(self::getGhostly()->getDataFolder() . "lang/$iso.yml");
+            Lang::$lang[$iso] = $this->getFile("lang/$iso.yml");
             Ghostly::$logger->info(PREFIX . "§a" . "The $iso language has been registered.");
         }
     }
@@ -62,7 +62,7 @@ final class ResourcesManager
     /**
      * @return Ghostly
      */
-    public static function getGhostly(): Ghostly
+    private static function getGhostly(): Ghostly
     {
         return Ghostly::getGhostly();
     }
