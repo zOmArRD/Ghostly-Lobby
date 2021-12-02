@@ -13,11 +13,11 @@ namespace core\ghostly\network\player;
 
 interface IPlayer
 {
-    public function setPlayer(GhostlyPlayer $player): void;
+    function setPlayer(GhostlyPlayer $player): void;
 
-    public function getPlayer(): GhostlyPlayer;
+    function getPlayer(): GhostlyPlayer;
 
-    public function getPlayerName(): string;
+    function getPlayerName(): string;
 
     public function __construct(GhostlyPlayer $player);
 }

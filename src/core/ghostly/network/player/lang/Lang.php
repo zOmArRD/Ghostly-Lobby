@@ -13,9 +13,11 @@ namespace core\ghostly\network\player\lang;
 
 use core\ghostly\modules\mysql\AsyncQueue;
 use core\ghostly\modules\mysql\query\UpdateRowQuery;
+use core\ghostly\network\GExtension;
 use core\ghostly\network\player\GhostlyPlayer;
 use core\ghostly\network\player\IPlayer;
 use core\ghostly\network\utils\MySQLUtils;
+use core\ghostly\network\utils\TextUtils;
 use pocketmine\utils\Config;
 
 
@@ -48,7 +50,10 @@ final class Lang implements IPlayer
     }
 
     /** @var array */
-    public static array $lang = [], $users = [];
+    public static array $users = [];
+
+    /** @var Config[] */
+    public static array $lang = [];
 
     /** @var Config */
     public static Config $config;
@@ -65,5 +70,38 @@ final class Lang implements IPlayer
             GhostlyPlayer::$playerSettings[$pn]["language"] = $language;
             MySQLUtils::UpdateRowQuery(["language" => "$language"], $pn, "settings");
         }
+    }
+
+    /**
+     * This function applies the language to the player.
+     */
+    public function apply(): void
+    {
+        $pn = $this->getPlayerName();
+        if (isset(GhostlyPlayer::$playerSettings[$pn])) {
+            $data = GhostlyPlayer::$playerSettings[$pn];
+            if ($data["language"] !== null && $data["language"] !== "null") {
+                $this->set($data["language"], false);
+            }
+        }
+    }
+
+    /**
+     * @return string Returns the language of the player.
+     */
+    public function get(): string
+    {
+        return self::$users[$this->getPlayerName()] ?? $this->getPlayer()->getLocale();
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return string Returns the string that contains the id.
+     */
+    public function getString(string $id): string
+    {
+        $str = self::$lang[$this->get()]->get("strings");
+        return $str["$id"] ?? TextUtils::colorize($str["message.error"]);
     }
 }

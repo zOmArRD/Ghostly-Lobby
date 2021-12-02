@@ -12,5 +12,8 @@
   "require": {
     "pocketmine/pocketmine-mp": "4.0.0",
     "ext-mysqli": "*"
+  },
+  "scripts": {
+    "make-phar": "@php make-phar.php"
   }
 }
