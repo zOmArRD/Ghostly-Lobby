@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace core\ghostly\modules\mysql;
 
 use pocketmine\Server;
-use const zOmArRD\MySQL;
 
 class AsyncQueue
 {

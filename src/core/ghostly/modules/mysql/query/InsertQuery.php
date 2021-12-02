@@ -14,7 +14,6 @@ namespace core\ghostly\modules\mysql\query;
 use core\ghostly\modules\mysql\AsyncQuery;
 use Exception;
 use mysqli;
-use pocketmine\Server;
 
 class InsertQuery extends AsyncQuery
 {

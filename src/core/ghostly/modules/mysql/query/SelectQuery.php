@@ -15,7 +15,6 @@ use core\ghostly\Ghostly;
 use core\ghostly\modules\mysql\AsyncQuery;
 use Exception;
 use mysqli;
-use pocketmine\Server;
 
 class SelectQuery extends AsyncQuery
 {
