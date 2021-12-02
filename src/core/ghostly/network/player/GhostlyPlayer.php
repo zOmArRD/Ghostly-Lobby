@@ -11,7 +11,8 @@ declare(strict_types=1);
 
 namespace core\ghostly\network\player;
 
-use pocketmine\Player;
+
+use pocketmine\player\Player;
 
 final class GhostlyPlayer extends Player
 {

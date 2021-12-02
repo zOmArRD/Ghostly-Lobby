@@ -30,9 +30,6 @@ class SelectQuery extends AsyncQuery
         $this->query = $sqlQuery;
     }
 
-    /**
-     * @param mysqli $mysqli
-     */
     public function query(mysqli $mysqli): void
     {
         $result = $mysqli->query($this->query);
@@ -47,16 +44,12 @@ class SelectQuery extends AsyncQuery
         }
     }
 
-    /**
-     * @param Server $server
-     */
-    public function onCompletion(Server $server)
+    public function onCompletion(): void
     {
         if ($this->rows === null) {
             Ghostly::$logger->error("Error while executing query. Please check database settings and try again.");
             return;
         }
         $this->rows = unserialize($this->rows);
-        parent::onCompletion($server);
     }
 }

@@ -1,11 +1,11 @@
 <?php
 /*
- * Created by PhpStorm
+ * Created by PhpStorm.
  *
  * User: zOmArRD
- * Date: 1/8/2021
+ * Date: 2/12/2021
  *
- * Copyright © 2021 - All Rights Reserved.
+ * Copyright © 2021 Ghostly Network - All Rights Reserved.
  */
 declare(strict_types=1);
 
@@ -13,7 +13,6 @@ namespace core\ghostly\modules\mysql;
 
 use mysqli;
 use pocketmine\scheduler\AsyncTask;
-use pocketmine\Server;
 
 abstract class AsyncQuery extends AsyncTask
 {
@@ -27,17 +26,11 @@ abstract class AsyncQuery extends AsyncTask
         $mysqli->close();
     }
 
-    /**
-     * @param Server $server
-     */
-    public function onCompletion(Server $server)
+    public function onCompletion(): void
     {
-        parent::onCompletion($server);
         AsyncQueue::activateCallback($this);
     }
 
-    /**
-     * @param mysqli $mysqli
-     */
+
     abstract public function query(mysqli $mysqli): void;
 }

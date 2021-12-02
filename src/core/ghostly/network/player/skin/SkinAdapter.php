@@ -13,14 +13,13 @@ namespace core\ghostly\network\player\skin;
 
 use Exception;
 use pocketmine\entity\Skin;
-use pocketmine\network\mcpe\protocol\types\LegacySkinAdapter;
-use pocketmine\network\mcpe\protocol\types\SkinData;
+use pocketmine\network\mcpe\convert\LegacySkinAdapter;
+use pocketmine\network\mcpe\protocol\types\skin\SkinData;
 
 final class SkinAdapter extends LegacySkinAdapter
 {
     /** @var array */
     private array $personaSkins = [];
-
 
     /**
      * @param SkinData $data

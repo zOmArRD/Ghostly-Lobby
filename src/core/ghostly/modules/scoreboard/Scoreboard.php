@@ -13,6 +13,9 @@ namespace core\ghostly\modules\scoreboard;
 
 use pocketmine\utils\TextFormat;
 
+/**
+ * @todo: finalize this
+ */
 final class Scoreboard extends ScoreboardAPI
 {
     /** @var string[] This is to replace blanks */

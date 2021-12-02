@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "pocketmine/pocketmine-mp": "3.25.4",
+    "pocketmine/pocketmine-mp": "4.0.0",
     "ext-mysqli": "*"
   }
 }

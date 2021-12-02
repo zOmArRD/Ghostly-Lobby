@@ -19,6 +19,9 @@ use core\ghostly\network\utils\MySQLUtils;
 use pocketmine\utils\Config;
 
 
+/**
+ * @todo: finalize this
+ */
 final class Lang implements IPlayer
 {
     /** @var GhostlyPlayer */

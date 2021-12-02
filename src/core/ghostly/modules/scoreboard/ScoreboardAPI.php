@@ -71,7 +71,7 @@ abstract class ScoreboardAPI implements IPlayer
     {
         $packet = new RemoveObjectivePacket();
         $packet->objectiveName = $this->getObjectiveName();
-        $this->getPlayer()->sendDataPacket($packet);
+        $this->getPlayer()->getNetworkSession()->sendDataPacket($packet);
     }
 
     public function new(string $objectiveName, string $displayName): void
@@ -85,7 +85,7 @@ abstract class ScoreboardAPI implements IPlayer
         $packet->displaySlot = "sidebar";
         $packet->criteriaName = "dummy";
         $this->setObjectiveName($objectiveName);
-        $this->getPlayer()->sendDataPacket($packet);
+        $this->getPlayer()->getNetworkSession()->sendDataPacket($packet);
     }
 
     public function setLine(int $score, string $message): void
@@ -104,7 +104,7 @@ abstract class ScoreboardAPI implements IPlayer
             $packet1 = new SetScorePacket();
             $packet1->entries[] = $this->lines[$score];
             $packet1->type = $packet1::TYPE_REMOVE;
-            $this->getPlayer()->sendDataPacket($packet1);
+            $this->getPlayer()->getNetworkSession()->sendDataPacket($packet1);
             unset($this->lines[$score]);
         }
         $entry->score = $score;
@@ -116,6 +116,6 @@ abstract class ScoreboardAPI implements IPlayer
         $packet2 = new SetScorePacket();
         $packet2->entries[] = $entry;
         $packet2->type = $packet2::TYPE_CHANGE;
-        $this->getPlayer()->sendDataPacket($packet2);
+        $this->getPlayer()->getNetworkSession()->sendDataPacket($packet2);
     }
 }

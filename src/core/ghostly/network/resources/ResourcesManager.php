@@ -12,11 +12,15 @@ declare(strict_types=1);
 namespace core\ghostly\network\resources;
 
 use core\ghostly\Ghostly;
-use core\ghostly\network\GExtension;
 
+/**
+ * @todo: finalize this
+ */
 final class ResourcesManager
 {
+    /** @var array|string[] */
     private array $listFiles = ['config.yml', 'scoreboard.yml'];
+
     public function init(): void
     {
         Ghostly::$logger->info("Resource management has started!");

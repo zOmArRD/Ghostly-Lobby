@@ -24,9 +24,6 @@ class RegisterServerQuery extends AsyncQuery
         $this->serverName = $serverName;
     }
 
-    /**
-     * @param mysqli $mysqli
-     */
     public function query(mysqli $mysqli): void
     {
         $result = $mysqli->query("SELECT * FROM servers WHERE server='$this->serverName';");

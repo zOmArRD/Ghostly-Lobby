@@ -1,6 +1,7 @@
 name: Ghostly-Lobby
-version: 1.0.0
-author: zOmArRD
-main: core\ghostly\Ghostly
 api: 3.23.1
-description: LobbyServer
+description: Ghostly Lobby Server
+version: 2.0.0
+author: zOmArRD
+src-namespace-prefix: core/ghostly
+main: core\ghostly\Ghostly
