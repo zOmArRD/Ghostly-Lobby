@@ -12,10 +12,41 @@ declare(strict_types=1);
 namespace core\ghostly\network\player;
 
 
+use core\ghostly\network\player\lang\Lang;
+use core\ghostly\network\utils\TextUtils;
+use Exception;
 use pocketmine\player\Player;
 
 final class GhostlyPlayer extends Player
 {
     /** @var array */
     public static array $playerSettings = [];
+
+    /** @var Lang */
+    public Lang $langClass;
+
+    public function setLangClass(): void
+    {
+        $this->langClass = new Lang($this);
+    }
+
+    public function getLangClass(): Lang
+    {
+        return $this->langClass;
+    }
+
+    /**
+     * @param string $stringId
+     *
+     * @return string Returns the id of the translated message.
+     */
+    public function getTranslated(string $stringId): string
+    {
+        try {
+            return TextUtils::colorize($this->getLangClass()->getString($stringId));
+        } catch (Exception) {
+            return "";
+        }
+    }
+
 }

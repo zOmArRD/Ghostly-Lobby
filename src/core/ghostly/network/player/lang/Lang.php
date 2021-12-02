@@ -73,9 +73,7 @@ final class Lang implements IPlayer
         $pn = $this->getPlayerName();
         if (isset(GhostlyPlayer::$playerSettings[$pn])) {
             $data = GhostlyPlayer::$playerSettings[$pn];
-            if ($data["language"] !== null && $data["language"] !== "null") {
-                $this->set($data["language"], false);
-            }
+            if ($data["language"] !== null && $data["language"] !== "null") $this->set($data["language"], false);
         }
     }
 
@@ -98,32 +96,44 @@ final class Lang implements IPlayer
         return $str["$id"] ?? TextUtils::colorize($str["message.error"]);
     }
 
-    public function showForm(int $type = 0): void
+    public function showForm(int $type = 1): void
     {
         $player = $this->getPlayer();
         $playerName = $this->getPlayerName();
-        $form = new SimpleForm(function (GhostlyPlayer $player, $data){
-           if (isset($data)) {
+        $form = new SimpleForm(function (GhostlyPlayer $player, $data) {
+            if (isset($data)) {
+                if ($data == "back") {
+                    /*todo: return to another form*/
+                    return;
+                } elseif ($data == "close") return;
 
-           }
+                if ($this->get() !== $data) {
+                    $this->set($data, true);
+                    /*todo: update the inventory of the player*/
+
+                    $player->sendMessage(PREFIX . TextUtils::colorize($this->getString("message.lang.set.done")));
+                } else $player->sendMessage(PREFIX . TextUtils::colorize($this->getString("message.lang.set.fail")));
+            }
         });
 
         $form->setTitle(TextUtils::colorize($this->getString("form.title.lang.selector")));
 
         try {
-            foreach (Lang::$config as $lang) {
-                $form->addButton("§f" . $lang["name"], $lang["image.type"], $lang["image.link"], $lang["ISOCode"]);
-            }
+            foreach (Lang::$config as $lang) $form->addButton("§f" . $lang["name"], $lang["image.type"], $lang["image.link"], $lang["ISOCode"]);
         } catch (Exception $ex) {
             $player->sendMessage(PREFIX . "");
-            if (GExtension::getServerPM()->isOp($playerName)) {
-                $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
-            }
+            if (GExtension::getServerPM()->isOp($playerName)) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
 
-        if ($type == 0) {
-            //TODO: Add button to close the form
+        switch ($type) {
+            case 1:
+                $form->addButton("form.button.back", $form::IMAGE_TYPE_PATH, "", "back");
+                break;
+            default:
+                $form->addButton("form.button.close", $form::IMAGE_TYPE_PATH, "textures/gui/newgui/anvil-crossout", "close");
+                break;
         }
+
         $player->sendForm($form);
     }
 }
