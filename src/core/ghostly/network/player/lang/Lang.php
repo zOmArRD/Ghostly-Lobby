@@ -20,9 +20,6 @@ use core\ghostly\network\utils\TextUtils;
 use Exception;
 use pocketmine\utils\Config;
 
-/**
- * @todo: finalize this
- */
 final class Lang implements IPlayer
 {
     /** @var GhostlyPlayer */
@@ -101,7 +98,7 @@ final class Lang implements IPlayer
         return $str["$id"] ?? TextUtils::colorize($str["message.error"]);
     }
 
-    public function showForm(string $type = "with.back.button"): void
+    public function showForm(int $type = 0): void
     {
         $player = $this->getPlayer();
         $playerName = $this->getPlayerName();
@@ -111,15 +108,22 @@ final class Lang implements IPlayer
            }
         });
 
-        $form->setTitle("");
+        $form->setTitle(TextUtils::colorize($this->getString("form.title.lang.selector")));
 
         try {
-
+            foreach (Lang::$config as $lang) {
+                $form->addButton("§f" . $lang["name"], $lang["image.type"], $lang["image.link"], $lang["ISOCode"]);
+            }
         } catch (Exception $ex) {
             $player->sendMessage(PREFIX . "");
             if (GExtension::getServerPM()->isOp($playerName)) {
                 $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
             }
         }
+
+        if ($type == 0) {
+            //TODO: Add button to close the form
+        }
+        $player->sendForm($form);
     }
 }

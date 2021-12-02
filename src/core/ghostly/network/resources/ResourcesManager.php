@@ -49,7 +49,7 @@ final class ResourcesManager
         define("PREFIX", TextUtils::colorize($cFile->get("prefix")));
         define("MySQL", $cFile->get("database"));
 
-        Lang::$config = $cFile->get("languages");
+        Lang::$config = $cFile->get("language.available");
 
         foreach (Lang::$config as $lang) {
             $iso = $lang["ISOCode"];

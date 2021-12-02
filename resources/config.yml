@@ -11,10 +11,20 @@ database:
   host: localhost
   database: minecraft
 
-# Array with available languages.
-# If you want to add any other, you must also add the strings in the lang folder
-languages:
+
+#####################################################################################
+# Array with available languages.                                                   #
+# If you want to add any other, you must also add the strings in the lang folder    #
+#                                                                                   #
+#                                                                                   #
+# Note: Consider reading what's above, so you know what to put in Icon: ""          #
+#                                                                                   #
+#   0 = "textures/items/apple_golden" | Image is provided by PATH                   #
+#   1 = "https://gooogle.png" | The image is provided by URL.                       #
+#####################################################################################
+language.available:
   - ISOCode: "en_US"
     name: "English"
-    icon: "https://cdn.countryflags.com/thumbs/united-states-of-america/flag-800.png"
+    image.type: 1
+    image.link: "https://cdn.countryflags.com/thumbs/united-states-of-america/flag-800.png"
 ...
