@@ -14,7 +14,7 @@ database:
 # Array with available languages.
 # If you want to add any other, you must also add the strings in the lang folder
 languages:
-  - ISOCode: "eng"
+  - ISOCode: "en_US"
     name: "English"
     icon: "https://cdn.countryflags.com/thumbs/united-states-of-america/flag-800.png"
 ...

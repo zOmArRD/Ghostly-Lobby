@@ -11,15 +11,14 @@ declare(strict_types=1);
 
 namespace core\ghostly\network\player\lang;
 
-use core\ghostly\modules\mysql\AsyncQueue;
-use core\ghostly\modules\mysql\query\UpdateRowQuery;
+use core\ghostly\modules\form\SimpleForm;
 use core\ghostly\network\GExtension;
 use core\ghostly\network\player\GhostlyPlayer;
 use core\ghostly\network\player\IPlayer;
 use core\ghostly\network\utils\MySQLUtils;
 use core\ghostly\network\utils\TextUtils;
+use Exception;
 use pocketmine\utils\Config;
-
 
 /**
  * @todo: finalize this
@@ -53,10 +52,7 @@ final class Lang implements IPlayer
     public static array $users = [];
 
     /** @var Config[] */
-    public static array $lang = [];
-
-    /** @var Config */
-    public static Config $config;
+    public static array $lang = [], $config;
 
     /**
      * @param string $language
@@ -103,5 +99,27 @@ final class Lang implements IPlayer
     {
         $str = self::$lang[$this->get()]->get("strings");
         return $str["$id"] ?? TextUtils::colorize($str["message.error"]);
+    }
+
+    public function showForm(string $type = "with.back.button"): void
+    {
+        $player = $this->getPlayer();
+        $playerName = $this->getPlayerName();
+        $form = new SimpleForm(function (GhostlyPlayer $player, $data){
+           if (isset($data)) {
+
+           }
+        });
+
+        $form->setTitle("");
+
+        try {
+
+        } catch (Exception $ex) {
+            $player->sendMessage(PREFIX . "");
+            if (GExtension::getServerPM()->isOp($playerName)) {
+                $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
+            }
+        }
     }
 }
