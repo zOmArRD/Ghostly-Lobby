@@ -3,9 +3,9 @@
  * Created by PhpStorm.
  *
  * User: zOmArRD
- * Date: 20/7/2021
+ * Date: 2/12/2021
  *
- * Copyright © 2021 Greek Network - All Rights Reserved.
+ * Copyright © 2021 Ghostly Network - All Rights Reserved.
  */
 declare(strict_types=1);
 
@@ -45,8 +45,9 @@ final class ServerManager
      * <p></p>
      * It is in charge of registering the servers and verifying them.
      */
-    public function init(): void
+    public function load(): void
     {
+        if ($this->getConfig()->get('current.server')['isEnabled'] !== "true") return;
         /** @var string $currentServerName */
         $currentServerName = $this->getConfig()->get('current.server')['name'];
         AsyncQueue::submitQuery(new RegisterServerQuery($currentServerName));
@@ -69,14 +70,13 @@ final class ServerManager
      */
     public function reloadServers(): void
     {
-        var_dump("reload servers executed");
+        if ($this->getConfig()->get('current.server')['isEnabled'] !== "true") return;
         self::$servers = [];
 
         /** @var string $currentServerName */
         $currentServerName = self::getConfig()->get('current.server')['name'];
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM servers"), function ($rows) use ($currentServerName) {
-            var_dump($rows);
-            /*foreach ($rows as $row) {
+            foreach ($rows as $row) {
                 $server = new Server($row["server"], (int)$row["players"], (bool)$row["isOnline"], (bool)$row["isWhitelisted"]);
                 if ($row["server"] === $currentServerName) {
                     self::$currentServer = $server;
@@ -85,7 +85,7 @@ final class ServerManager
                     self::$servers[] = $server;
                     Ghostly::$logger->notice(PREFIX . "A new server has been registered | ($server->name)");
                 }
-            }*/
+            }
         });
     }
 
@@ -135,6 +135,7 @@ final class ServerManager
 
     /**
      * @param string $target
+     *
      * @return Server|null
      */
     public static function getServer(string $target): ?Server
@@ -149,6 +150,7 @@ final class ServerManager
 
     /**
      * @param string $server
+     *
      * @return string
      */
     public static function getStatus(string $server): string

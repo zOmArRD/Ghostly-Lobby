@@ -31,6 +31,5 @@ abstract class AsyncQuery extends AsyncTask
         AsyncQueue::activateCallback($this);
     }
 
-
     abstract public function query(mysqli $mysqli): void;
 }

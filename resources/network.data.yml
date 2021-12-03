@@ -3,6 +3,7 @@
 ################################
 ---
 current.server:
-  name: "Lobby-1"
-  version: "1.18"
+  isEnabled: "true" # true or false
+  name: "Lobby-1" # Server Name
+  version: "1.18" # Server Version (1.17.41)
 ...

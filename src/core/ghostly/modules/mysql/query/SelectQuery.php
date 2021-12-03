@@ -1,11 +1,11 @@
 <?php
 /*
- * Created by PhpStorm
+ * Created by PhpStorm.
  *
  * User: zOmArRD
- * Date: 1/8/2021
+ * Date: 2/12/2021
  *
- * Copyright © 2021 - All Rights Reserved.
+ * Copyright © 2021 Ghostly Network - All Rights Reserved.
  */
 declare(strict_types=1);
 
@@ -29,6 +29,9 @@ class SelectQuery extends AsyncQuery
         $this->query = $sqlQuery;
     }
 
+    /**
+     * @param mysqli $mysqli
+     */
     public function query(mysqli $mysqli): void
     {
         $result = $mysqli->query($this->query);

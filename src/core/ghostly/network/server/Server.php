@@ -3,9 +3,9 @@
  * Created by PhpStorm.
  *
  * User: zOmArRD
- * Date: 20/7/2021
+ * Date: 2/12/2021
  *
- * Copyright © 2021 Greek Network - All Rights Reserved.
+ * Copyright © 2021 Ghostly Network - All Rights Reserved.
  */
 declare(strict_types=1);
 
@@ -38,9 +38,9 @@ class Server
 
     /**
      * @param string $server
-     * @param int $players
-     * @param bool $isOnline
-     * @param bool $isWhitelisted
+     * @param int    $players
+     * @param bool   $isOnline
+     * @param bool   $isWhitelisted
      */
     public function update(string $server = "Unknown", int $players = 0, bool $isOnline = false, bool $isWhitelisted = false): void
     {
@@ -57,6 +57,7 @@ class Server
     {
         AsyncQueue::submitQuery(new SelectQuery("SELECT * FROM servers WHERE server='$this->name';"), function ($rows) {
             $row = $rows[0];
+            var_dump("lll");
             if ($row !== null) {
                 $this->setIsOnline((bool)$row["isOnline"]);
                 $this->setPlayers((int)$row["players"]);

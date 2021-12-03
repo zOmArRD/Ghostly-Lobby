@@ -14,9 +14,8 @@ namespace core\ghostly;
 use core\ghostly\events\EventsManager;
 use core\ghostly\modules\mysql\AsyncQueue;
 use core\ghostly\modules\mysql\query\InsertQuery;
+use core\ghostly\modules\mysql\query\UpdateRowQuery;
 use core\ghostly\network\player\skin\SkinAdapter;
-use core\ghostly\network\server\ServerManager;
-use core\ghostly\network\utils\MySQLUtils;
 use core\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\plugin\PluginBase;
@@ -30,23 +29,19 @@ final class Ghostly extends PluginBase
     /** @var PluginLogger */
     public static PluginLogger $logger;
 
-    public function onLoad(): void
+    protected function onLoad(): void
     {
         self::$ghostly = $this;
         self::$logger = $this->getLogger();
+        self::$logger->info("§a" ."The core is being loaded!");
 
         GExtension::getResourcesManager()->init();
         $this->MySQLScan();
-        GExtension::getServerManager()->init();
+        GExtension::getServerManager()->load();
     }
 
     protected function onEnable(): void
     {
-        /* Avoid some network crashes when transferring packets */
-        /*foreach ($this->getServer()->getNetwork()->getInterfaces() as $interface) {
-            //TODO
-        }*/
-
         /* Mojang Skin Support*/
         SkinAdapterSingleton::set(new SkinAdapter());
 
@@ -55,11 +50,14 @@ final class Ghostly extends PluginBase
 
         /* Administrator of all Task. */
         new TaskManager();
+
+        self::$logger->notice(PREFIX . "The core has been fully loaded!");
     }
 
     protected function onDisable(): void
     {
-        MySQLUtils::UpdateRowQuery(["isOnline" => 0, "players" => 0], "server", GExtension::getServerManager()->getCurrentServer()->getName(), "servers");
+        //MySQLUtils::UpdateRowQuery(["isOnline" => 0, "players" => 0], "server", GExtension::getServerManager()->getCurrentServer()->getName(), "servers");
+        AsyncQueue::submitQuery(new UpdateRowQuery(["isOnline" => 0, "players" => 0], "server",GExtension::getServerManager()->getCurrentServer()->getName(), "servers"));
     }
 
     /**
@@ -71,12 +69,13 @@ final class Ghostly extends PluginBase
     }
 
     /**
-     * @todo add more tables.
+     * @todo add the necessary tables.
      */
     public function MySQLScan(): void
     {
-        self::$logger->info("Analyzing the database");
-        AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(server VARCHAR(50) UNIQUE, players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
+        self::$logger->info(PREFIX . "MySQL scan in progress...");
+        AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(server TEXT, players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
         AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS settings(player TEXT, lang TEXT, scoreboard SMALLINT DEFAULT 1);"));
+        self::$logger->info(PREFIX . "MySQL scan finished!");
     }
 }

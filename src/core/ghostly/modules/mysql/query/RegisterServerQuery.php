@@ -1,11 +1,11 @@
 <?php
 /*
  * Created by PhpStorm.
- *  
+ *
  * User: zOmArRD
- * Date: 20/7/2021
- *  
- * Copyright © 2021 Greek Network - All Rights Reserved.
+ * Date: 2/12/2021
+ *
+ * Copyright © 2021 Ghostly Network - All Rights Reserved.
  */
 declare(strict_types=1);
 
@@ -24,6 +24,9 @@ class RegisterServerQuery extends AsyncQuery
         $this->serverName = $serverName;
     }
 
+    /**
+     * @param mysqli $mysqli
+     */
     public function query(mysqli $mysqli): void
     {
         $result = $mysqli->query("SELECT * FROM servers WHERE server='$this->serverName';");
