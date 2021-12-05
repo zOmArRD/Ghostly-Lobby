@@ -15,11 +15,13 @@ use core\ghostly\GExtension;
 use core\ghostly\modules\form\SimpleForm;
 use core\ghostly\network\player\GhostlyPlayer;
 use core\ghostly\network\player\IPlayer;
-use core\ghostly\network\utils\MySQLUtils;
 use core\ghostly\network\utils\TextUtils;
 use Exception;
 use pocketmine\utils\Config;
 
+/**
+ * DON'T USE THIS FOR NOW
+ */
 final class Lang implements IPlayer
 {
     /** @var GhostlyPlayer */
@@ -59,10 +61,10 @@ final class Lang implements IPlayer
     {
         $pn = $this->getPlayerName();
         self::$users[$pn] = $language;
-        if ($safe) {
+        /*if ($safe) {
             GhostlyPlayer::$playerSettings[$pn]["language"] = $language;
             MySQLUtils::UpdateRowQuery(["language" => "$language"], $pn, "settings");
-        }
+        }*/
     }
 
     /**
@@ -71,10 +73,10 @@ final class Lang implements IPlayer
     public function apply(): void
     {
         $pn = $this->getPlayerName();
-        if (isset(GhostlyPlayer::$playerSettings[$pn])) {
+        /*if (isset(GhostlyPlayer::$playerSettings[$pn])) {
             $data = GhostlyPlayer::$playerSettings[$pn];
             if ($data["language"] !== null && $data["language"] !== "null") $this->set($data["language"], false);
-        }
+        }*/
     }
 
     /**

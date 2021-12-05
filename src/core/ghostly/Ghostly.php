@@ -12,9 +12,6 @@ declare(strict_types=1);
 namespace core\ghostly;
 
 use core\ghostly\events\EventsManager;
-use core\ghostly\modules\mysql\AsyncQueue;
-use core\ghostly\modules\mysql\query\InsertQuery;
-use core\ghostly\modules\mysql\query\UpdateRowQuery;
 use core\ghostly\network\player\skin\SkinAdapter;
 use core\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
@@ -36,8 +33,6 @@ final class Ghostly extends PluginBase
         self::$logger->info("§a" ."The core is being loaded!");
 
         GExtension::getResourcesManager()->init();
-        $this->MySQLScan();
-        GExtension::getServerManager()->load();
     }
 
     protected function onEnable(): void
@@ -56,8 +51,7 @@ final class Ghostly extends PluginBase
 
     protected function onDisable(): void
     {
-        //MySQLUtils::UpdateRowQuery(["isOnline" => 0, "players" => 0], "server", GExtension::getServerManager()->getCurrentServer()->getName(), "servers");
-        AsyncQueue::submitQuery(new UpdateRowQuery(["isOnline" => 0, "players" => 0], "server",GExtension::getServerManager()->getCurrentServer()->getName(), "servers"));
+
     }
 
     /**
@@ -66,16 +60,5 @@ final class Ghostly extends PluginBase
     public static function getGhostly(): Ghostly
     {
         return self::$ghostly;
-    }
-
-    /**
-     * @todo add the necessary tables.
-     */
-    public function MySQLScan(): void
-    {
-        self::$logger->info(PREFIX . "MySQL scan in progress...");
-        AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(server TEXT, players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
-        AsyncQueue::submitQuery(new InsertQuery("CREATE TABLE IF NOT EXISTS settings(player TEXT, lang TEXT, scoreboard SMALLINT DEFAULT 1);"));
-        self::$logger->info(PREFIX . "MySQL scan finished!");
     }
 }

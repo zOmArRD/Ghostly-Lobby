@@ -2,6 +2,8 @@
 # This was written by zOmArRD  #
 ################################
 ---
+isEnabled: "true"
+
 display.name: "{bold}{red}Ghostly {white}Network"
 
 lines:
@@ -10,6 +12,7 @@ lines:
   - ""
   - "{white}Network:"
   - "{network.get.players}"
+  - ""
   - "{white}Rank: {player.get.rank}"
   - ""
   - "{gray} GhostlyMC.live"

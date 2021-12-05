@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace core\ghostly;
 
 use core\ghostly\network\resources\ResourcesManager;
-use core\ghostly\network\server\ServerManager;
 use pocketmine\plugin\PluginManager;
 use pocketmine\scheduler\TaskScheduler;
 use pocketmine\Server;
@@ -49,14 +48,6 @@ final class GExtension
     public static function getTaskScheduler(): TaskScheduler
     {
         return self::getGhostly()->getScheduler();
-    }
-
-    /**
-     * @return ServerManager
-     */
-    public static function getServerManager(): ServerManager
-    {
-        return new ServerManager();
     }
 
     /**

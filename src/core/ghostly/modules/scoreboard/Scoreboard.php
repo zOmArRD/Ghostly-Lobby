@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace core\ghostly\modules\scoreboard;
 
+use core\ghostly\network\resources\ResourcesManager;
+use core\ghostly\network\utils\TextUtils;
+use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -68,5 +71,32 @@ final class Scoreboard extends ScoreboardAPI
         return $msg;
     }
 
+    /**
+     * @return Config
+     */
+    private function getScoreboardFile(): Config
+    {
+        return ResourcesManager::getFile("scoreboard.yml");
+    }
 
+    /**
+     * Update each line of the scoreboard.
+     */
+    private function update(): void
+    {
+        if (!is_array($this->getScoreboardFile()->get("lines")))return;
+        foreach ($this->getScoreboardFile()->get("lines") as $scLine => $string) {
+            $line = $scLine +1;
+            $msg = $this->replaceData($line, (string)$string);
+            $this->setLine($line, $msg);
+        }
+    }
+
+    public function set(): void
+    {
+        /* TODO: add verification of player settings via MySQL */
+        if ($this->getScoreboardFile()->get("isEnabled") !== "true") return;
+        $this->new("ghostly.lobby", TextUtils::colorize($this->getScoreboardFile()->get("display.name")));
+        $this->update();
+    }
 }
