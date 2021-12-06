@@ -20,19 +20,19 @@ abstract class Events
 {
 
     /**
-     * @return PluginManager
-     */
-    private function getPluginManager(): PluginManager
-    {
-        return GExtension::getPluginManager();
-    }
-
-    /**
      * @param Listener $event
      */
     public function register(Listener $event): void
     {
         $this->getPluginManager()->registerEvents($event, Ghostly::getGhostly());
+    }
+
+    /**
+     * @return PluginManager
+     */
+    private function getPluginManager(): PluginManager
+    {
+        return GExtension::getPluginManager();
     }
 
     abstract public function loadEvents(): void;

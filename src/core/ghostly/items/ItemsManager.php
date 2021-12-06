@@ -24,15 +24,9 @@ final class ItemsManager implements IPlayer
     /** @var GhostlyPlayer */
     private GhostlyPlayer $player;
 
-    /**
-     * @param int    $itemId
-     * @param string $customName
-     *
-     * @return Block|Attribute|Item|null
-     */
-    public static function load(int $itemId, string $customName): Attribute|Block|Item|null
+    public function __construct(GhostlyPlayer $player)
     {
-        return ItemFactory::getInstance()->get($itemId)->setCustomName($customName);
+        $this->setPlayer($player);
     }
 
     /**
@@ -48,14 +42,15 @@ final class ItemsManager implements IPlayer
         };
     }
 
-    function setPlayer(GhostlyPlayer $player): void
+    /**
+     * @param int    $itemId
+     * @param string $customName
+     *
+     * @return Block|Attribute|Item|null
+     */
+    public static function load(int $itemId, string $customName): Attribute|Block|Item|null
     {
-        $this->player = $player;
-    }
-
-    function getPlayer(): GhostlyPlayer
-    {
-        return $this->player;
+        return ItemFactory::getInstance()->get($itemId)->setCustomName($customName);
     }
 
     function getPlayerName(): string
@@ -63,8 +58,13 @@ final class ItemsManager implements IPlayer
         return $this->getPlayer()->getName();
     }
 
-    public function __construct(GhostlyPlayer $player)
+    function getPlayer(): GhostlyPlayer
     {
-        $this->setPlayer($player);
+        return $this->player;
+    }
+
+    function setPlayer(GhostlyPlayer $player): void
+    {
+        $this->player = $player;
     }
 }

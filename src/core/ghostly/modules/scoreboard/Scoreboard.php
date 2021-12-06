@@ -24,6 +24,35 @@ final class Scoreboard extends ScoreboardAPI
     /** @var string[] This is to replace blanks */
     private const EMPTY_CACHE = ["§0\e", "§1\e", "§2\e", "§3\e", "§4\e", "§5\e", "§6\e", "§7\e", "§8\e", "§9\e", "§a\e", "§b\e", "§c\e", "§d\e", "§e\e"];
 
+    public function set(): void
+    {
+        /* TODO: add verification of player settings via MySQL */
+        if ($this->getScoreboardFile()->get("is.enabled") !== "true") return;
+        $this->new("ghostly.lobby", TextUtils::colorize($this->getScoreboardFile()->get("display.name")));
+        $this->update();
+    }
+
+    /**
+     * @return Config
+     */
+    private function getScoreboardFile(): Config
+    {
+        return ResourcesManager::getFile("scoreboard.yml");
+    }
+
+    /**
+     * Update each line of the scoreboard.
+     */
+    private function update(): void
+    {
+        if (!is_array($this->getScoreboardFile()->get("lines")))return;
+        foreach ($this->getScoreboardFile()->get("lines") as $scLine => $string) {
+            $line = $scLine +1;
+            $msg = $this->replaceData($line, (string)$string);
+            $this->setLine($line, $msg);
+        }
+    }
+
     /**
      * @param int    $line
      * @param string $message
@@ -69,34 +98,5 @@ final class Scoreboard extends ScoreboardAPI
 
         for ($i = 0; $i < count($keys); $i++) $msg = str_replace($keys[$i], (string)$values[$i], $msg);
         return $msg;
-    }
-
-    /**
-     * @return Config
-     */
-    private function getScoreboardFile(): Config
-    {
-        return ResourcesManager::getFile("scoreboard.yml");
-    }
-
-    /**
-     * Update each line of the scoreboard.
-     */
-    private function update(): void
-    {
-        if (!is_array($this->getScoreboardFile()->get("lines")))return;
-        foreach ($this->getScoreboardFile()->get("lines") as $scLine => $string) {
-            $line = $scLine +1;
-            $msg = $this->replaceData($line, (string)$string);
-            $this->setLine($line, $msg);
-        }
-    }
-
-    public function set(): void
-    {
-        /* TODO: add verification of player settings via MySQL */
-        if ($this->getScoreboardFile()->get("is.enabled") !== "true") return;
-        $this->new("ghostly.lobby", TextUtils::colorize($this->getScoreboardFile()->get("display.name")));
-        $this->update();
     }
 }

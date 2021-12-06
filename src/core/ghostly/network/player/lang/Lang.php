@@ -24,47 +24,16 @@ use pocketmine\utils\Config;
  */
 final class Lang implements IPlayer
 {
+    /** @var array */
+    public static array $users = [];
+    /** @var Config[] */
+    public static array $lang = [], $config;
     /** @var GhostlyPlayer */
     private GhostlyPlayer $player;
-
-    public function setPlayer(GhostlyPlayer $player): void
-    {
-        $this->player = $player;
-    }
-
-    public function getPlayer(): GhostlyPlayer
-    {
-        return $this->player;
-    }
-
-    public function getPlayerName(): string
-    {
-        return $this->getPlayer()->getName();
-    }
 
     public function __construct(GhostlyPlayer $player)
     {
         $this->setPlayer($player);
-    }
-
-    /** @var array */
-    public static array $users = [];
-
-    /** @var Config[] */
-    public static array $lang = [], $config;
-
-    /**
-     * @param string $language
-     * @param bool   $safe
-     */
-    public function set(string $language, bool $safe): void
-    {
-        $pn = $this->getPlayerName();
-        self::$users[$pn] = $language;
-        /*if ($safe) {
-            GhostlyPlayer::$playerSettings[$pn]["language"] = $language;
-            MySQLUtils::UpdateRowQuery(["language" => "$language"], $pn, "settings");
-        }*/
     }
 
     /**
@@ -79,23 +48,19 @@ final class Lang implements IPlayer
         }*/
     }
 
-    /**
-     * @return string Returns the language of the player.
-     */
-    public function get(): string
+    public function getPlayerName(): string
     {
-        return self::$users[$this->getPlayerName()] ?? $this->getPlayer()->getLocale();
+        return $this->getPlayer()->getName();
     }
 
-    /**
-     * @param string $id
-     *
-     * @return string Returns the string that contains the id.
-     */
-    public function getString(string $id): string
+    public function getPlayer(): GhostlyPlayer
     {
-        $str = self::$lang[$this->get()]->get("strings");
-        return $str["$id"] ?? TextUtils::colorize($str["message.error"]);
+        return $this->player;
+    }
+
+    public function setPlayer(GhostlyPlayer $player): void
+    {
+        $this->player = $player;
     }
 
     public function showForm(int $type = 1): void
@@ -137,5 +102,38 @@ final class Lang implements IPlayer
         }
 
         $player->sendForm($form);
+    }
+
+    /**
+     * @return string Returns the language of the player.
+     */
+    public function get(): string
+    {
+        return self::$users[$this->getPlayerName()] ?? $this->getPlayer()->getLocale();
+    }
+
+    /**
+     * @param string $language
+     * @param bool   $safe
+     */
+    public function set(string $language, bool $safe): void
+    {
+        $pn = $this->getPlayerName();
+        self::$users[$pn] = $language;
+        /*if ($safe) {
+            GhostlyPlayer::$playerSettings[$pn]["language"] = $language;
+            MySQLUtils::UpdateRowQuery(["language" => "$language"], $pn, "settings");
+        }*/
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return string Returns the string that contains the id.
+     */
+    public function getString(string $id): string
+    {
+        $str = self::$lang[$this->get()]->get("strings");
+        return $str["$id"] ?? TextUtils::colorize($str["message.error"]);
     }
 }

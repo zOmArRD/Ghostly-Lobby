@@ -13,7 +13,6 @@ namespace core\ghostly\events;
 
 use core\ghostly\events\listener\PlayerListener;
 use core\ghostly\Ghostly;
-use Exception;
 
 final class EventsManager extends Events
 {

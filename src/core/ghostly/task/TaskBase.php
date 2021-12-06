@@ -18,15 +18,6 @@ use pocketmine\scheduler\TaskScheduler;
 
 abstract class TaskBase
 {
-
-    /**
-     * @return TaskScheduler
-     */
-    public function getTaskScheduler(): TaskScheduler
-    {
-        return GExtension::getTaskScheduler();
-    }
-
     /**
      * @param Task $task
      * @param int  $period
@@ -36,5 +27,13 @@ abstract class TaskBase
     public function registerTask(Task $task, int $period): TaskHandler
     {
         return $this->getTaskScheduler()->scheduleRepeatingTask($task, $period);
+    }
+
+    /**
+     * @return TaskScheduler
+     */
+    public function getTaskScheduler(): TaskScheduler
+    {
+        return GExtension::getTaskScheduler();
     }
 }

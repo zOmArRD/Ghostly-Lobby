@@ -20,11 +20,11 @@ use pocketmine\world\WorldManager;
 final class GExtension
 {
     /**
-     * @return Ghostly
+     * @return PluginManager
      */
-    private static function getGhostly(): Ghostly
+    public static function getPluginManager(): PluginManager
     {
-        return Ghostly::getGhostly();
+        return self::getServerPM()->getPluginManager();
     }
 
     /**
@@ -36,11 +36,11 @@ final class GExtension
     }
 
     /**
-     * @return PluginManager
+     * @return Ghostly
      */
-    public static function getPluginManager(): PluginManager
+    private static function getGhostly(): Ghostly
     {
-        return self::getServerPM()->getPluginManager();
+        return Ghostly::getGhostly();
     }
 
     /**

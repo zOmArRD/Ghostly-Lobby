@@ -27,22 +27,6 @@ final class GhostlyPlayer extends Player
     /** @var Scoreboard */
     private Scoreboard $scoreboardSession;
 
-    public function getScoreboardSession(): Scoreboard
-    {
-        return $this->scoreboardSession;
-    }
-
-    /**
-     * Very important function in the core structure
-     */
-    public function initGhostlyPlayer(): void
-    {
-        new ItemsManager($this);
-        $this->scoreboardSession = new Scoreboard($this);
-
-        $this->loaded = true;
-    }
-
     public function onUpdate(int $currentTick): bool
     {
         if ($this->loaded !== true) {
@@ -61,13 +45,19 @@ final class GhostlyPlayer extends Player
     }
 
     /**
-     * @param int  $index
-     * @param Item $item
+     * Very important function in the core structure
      */
-    public function setItem(int $index, Item $item): void
+    public function initGhostlyPlayer(): void
     {
-        $inventory = $this->getInventory();
-        if (isset($inventory)) $inventory->setItem($index, $item);
+        new ItemsManager($this);
+        $this->scoreboardSession = new Scoreboard($this);
+
+        $this->loaded = true;
+    }
+
+    public function getScoreboardSession(): Scoreboard
+    {
+        return $this->scoreboardSession;
     }
 
     public function setLobbyItems(): void
@@ -81,5 +71,15 @@ final class GhostlyPlayer extends Player
                 $this->setItem($index, ItemsManager::get($item));
             }
         }
+    }
+
+    /**
+     * @param int  $index
+     * @param Item $item
+     */
+    public function setItem(int $index, Item $item): void
+    {
+        $inventory = $this->getInventory();
+        if (isset($inventory)) $inventory->setItem($index, $item);
     }
 }

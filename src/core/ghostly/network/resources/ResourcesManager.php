@@ -26,17 +26,6 @@ final class ResourcesManager
     /** @var array|string[] */
     private array $listFiles = ['config.yml' => "1.0.0", 'scoreboard.yml' => "1.0.0", 'network.data.yml' => "1.0.0"];
 
-    /**
-     * @param string $file
-     * @param int    $type
-     *
-     * @return Config The config file
-     */
-    public static function getFile(string $file, int $type = Config::YAML): Config
-    {
-        return new Config(GExtension::getDataFolder() . "$file", $type);
-    }
-
     public function init(): void
     {
         Ghostly::$logger->info("Resource management has started!");
@@ -87,5 +76,16 @@ final class ResourcesManager
     private static function getGhostly(): Ghostly
     {
         return Ghostly::getGhostly();
+    }
+
+    /**
+     * @param string $file
+     * @param int    $type
+     *
+     * @return Config The config file
+     */
+    public static function getFile(string $file, int $type = Config::YAML): Config
+    {
+        return new Config(GExtension::getDataFolder() . "$file", $type);
     }
 }

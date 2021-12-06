@@ -3,9 +3,9 @@
  * Created by PhpStorm.
  *
  * User: zOmArRD
- * Date: 25/11/2021
+ * Date: 5/12/2021
  *
- * Copyright © 2021 Ghostly GExtension - All Rights Reserved.
+ * Copyright © 2021 Ghostly Network - All Rights Reserved.
  */
 declare(strict_types=1);
 
@@ -15,16 +15,19 @@ use core\ghostly\events\EventsManager;
 use core\ghostly\network\player\skin\SkinAdapter;
 use core\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
-use pocketmine\plugin\PluginBase;
-use pocketmine\plugin\PluginLogger;
+use pocketmine\plugin\{PluginBase, PluginLogger};
 
 final class Ghostly extends PluginBase
 {
-    /** @var Ghostly */
-    public static Ghostly $ghostly;
+    public static Ghostly $ghostly; public static PluginLogger $logger;
 
-    /** @var PluginLogger */
-    public static PluginLogger $logger;
+    /**
+     * @return Ghostly
+     */
+    public static function getGhostly(): Ghostly
+    {
+        return self::$ghostly;
+    }
 
     protected function onLoad(): void
     {
@@ -47,18 +50,5 @@ final class Ghostly extends PluginBase
         new TaskManager();
 
         self::$logger->notice(PREFIX . "The core has been fully loaded!");
-    }
-
-    protected function onDisable(): void
-    {
-
-    }
-
-    /**
-     * @return Ghostly
-     */
-    public static function getGhostly(): Ghostly
-    {
-        return self::$ghostly;
     }
 }

@@ -21,40 +21,14 @@ use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 
 abstract class ScoreboardAPI implements IPlayer
 {
-    /** @var GhostlyPlayer */
-    private GhostlyPlayer $player;
-
     /** @var array */
     public array $lines = [], $objectiveName = [];
-
-    public function setPlayer(GhostlyPlayer $player): void
-    {
-        $this->player = $player;
-    }
-
-    public function getPlayer(): GhostlyPlayer
-    {
-        return $this->player;
-    }
-
-    public function getPlayerName(): string
-    {
-        return $this->getPlayer()->getName();
-    }
+    /** @var GhostlyPlayer */
+    private GhostlyPlayer $player;
 
     public function __construct(GhostlyPlayer $player)
     {
         $this->setPlayer($player);
-    }
-
-    public function setObjectiveName(string $objectiveName): void
-    {
-        $this->objectiveName[$this->getPlayerName()] = $objectiveName;
-    }
-
-    public function getObjectiveName(): string
-    {
-        return $this->objectiveName[$this->getPlayerName()];
     }
 
     public function removeObjectiveName(): void
@@ -62,16 +36,19 @@ abstract class ScoreboardAPI implements IPlayer
         unset($this->objectiveName[$this->getPlayerName()]);
     }
 
-    public function isObjectiveName(): bool
+    public function getPlayerName(): string
     {
-        return isset($this->objectiveName[$this->getPlayer()->getName()]);
+        return $this->getPlayer()->getName();
     }
 
-    public function remove(): void
+    public function getPlayer(): GhostlyPlayer
     {
-        $packet = new RemoveObjectivePacket();
-        $packet->objectiveName = $this->getObjectiveName();
-        $this->getPlayer()->getNetworkSession()->sendDataPacket($packet);
+        return $this->player;
+    }
+
+    public function setPlayer(GhostlyPlayer $player): void
+    {
+        $this->player = $player;
     }
 
     public function new(string $objectiveName, string $displayName): void
@@ -86,6 +63,28 @@ abstract class ScoreboardAPI implements IPlayer
         $packet->criteriaName = "dummy";
         $this->setObjectiveName($objectiveName);
         $this->getPlayer()->getNetworkSession()->sendDataPacket($packet);
+    }
+
+    public function isObjectiveName(): bool
+    {
+        return isset($this->objectiveName[$this->getPlayer()->getName()]);
+    }
+
+    public function remove(): void
+    {
+        $packet = new RemoveObjectivePacket();
+        $packet->objectiveName = $this->getObjectiveName();
+        $this->getPlayer()->getNetworkSession()->sendDataPacket($packet);
+    }
+
+    public function getObjectiveName(): string
+    {
+        return $this->objectiveName[$this->getPlayerName()];
+    }
+
+    public function setObjectiveName(string $objectiveName): void
+    {
+        $this->objectiveName[$this->getPlayerName()] = $objectiveName;
     }
 
     public function setLine(int $score, string $message): void
