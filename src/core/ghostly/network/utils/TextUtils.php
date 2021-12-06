@@ -80,20 +80,4 @@ final class TextUtils
         for ($i = 0; $i < count($keys); $i++) $m = str_replace($keys[$i], $values[$i], $m);
         return $m;
     }
-
-    /**
-     * Decode an uuencoded string
-     * 
-     * @param string $id
-     *
-     * @return bool|string
-     */
-    public static function uDecode(string $id): bool|string
-    {
-        try {
-            return convert_uudecode($id);
-        } catch (Exception) {
-            return "error";
-        }
-    }
 }

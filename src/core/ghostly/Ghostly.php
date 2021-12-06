@@ -38,8 +38,8 @@ final class Ghostly extends PluginBase
 
     protected function onLoad(): void
     {
+        date_default_timezone_set("America/New_York");
         self::$logger = $this->getLogger();
-        self::$logger->info("§a" . "The core is being loaded!");
         self::$ghostly = $this;
 
         GExtension::getResourcesManager()->init();

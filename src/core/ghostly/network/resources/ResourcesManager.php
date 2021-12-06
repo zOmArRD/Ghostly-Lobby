@@ -59,7 +59,7 @@ final class ResourcesManager
             Ghostly::$logger->info(PREFIX . "§a" . "The $iso language has been registered.");
         }
 
-        if (SP['is.enabled'] == "true") {
+        if (SP['is.enabled'] === "true") {
             $levelName = SP['world']['name'];
             if (!GExtension::getWorldManager()->isWorldLoaded($levelName)) {
                 GExtension::getWorldManager()->loadWorld($levelName);
