@@ -95,7 +95,7 @@ final class Scoreboard extends ScoreboardAPI
     public function set(): void
     {
         /* TODO: add verification of player settings via MySQL */
-        if ($this->getScoreboardFile()->get("isEnabled") !== "true") return;
+        if ($this->getScoreboardFile()->get("is.enabled") !== "true") return;
         $this->new("ghostly.lobby", TextUtils::colorize($this->getScoreboardFile()->get("display.name")));
         $this->update();
     }
