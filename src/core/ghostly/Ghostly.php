@@ -19,7 +19,14 @@ use pocketmine\plugin\{PluginBase, PluginLogger};
 
 final class Ghostly extends PluginBase
 {
-    public static Ghostly $ghostly; public static PluginLogger $logger;
+    /** @var Ghostly */
+    public static Ghostly $ghostly;
+
+    /** @var PluginLogger  */
+    public static PluginLogger $logger;
+
+    /** @var string|null */
+    public ?string $prefix;
 
     /**
      * @return Ghostly
@@ -31,15 +38,17 @@ final class Ghostly extends PluginBase
 
     protected function onLoad(): void
     {
-        self::$ghostly = $this;
         self::$logger = $this->getLogger();
-        self::$logger->info("§a" ."The core is being loaded!");
+        self::$logger->info("§a" . "The core is being loaded!");
+        self::$ghostly = $this;
 
         GExtension::getResourcesManager()->init();
     }
 
     protected function onEnable(): void
     {
+        $this->prefix = PREFIX;
+
         /* Mojang Skin Support*/
         SkinAdapterSingleton::set(new SkinAdapter());
 
@@ -50,5 +59,23 @@ final class Ghostly extends PluginBase
         new TaskManager();
 
         self::$logger->notice(PREFIX . "The core has been fully loaded!");
+        self::$logger->notice("§c" . <<<INFO
+
+
+         $$$$$$\  $$\                             $$\     $$\           $$\      $$\  $$$$$$\  
+        $$  __$$\ $$ |                            $$ |    $$ |          $$$\    $$$ |$$  __$$\ 
+        $$ /  \__|$$$$$$$\   $$$$$$\   $$$$$$$\ $$$$$$\   $$ |$$\   $$\ $$$$\  $$$$ |$$ /  \__|
+        $$ |$$$$\ $$  __$$\ $$  __$$\ $$  _____|\_$$  _|  $$ |$$ |  $$ |$$\$$\$$ $$ |$$ |      
+        $$ |\_$$ |$$ |  $$ |$$ /  $$ |\$$$$$$\    $$ |    $$ |$$ |  $$ |$$ \$$$  $$ |$$ |      
+        $$ |  $$ |$$ |  $$ |$$ |  $$ | \____$$\   $$ |$$\ $$ |$$ |  $$ |$$ |\$  /$$ |$$ |  $$\ 
+        \$$$$$$  |$$ |  $$ |\$$$$$$  |$$$$$$$  |  \$$$$  |$$ |\$$$$$$$ |$$ | \_/ $$ |\$$$$$$  |
+         \______/ \__|  \__| \______/ \_______/    \____/ \__| \____$$ |\__|     \__| \______/ 
+                                                              $$\   $$ |                       
+                                                              \$$$$$$  |                       
+                                                               \______/         
+                                                               
+         $this->prefix §fCreated by zOmArRD :)                                                                     
+INFO
+        );
     }
 }

@@ -16,6 +16,7 @@ use core\ghostly\items\ItemsManager;
 use core\ghostly\modules\scoreboard\Scoreboard;
 use Exception;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\player\Player;
 
 final class GhostlyPlayer extends Player
@@ -67,19 +68,21 @@ final class GhostlyPlayer extends Player
         if (isset($inventory)) {
             $inventory->clearAll();
 
-            foreach (['item.navigator' => 0] as $item => $index) {
+            foreach (['item.navigator' => 0, 'item.cosmetics' => 1, 'item.ls' => 8] as $item => $index) {
                 $this->setItem($index, ItemsManager::get($item));
             }
         }
     }
 
     /**
-     * @param int  $index
-     * @param Item $item
+     * @param int       $index
+     * @param Item|null $item
+     *
+     * @return void
      */
-    public function setItem(int $index, Item $item): void
+    public function setItem(int $index = 0, ?Item $item = null): void
     {
         $inventory = $this->getInventory();
-        if (isset($inventory)) $inventory->setItem($index, $item);
+        $inventory?->setItem($index, $item);
     }
 }

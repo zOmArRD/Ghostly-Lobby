@@ -11,13 +11,28 @@ declare(strict_types=1);
 
 namespace core\ghostly\network\player;
 
-interface IPlayer
+trait IPlayer
 {
-    function setPlayer(GhostlyPlayer $player): void;
+    /** @var GhostlyPlayer */
+    public GhostlyPlayer $player;
 
-    function getPlayer(): GhostlyPlayer;
+    public function __construct(GhostlyPlayer $player)
+    {
+        $this->setPlayer($player);
+    }
 
-    function getPlayerName(): string;
+    function getPlayerName(): string
+    {
+        return $this->getPlayer()->getName();
+    }
 
-    public function __construct(GhostlyPlayer $player);
+    function getPlayer(): GhostlyPlayer
+    {
+        return $this->player;
+    }
+
+    function setPlayer(GhostlyPlayer $player): void
+    {
+        $this->player = $player;
+    }
 }

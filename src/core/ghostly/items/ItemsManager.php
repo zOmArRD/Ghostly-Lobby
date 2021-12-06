@@ -19,10 +19,9 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 
-final class ItemsManager implements IPlayer
+final class ItemsManager
 {
-    /** @var GhostlyPlayer */
-    private GhostlyPlayer $player;
+    use IPlayer;
 
     public function __construct(GhostlyPlayer $player)
     {
@@ -37,7 +36,9 @@ final class ItemsManager implements IPlayer
     public static function get(string $item): Attribute|Block|Item|null
     {
         return match ($item) {
-            "item.navigator" => self::load(ItemIds::COMPASS, "§cServer Selector §r(Click)"),
+            "item.navigator" => self::load(ItemIds::COMPASS, "§cServer Selector §7(Click)"),
+            "item.cosmetics" => self::load(ItemIds::ENDER_CHEST, "§cCosmetics §7(Click)"),
+            "item.ls" => self::load(ItemIds::NETHER_STAR, "§cLobby Selector §7(Click)"),
             default => ItemFactory::air(),
         };
     }
@@ -51,20 +52,5 @@ final class ItemsManager implements IPlayer
     public static function load(int $itemId, string $customName): Attribute|Block|Item|null
     {
         return ItemFactory::getInstance()->get($itemId)->setCustomName($customName);
-    }
-
-    function getPlayerName(): string
-    {
-        return $this->getPlayer()->getName();
-    }
-
-    function getPlayer(): GhostlyPlayer
-    {
-        return $this->player;
-    }
-
-    function setPlayer(GhostlyPlayer $player): void
-    {
-        $this->player = $player;
     }
 }

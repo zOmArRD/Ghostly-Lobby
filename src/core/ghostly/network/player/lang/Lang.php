@@ -22,14 +22,15 @@ use pocketmine\utils\Config;
 /**
  * DON'T USE THIS FOR NOW
  */
-final class Lang implements IPlayer
+final class Lang
 {
+    use IPlayer;
+
     /** @var array */
     public static array $users = [];
+
     /** @var Config[] */
     public static array $lang = [], $config;
-    /** @var GhostlyPlayer */
-    private GhostlyPlayer $player;
 
     public function __construct(GhostlyPlayer $player)
     {
@@ -46,21 +47,6 @@ final class Lang implements IPlayer
             $data = GhostlyPlayer::$playerSettings[$pn];
             if ($data["language"] !== null && $data["language"] !== "null") $this->set($data["language"], false);
         }*/
-    }
-
-    public function getPlayerName(): string
-    {
-        return $this->getPlayer()->getName();
-    }
-
-    public function getPlayer(): GhostlyPlayer
-    {
-        return $this->player;
-    }
-
-    public function setPlayer(GhostlyPlayer $player): void
-    {
-        $this->player = $player;
     }
 
     public function showForm(int $type = 1): void

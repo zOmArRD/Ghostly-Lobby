@@ -13,6 +13,8 @@ namespace core\ghostly\events\listener;
 
 use core\ghostly\Ghostly;
 use core\ghostly\network\player\GhostlyPlayer;
+use pocketmine\block\Furnace;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -45,10 +47,16 @@ final class PlayerListener implements Listener
         $player = $event->getPlayer();
 
         if (!$player instanceof GhostlyPlayer) return;
+        $player->setLobbyItems();
     }
 
     public function onPlayerLeave(PlayerQuitEvent $event): void
     {
         $event->setQuitMessage("");
+    }
+
+    public function entityDamage(EntityDamageEvent $event): void
+    {
+        $event->cancel();
     }
 }

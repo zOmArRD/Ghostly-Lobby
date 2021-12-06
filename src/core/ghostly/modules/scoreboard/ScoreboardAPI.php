@@ -19,36 +19,21 @@ use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetScorePacket;
 use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 
-abstract class ScoreboardAPI implements IPlayer
+abstract class ScoreboardAPI
 {
-    /** @var array */
-    public array $lines = [], $objectiveName = [];
-    /** @var GhostlyPlayer */
-    private GhostlyPlayer $player;
+    use IPlayer;
 
     public function __construct(GhostlyPlayer $player)
     {
         $this->setPlayer($player);
     }
 
+    /** @var array */
+    public array $lines = [], $objectiveName = [];
+
     public function removeObjectiveName(): void
     {
         unset($this->objectiveName[$this->getPlayerName()]);
-    }
-
-    public function getPlayerName(): string
-    {
-        return $this->getPlayer()->getName();
-    }
-
-    public function getPlayer(): GhostlyPlayer
-    {
-        return $this->player;
-    }
-
-    public function setPlayer(GhostlyPlayer $player): void
-    {
-        $this->player = $player;
     }
 
     public function new(string $objectiveName, string $displayName): void
