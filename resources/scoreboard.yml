@@ -14,13 +14,13 @@ display.name: "{bold}{red}Ghostly Network"
 # Scoreboard Lines
 lines:
   - "{gray}"
-  - "{dark.gray}{date} {gray}{time}"
+  - "{dark.gray}{date}"
   - ""
   - "{white}Network:"
-  - "{network.get.players}"
+  - "{red}{network.get.players}"
   - ""
   - "{white}Rank: {gray}{player.get.rank}"
   - ""
-  - "{bold}{gray}GhostlyMC.live"
+  - "{red}GhostlyMC.live"
   - "{red}{gray}"
 ...
