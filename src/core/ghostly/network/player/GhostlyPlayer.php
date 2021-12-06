@@ -12,8 +12,10 @@ declare(strict_types=1);
 namespace core\ghostly\network\player;
 
 use core\ghostly\Ghostly;
+use core\ghostly\items\ItemsManager;
 use core\ghostly\modules\scoreboard\Scoreboard;
 use Exception;
+use pocketmine\item\Item;
 use pocketmine\player\Player;
 
 final class GhostlyPlayer extends Player
@@ -35,6 +37,7 @@ final class GhostlyPlayer extends Player
      */
     public function initGhostlyPlayer(): void
     {
+        new ItemsManager($this);
         $this->scoreboardSession = new Scoreboard($this);
 
         $this->loaded = true;
@@ -44,8 +47,6 @@ final class GhostlyPlayer extends Player
     {
         if ($this->loaded !== true) {
             $this->initGhostlyPlayer();
-
-            $this->loaded = true;
             return parent::onUpdate($currentTick);
         }
 
@@ -57,5 +58,28 @@ final class GhostlyPlayer extends Player
             }
         }
         return parent::onUpdate($currentTick);
+    }
+
+    /**
+     * @param int  $index
+     * @param Item $item
+     */
+    public function setItem(int $index, Item $item): void
+    {
+        $inventory = $this->getInventory();
+        if (isset($inventory)) $inventory->setItem($index, $item);
+    }
+
+    public function setLobbyItems(): void
+    {
+        $inventory = $this->getInventory();
+
+        if (isset($inventory)) {
+            $inventory->clearAll();
+
+            foreach (['item.navigator' => 0] as $item => $index) {
+                $this->setItem($index, ItemsManager::get($item));
+            }
+        }
     }
 }

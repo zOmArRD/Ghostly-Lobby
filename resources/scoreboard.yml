@@ -2,10 +2,16 @@
 # This was written by zOmArRD  #
 ################################
 ---
-isEnabled: "true"
+# BUMP
+version: "1.0.0"
 
-display.name: "{bold}{red}Ghostly {white}Network"
+# Do you want to enable the scoreboard?
+is.enabled: "true"
 
+# Scoreboard Title
+display.name: "{bold}{red}Ghostly Network"
+
+# Scoreboard Lines
 lines:
   - "{gray}"
   - "{dark.gray}{date} {gray}{time}"

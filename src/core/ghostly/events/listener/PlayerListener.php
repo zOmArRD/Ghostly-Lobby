@@ -35,10 +35,16 @@ final class PlayerListener implements Listener
         $event->setPlayerClass(GhostlyPlayer::class);
     }
 
+    /**
+     * @param PlayerJoinEvent $event
+     * @todo finalize this.
+     */
     public function onPlayerJoin(PlayerJoinEvent $event): void
     {
         $event->setJoinMessage("");
         $player = $event->getPlayer();
+
+        if (!$player instanceof GhostlyPlayer) return;
     }
 
     public function onPlayerLeave(PlayerQuitEvent $event): void

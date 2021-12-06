@@ -15,6 +15,7 @@ use core\ghostly\network\resources\ResourcesManager;
 use pocketmine\plugin\PluginManager;
 use pocketmine\scheduler\TaskScheduler;
 use pocketmine\Server;
+use pocketmine\world\WorldManager;
 
 final class GExtension
 {
@@ -56,5 +57,21 @@ final class GExtension
     public static function getResourcesManager(): ResourcesManager
     {
         return new ResourcesManager();
+    }
+
+    /**
+     * @return WorldManager
+     */
+    public static function getWorldManager(): WorldManager
+    {
+        return self::getServerPM()->getWorldManager();
+    }
+
+    /**
+     * @return string
+     */
+    public static function getDataFolder(): string
+    {
+        return self::getGhostly()->getDataFolder();
     }
 }

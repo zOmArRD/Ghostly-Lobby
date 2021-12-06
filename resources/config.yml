@@ -2,6 +2,9 @@
 # This was written by zOmArRD  #
 ################################
 ---
+# BUMP
+version: "1.0.0"
+
 # Server Prefix
 prefix: "{bold}{red}Ghostly {white}»{reset} "
 
