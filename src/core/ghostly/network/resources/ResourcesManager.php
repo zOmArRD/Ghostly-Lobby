@@ -70,14 +70,14 @@ final class ResourcesManager
             Ghostly::$logger->info(PREFIX . "§a" . "The $iso language has been registered.");
         }
 
-        if (SP['is.enabled']) {
+        if (SP['is.enabled'] == "true") {
             $levelName = SP['world']['name'];
             if (!GExtension::getWorldManager()->isWorldLoaded($levelName)) {
                 GExtension::getWorldManager()->loadWorld($levelName);
-                Ghostly::$logger->info(PREFIX . "§a" . "world $levelName loaded");
+                Ghostly::$logger->info(PREFIX . "§a" . "The world ($levelName) has been loaded.");
             }
-            GExtension::getWorldManager()->getWorld($levelName)->setTime(World::TIME_NOON);
-            GExtension::getWorldManager()->getWorld($levelName)->stopTime();
+            GExtension::getWorldManager()->getWorldByName($levelName)->setTime(World::TIME_NOON);
+            GExtension::getWorldManager()->getWorldByName($levelName)->stopTime();
         }
     }
 

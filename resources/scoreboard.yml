@@ -19,8 +19,8 @@ lines:
   - "{white}Network:"
   - "{network.get.players}"
   - ""
-  - "{white}Rank: {player.get.rank}"
+  - "{white}Rank: {gray}{player.get.rank}"
   - ""
-  - "{gray} GhostlyMC.live"
+  - "{bold}{gray}GhostlyMC.live"
   - "{red}{gray}"
 ...
