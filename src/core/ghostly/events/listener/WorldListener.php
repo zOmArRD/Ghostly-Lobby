@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace core\ghostly\events\listener;
 
 use core\ghostly\GExtension;
+use core\ghostly\Ghostly;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\LeavesDecayEvent;
@@ -19,6 +20,11 @@ use pocketmine\event\Listener;
 
 class WorldListener implements Listener
 {
+    public function __construct()
+    {
+        Ghostly::$logger->info("§b" . "WordListener registered");
+    }
+
     public function leavesDE(LeavesDecayEvent $event): void
     {
         $event->cancel();

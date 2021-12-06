@@ -12,11 +12,11 @@ declare(strict_types=1);
 namespace core\ghostly\events;
 
 use core\ghostly\events\listener\PlayerListener;
+use core\ghostly\events\listener\WorldListener;
 use core\ghostly\Ghostly;
 
 final class EventsManager extends Events
 {
-
     public function __construct()
     {
         $this->loadEvents();
@@ -27,7 +27,7 @@ final class EventsManager extends Events
      */
     public function loadEvents(): void
     {
-        foreach ([new PlayerListener()] as $listener) $this->register($listener);
-        Ghostly::$logger->info(PREFIX . "the events have been registered!");
+        Ghostly::$logger->info(PREFIX . "§a" . "loading the Events...");
+        foreach ([new PlayerListener(), new WorldListener()] as $listener) $this->register($listener);
     }
 }

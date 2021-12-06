@@ -18,6 +18,7 @@ use pocketmine\entity\Attribute;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\network\mcpe\protocol\LevelChunkPacket;
 
 final class ItemsManager
 {
@@ -41,6 +42,7 @@ final class ItemsManager
             "item.ls" => self::load(ItemIds::NETHER_STAR, "§cLobby Selector §7(Click)"),
             default => ItemFactory::air(),
         };
+
     }
 
     /**
