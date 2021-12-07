@@ -12,10 +12,12 @@ declare(strict_types=1);
 namespace core\ghostly;
 
 use core\ghostly\events\EventsManager;
+use core\ghostly\modules\invmenu\InvMenuHandler;
 use core\ghostly\network\player\skin\SkinAdapter;
 use core\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\plugin\{PluginBase, PluginLogger};
+use ReflectionException;
 
 final class Ghostly extends PluginBase
 {
@@ -45,6 +47,9 @@ final class Ghostly extends PluginBase
         GExtension::getResourcesManager()->init();
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function onEnable(): void
     {
         $this->prefix = PREFIX;
@@ -57,6 +62,11 @@ final class Ghostly extends PluginBase
 
         /* Administrator of all Task. */
         new TaskManager();
+
+        /* InvMenu Register Lol */
+        if(!InvMenuHandler::isRegistered()){
+            InvMenuHandler::register($this);
+        }
 
         self::$logger->notice(PREFIX . "The core has been fully loaded!");
         self::$logger->notice("§c" . <<<INFO
