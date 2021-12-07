@@ -10,9 +10,14 @@
 $file_phar = 'Ghostly-Lobby.phar';
 
 if (file_exists($file_phar)) {
-    echo "Phar file already exists, overwriting...";
+    echo "Phar file already exists!";
     echo PHP_EOL;
-    Phar::unlinkArchive($file_phar);
+    try {
+        echo "overwriting...";
+        Phar::unlinkArchive($file_phar);
+    } catch (PharException $e) {
+        return;
+    }
 }
 
 $files = [];
