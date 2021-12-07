@@ -22,7 +22,7 @@ class WorldListener implements Listener
 {
     public function __construct()
     {
-        Ghostly::$logger->info("§b" . "WordListener registered");
+        Ghostly::$logger->info(PREFIX . "§b" . "WordListener registered");
     }
 
     public function leavesDE(LeavesDecayEvent $event): void

@@ -24,7 +24,7 @@ final class PlayerListener implements Listener
 {
     public function __construct()
     {
-        Ghostly::$logger->info("§b" . "PlayerListener registered");
+        Ghostly::$logger->info(PREFIX . "§b" . "PlayerListener registered");
     }
 
     /**

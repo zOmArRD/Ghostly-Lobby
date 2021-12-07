@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace core\ghostly\events;
 
+use core\ghostly\events\listener\InteractListener;
 use core\ghostly\events\listener\PlayerListener;
 use core\ghostly\events\listener\WorldListener;
 use core\ghostly\Ghostly;
@@ -28,6 +29,6 @@ final class EventsManager extends Events
     public function loadEvents(): void
     {
         Ghostly::$logger->info(PREFIX . "§a" . "loading the Events...");
-        foreach ([new PlayerListener(), new WorldListener()] as $listener) $this->register($listener);
+        foreach ([new PlayerListener(), new WorldListener(), new InteractListener()] as $listener) $this->register($listener);
     }
 }
