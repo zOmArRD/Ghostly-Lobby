@@ -13,6 +13,8 @@ namespace core\ghostly;
 
 use core\ghostly\events\EventsManager;
 use core\ghostly\modules\invmenu\InvMenuHandler;
+use core\ghostly\modules\mysql\AsyncQueue;
+use core\ghostly\modules\mysql\SelectQuery;
 use core\ghostly\network\player\skin\SkinAdapter;
 use core\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
@@ -87,5 +89,9 @@ final class Ghostly extends PluginBase
          $this->prefix §fCreated by zOmArRD :)                                                                     
 INFO
         );
+
+        AsyncQueue::runAsync(new SelectQuery(), function (SelectQuery $query): void {
+            print_r((array) $query->getResult());
+        });
     }
 }
