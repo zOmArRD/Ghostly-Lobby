@@ -34,9 +34,7 @@ final class InvMenuEventHandler implements Listener
         $packet = $event->getPacket();
         if ($packet instanceof NetworkStackLatencyPacket) {
             $session = $this->player_manager->getNullable($event->getOrigin()->getPlayer());
-            if ($session !== null) {
-                $session->getNetwork()->notify($packet->timestamp);
-            }
+            $session?->getNetwork()->notify($packet->timestamp);
         }
     }
 
@@ -55,9 +53,7 @@ final class InvMenuEventHandler implements Listener
                 if (count($targets) === 1) {
                     $target = reset($targets);
                     $session = $this->player_manager->getNullable($target->getPlayer());
-                    if ($session !== null) {
-                        $session->getNetwork()->translateContainerOpen($session, $packet);
-                    }
+                    $session?->getNetwork()->translateContainerOpen($session, $packet);
                 }
             }
         }
@@ -74,9 +70,7 @@ final class InvMenuEventHandler implements Listener
         $session = $this->player_manager->getNullable($player);
         if ($session !== null) {
             $current = $session->getCurrent();
-            if ($current !== null && $event->getInventory() === $current->menu->getInventory()) {
-                $current->menu->onClose($player);
-            }
+            if ($current !== null && $event->getInventory() === $current->menu->getInventory()) $current->menu->onClose($player);
         }
     }
 
@@ -95,26 +89,18 @@ final class InvMenuEventHandler implements Listener
         if ($current !== null) {
             $inventory = $current->menu->getInventory();
             $network_stack_callbacks = [];
-            foreach ($transaction->getActions() as $action) {
-                if ($action instanceof SlotChangeAction && $action->getInventory() === $inventory) {
-                    $result = $current->menu->handleInventoryTransaction($player, $action->getSourceItem(), $action->getTargetItem(), $action, $transaction);
-                    $network_stack_callback = $result->getPostTransactionCallback();
-                    if ($network_stack_callback !== null) {
-                        $network_stack_callbacks[] = $network_stack_callback;
-                    }
-                    if ($result->isCancelled()) {
-                        $event->cancel();
-                        break;
-                    }
+            foreach ($transaction->getActions() as $action) if ($action instanceof SlotChangeAction && $action->getInventory() === $inventory) {
+                $result = $current->menu->handleInventoryTransaction($player, $action->getSourceItem(), $action->getTargetItem(), $action, $transaction);
+                $network_stack_callback = $result->getPostTransactionCallback();
+                if ($network_stack_callback !== null) $network_stack_callbacks[] = $network_stack_callback;
+                if ($result->isCancelled()) {
+                    $event->cancel();
+                    break;
                 }
             }
             if (count($network_stack_callbacks) > 0) {
                 $player_instance->getNetwork()->wait(static function (bool $success) use ($player, $network_stack_callbacks): void {
-                    if ($success) {
-                        foreach ($network_stack_callbacks as $callback) {
-                            $callback($player);
-                        }
-                    }
+                    if ($success) foreach ($network_stack_callbacks as $callback) $callback($player);
                 });
             }
         }

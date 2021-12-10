@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Created by PhpStorm.
  *
@@ -15,23 +14,19 @@ namespace core\ghostly\modules\mysql;
 use mysqli;
 use pocketmine\scheduler\AsyncTask;
 
-abstract class AsyncQuery extends AsyncTask {
-
+abstract class AsyncQuery extends AsyncTask
+{
     /** @var string */
     public string $host, $user, $pass, $db;
 
-    public function onRun(): void {
+    /**
+     * @return void
+     */
+    public function onRun(): void
+    {
         $this->query($mysqli = new mysqli($this->host, $this->user, $this->pass, $this->db));
-
-        if ($mysqli->connect_errno) {
-            die(PREFIX . "Could not connect to the database!");
-        }
-
+        if ($mysqli->connect_errno) die(PREFIX . "Could not connect to the database!");
         $mysqli->close();
-    }
-
-    public function onCompletion(): void {
-        AsyncQueue::submitAsync($this);
     }
 
     /**
@@ -40,4 +35,12 @@ abstract class AsyncQuery extends AsyncTask {
      * @return void
      */
     abstract public function query(mysqli $mysqli): void;
+
+    /**
+     * @return void
+     */
+    public function onCompletion(): void
+    {
+        AsyncQueue::submitAsync($this);
+    }
 }

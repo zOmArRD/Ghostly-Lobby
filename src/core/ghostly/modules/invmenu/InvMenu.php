@@ -32,9 +32,7 @@ class InvMenu implements InvMenuTypeIds
 
     public function __construct(InvMenuType $type, ?Inventory $custom_inventory = null)
     {
-        if (!InvMenuHandler::isRegistered()) {
-            throw new LogicException("Tried creating menu before calling " . InvMenuHandler::class . "::register()");
-        }
+        if (!InvMenuHandler::isRegistered()) throw new LogicException("Tried creating menu before calling " . InvMenuHandler::class . "::register()");
         $this->type = $type;
         $this->inventory = $this->type->createInventory();
         $this->setInventory($custom_inventory);

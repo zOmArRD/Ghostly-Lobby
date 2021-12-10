@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Created by PhpStorm.
  *
@@ -14,37 +13,34 @@ namespace core\ghostly\modules\mysql;
 
 use pocketmine\Server;
 
-final class AsyncQueue {
-
+final class AsyncQueue
+{
+    /** @var array */
     private static array $callbacks = [];
 
     /**
      * @param AsyncQuery    $query
      * @param callable|null $callable
+     *
+     * @return void
      */
-    public static function runAsync(AsyncQuery $query, ?callable $callable): void {
+    static public function submitQuery(AsyncQuery $query, ?callable $callable): void
+    {
         $query->host = MySQL['host'];
         $query->user = MySQL['user'];
         $query->pass = MySQL['password'];
         $query->db = MySQL['database'];
 
-        if ($callable !== null) {
-            self::$callbacks[spl_object_hash($query)] = $callable;
-        }
-
+        if (isset($callable)) self::$callbacks[spl_object_hash($query)] = $callable;
         Server::getInstance()->getAsyncPool()->submitTask($query);
     }
 
     /**
      * @param AsyncQuery $query
      */
-    public static function submitAsync(AsyncQuery $query): void {
+    static public function submitAsync(AsyncQuery $query): void
+    {
         $callable = self::$callbacks[spl_object_hash($query)] ?? null;
-
-        if (!is_callable($callable)) {
-            return;
-        }
-
-        $callable($query);
+        if (is_callable($callable)) $callable($query);
     }
 }
