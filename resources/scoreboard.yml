@@ -5,7 +5,7 @@
 # BUMP
 version: "1.0.0"
 
-# Do you want to enable the scoreboard?
+# Do you want to enable the scoreboard? | This is Globally
 is.enabled: "true"
 
 # Scoreboard Title

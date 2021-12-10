@@ -43,7 +43,15 @@ class InteractListener implements Listener
         $pk = $event->getPacket();
 
         if (!$player instanceof GhostlyPlayer && !$pk instanceof InventoryTransactionPacket) return;
-        if ($pk->trData instanceof UseItemTransactionData) switch ($pk->trData->getActionType()) {
+
+        try {
+            $trData = $pk->trData;
+        } catch (\Exception) {
+            return;
+
+        }
+
+        if ($trData instanceof UseItemTransactionData) switch ($trData->getActionType()) {
             case UseItemTransactionData::ACTION_CLICK_BLOCK:
             case UseItemTransactionData::ACTION_CLICK_AIR:
             case UseItemTransactionData::ACTION_BREAK_BLOCK:

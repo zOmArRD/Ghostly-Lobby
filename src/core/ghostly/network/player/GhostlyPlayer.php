@@ -16,12 +16,10 @@ use core\ghostly\items\ItemsManager;
 use core\ghostly\modules\scoreboard\Scoreboard;
 use Exception;
 use pocketmine\item\Item;
-use pocketmine\item\ItemIds;
 use pocketmine\player\Player;
 
 final class GhostlyPlayer extends Player
 {
-
     /** @var bool */
     private bool $loaded = false;
 
