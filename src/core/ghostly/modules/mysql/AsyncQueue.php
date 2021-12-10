@@ -24,7 +24,7 @@ final class AsyncQueue
      *
      * @return void
      */
-    static public function submitQuery(AsyncQuery $query, ?callable $callable): void
+    static public function runAsync(AsyncQuery $query, ?callable $callable = null): void
     {
         $query->host = MySQL['host'];
         $query->user = MySQL['user'];
