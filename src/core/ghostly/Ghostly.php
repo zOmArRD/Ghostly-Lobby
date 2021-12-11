@@ -93,6 +93,6 @@ INFO
 
     protected function onDisable(): void
     {
-        AsyncQueue::runAsync(new UpdateRowQuery(["isOnline" => false, "players" => 0], "server", GExtension::getServerManager()->getCurrentServer()->getName(), "servers"));
+        AsyncQueue::runAsync(new UpdateRowQuery(["isOnline" => 0, "players" => 0], "server", GExtension::getServerManager()->getCurrentServer()->getName(), "servers"));
     }
 }

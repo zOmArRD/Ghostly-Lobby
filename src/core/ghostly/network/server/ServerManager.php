@@ -84,7 +84,7 @@ final class ServerManager
         $this->reloadServers();
         GExtension::getTaskScheduler()->scheduleRepeatingTask(new ClosureTask(function () use ($currentServerName): void {
             $players = count(GExtension::getServerPM()->getOnlinePlayers());
-            $isWhitelist = GExtension::getServerPM()->hasWhitelist();
+            $isWhitelist = GExtension::getServerPM()->hasWhitelist() ? 1 : 0;
             AsyncQueue::runAsync(new UpdateRowQuery(["players" => $players, "isWhitelisted" => $isWhitelist], "server", $currentServerName, "servers"));
 
             foreach (self::getServers() as $server) $server->sync();
