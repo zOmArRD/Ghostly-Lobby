@@ -37,10 +37,14 @@ final class AsyncQueue
 
     /**
      * @param AsyncQuery $query
+     *
+     * @return void
      */
     static public function submitAsync(AsyncQuery $query): void
     {
         $callable = self::$callbacks[spl_object_hash($query)] ?? null;
-        if (is_callable($callable)) $callable($query);
+        if (is_callable($callable)) {
+            $callable($query);
+        }
     }
 }

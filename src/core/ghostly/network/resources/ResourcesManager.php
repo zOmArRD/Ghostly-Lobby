@@ -97,6 +97,6 @@ final class ResourcesManager
     private function checkTables(): void
     {
         Ghostly::$logger->info(PREFIX . "parsing the database tables");
-        AsyncQueue::runAsync(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(server TEXT, players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT  0);"));
+        AsyncQueue::runAsync(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(server TEXT, players INT DEFAULT 0, isOnline BOOL DEFAULT false, isWhitelisted BOOL DEFAULT false);"));
     }
 }

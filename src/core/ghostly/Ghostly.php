@@ -14,7 +14,7 @@ namespace core\ghostly;
 use core\ghostly\events\EventsManager;
 use core\ghostly\modules\invmenu\InvMenuHandler;
 use core\ghostly\modules\mysql\AsyncQueue;
-use core\ghostly\modules\mysql\query\InsertQuery;
+use core\ghostly\modules\mysql\query\UpdateRowQuery;
 use core\ghostly\network\player\skin\SkinAdapter;
 use core\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
@@ -26,7 +26,7 @@ final class Ghostly extends PluginBase
     /** @var Ghostly */
     public static Ghostly $ghostly;
 
-    /** @var PluginLogger  */
+    /** @var PluginLogger */
     public static PluginLogger $logger;
 
     /** @var string|null */
@@ -46,7 +46,7 @@ final class Ghostly extends PluginBase
         self::$logger = $this->getLogger();
         self::$ghostly = $this;
 
-        GExtension::getResourcesManager()->init();
+        GExtension::init();
     }
 
     /**
@@ -66,7 +66,7 @@ final class Ghostly extends PluginBase
         new TaskManager();
 
         /* InvMenu Register Lol */
-        if(!InvMenuHandler::isRegistered()){
+        if (!InvMenuHandler::isRegistered()) {
             InvMenuHandler::register($this);
         }
 
@@ -89,5 +89,10 @@ final class Ghostly extends PluginBase
          $this->prefix §fCreated by zOmArRD :)                                                                     
 INFO
         );
+    }
+
+    protected function onDisable(): void
+    {
+        AsyncQueue::runAsync(new UpdateRowQuery(["isOnline" => false, "players" => 0], "server", GExtension::getServerManager()->getCurrentServer()->getName(), "servers"));
     }
 }

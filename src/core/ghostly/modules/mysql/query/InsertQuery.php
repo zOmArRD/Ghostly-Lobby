@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace core\ghostly\modules\mysql\query;
 
 use core\ghostly\modules\mysql\AsyncQuery;
-use Exception;
 use mysqli;
 
 class InsertQuery extends AsyncQuery
@@ -38,19 +37,6 @@ class InsertQuery extends AsyncQuery
      */
     public function query(mysqli $mysqli): void
     {
-        $result = $mysqli->query($this->query);
-        $this->res = serialize($result);
-    }
-
-    /**
-     * @return void
-     */
-    public function onCompletion(): void
-    {
-        try {
-            $this->res = unserialize($this->res);
-        } catch (Exception) {
-            $this->res = null;
-        }
+        $mysqli->query($this->query);
     }
 }

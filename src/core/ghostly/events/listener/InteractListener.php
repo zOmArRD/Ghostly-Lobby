@@ -23,6 +23,8 @@ use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 
 class InteractListener implements Listener
 {
+    private array $itemDelay;
+
     public function __construct()
     {
         Ghostly::$logger->info("§b" . "InteractListener registered");
@@ -35,8 +37,6 @@ class InteractListener implements Listener
         if (!GExtension::getServerPM()->isOp($player->getName())) $event->cancel();
     }
 
-    private array $itemDelay;
-
     public function newInteract(DataPacketReceiveEvent $event): void
     {
         $player = $event->getOrigin()->getPlayer();
@@ -48,7 +48,6 @@ class InteractListener implements Listener
             $trData = $pk->trData;
         } catch (\Exception) {
             return;
-
         }
 
         if ($trData instanceof UseItemTransactionData) switch ($trData->getActionType()) {
@@ -69,5 +68,4 @@ class InteractListener implements Listener
                 break;
         }
     }
-
 }
