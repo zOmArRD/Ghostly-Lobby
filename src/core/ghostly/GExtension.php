@@ -3,73 +3,73 @@
  * Created by PhpStorm.
  *
  * User: zOmArRD
- * Date: 25/11/2021
+ * Date: 11/12/2021
  *
- * Copyright © 2021 Ghostly GExtension - All Rights Reserved.
+ * Copyright © 2021 Ghostly Network - All Rights Reserved.
  */
 declare(strict_types=1);
 
 namespace core\ghostly;
 
 use core\ghostly\network\resources\ResourcesManager;
+use core\ghostly\network\server\ServerManager;
 use pocketmine\plugin\PluginManager;
 use pocketmine\scheduler\TaskScheduler;
-use pocketmine\Server;
+use pocketmine\Server as PMServer;
 use pocketmine\world\WorldManager;
 
 final class GExtension
 {
-    /**
-     * @return PluginManager
-     */
+    /** @var ServerManager */
+    private static ServerManager $serverManager;
+
+    /** @var ResourcesManager */
+    private static ResourcesManager $resourcesManager;
+
+    public static function init(): void
+    {
+        self::$serverManager = new ServerManager();
+        self::$resourcesManager = new ResourcesManager();
+
+        self::$resourcesManager->init();
+        self::$serverManager->init();
+    }
+
+    public static function getResourcesManager(): ResourcesManager
+    {
+        return self::$resourcesManager;
+    }
+
+    public static function getServerManager(): ServerManager
+    {
+        return self::$serverManager;
+    }
+
     public static function getPluginManager(): PluginManager
     {
-        return self::getServerPM()->getPluginManager();
+        return self::getGhostly()->getServer()->getPluginManager();
     }
 
-    /**
-     * @return Server
-     */
-    public static function getServerPM(): Server
-    {
-        return self::getGhostly()->getServer();
-    }
-
-    /**
-     * @return Ghostly
-     */
     private static function getGhostly(): Ghostly
     {
         return Ghostly::getGhostly();
     }
 
-    /**
-     * @return TaskScheduler
-     */
     public static function getTaskScheduler(): TaskScheduler
     {
         return self::getGhostly()->getScheduler();
     }
 
-    /**
-     * @return ResourcesManager
-     */
-    public static function getResourcesManager(): ResourcesManager
-    {
-        return new ResourcesManager();
-    }
-
-    /**
-     * @return WorldManager
-     */
     public static function getWorldManager(): WorldManager
     {
         return self::getServerPM()->getWorldManager();
     }
 
-    /**
-     * @return string
-     */
+    public static function getServerPM(): PMServer
+    {
+        return self::getGhostly()->getServer();
+    }
+
     public static function getDataFolder(): string
     {
         return self::getGhostly()->getDataFolder();

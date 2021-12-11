@@ -11,11 +11,9 @@ declare(strict_types=1);
 
 namespace core\ghostly\modules\mysql\query;
 
-use core\ghostly\Ghostly;
 use core\ghostly\modules\mysql\AsyncQuery;
 use Exception;
 use mysqli;
-use pocketmine\Server;
 
 class SelectQuery extends AsyncQuery
 {
@@ -50,17 +48,5 @@ class SelectQuery extends AsyncQuery
         } catch (Exception $exception) {
             var_dump($exception->getMessage());
         }
-    }
-
-    /**
-     * @return void
-     */
-    public function onCompletion(): void
-    {
-        if ($this->rows === null) {
-            Ghostly::$logger->error("Error while executing query. Please check database settings and try again.");
-            return;
-        }
-        $this->rows = unserialize($this->rows);
     }
 }
