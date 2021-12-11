@@ -15,6 +15,7 @@ use core\ghostly\GExtension;
 use core\ghostly\Ghostly;
 use core\ghostly\modules\mysql\AsyncQueue;
 use core\ghostly\modules\mysql\query\InsertQuery;
+use core\ghostly\modules\npc\EntityManager;
 use core\ghostly\network\player\lang\Lang;
 use core\ghostly\network\utils\TextUtils;
 use pocketmine\utils\Config;
@@ -72,6 +73,8 @@ final class ResourcesManager
         }
 
         $this->checkTables();
+        new EntityManager();
+
         Ghostly::$logger->notice("Resource management has ended!");
     }
 
