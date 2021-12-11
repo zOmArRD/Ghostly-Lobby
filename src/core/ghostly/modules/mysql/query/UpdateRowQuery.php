@@ -28,7 +28,7 @@ class UpdateRowQuery extends AsyncQuery
      */
     public function __construct(array $updates, string $conditionKey, string $conditionValue, string $table = null)
     {
-        $this->setResult($updates);
+        $this->updates = serialize($updates);
         $this->conditionKey = $conditionKey;
         $this->conditionValue = $conditionValue;
 
@@ -47,7 +47,7 @@ class UpdateRowQuery extends AsyncQuery
     public function query(mysqli $mysqli): void
     {
         $updates = [];
-        foreach ($this->getResult() as $k => $v) $updates[] = "$k='$v'";
+        foreach (unserialize($this->updates) as $k => $v) $updates[] = "$k='$v'";
         $mysqli->query("UPDATE $this->table SET " . implode(",", $updates) . " WHERE $this->conditionKey='$this->conditionValue';");
     }
 }

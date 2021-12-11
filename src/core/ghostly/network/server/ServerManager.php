@@ -50,7 +50,7 @@ final class ServerManager
      */
     public static function getServer(string $target): ?Server
     {
-        $servers = (new ServerManager)->getServers();
+        $servers = GExtension::getServerManager()->getServers();
 
         foreach ($servers as $server) {
             if ($server->getName() === $target) return $server;
@@ -121,7 +121,7 @@ final class ServerManager
             }
 
             foreach ($query->getResult() as $row) {
-                $server = new Server($row["server"], $row["players"], $row["isOnline"], $row["isWhitelisted"]);
+                $server = new Server($row["server"], (int)$row["players"], (bool)$row["isOnline"], (bool)$row["isWhitelisted"]);
                 if ($row["server"] === $currentServerName) {
                     self::$currentServer = $server;
                     Ghostly::$logger->info(PREFIX . "The server ($currentServerName) has been registered in the database.");
