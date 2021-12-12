@@ -38,8 +38,8 @@ final class Lang extends IPlayer
     public function apply(): void
     {
         $pn = $this->getPlayerName();
-        if (isset(GhostlyPlayer::$playerData[$pn])) {
-            $data = GhostlyPlayer::$playerData[$pn];
+        if (isset(GhostlyPlayer::$player_config[$pn])) {
+            $data = GhostlyPlayer::$player_config[$pn];
             if ($data["language"] !== null && $data["language"] !== "null") $this->set($data["language"], false);
         }
     }
@@ -101,8 +101,8 @@ final class Lang extends IPlayer
         $pn = $this->getPlayerName();
         self::$users[$pn] = $language;
         if ($safe) {
-            GhostlyPlayer::$playerData[$pn]["language"] = $language;
-            AsyncQueue::runAsync(new UpdateRowQuery(["language" => "$language"], "player", $pn, "settings"));
+            GhostlyPlayer::$player_config[$pn]["language"] = $language;
+            AsyncQueue::runAsync(new UpdateRowQuery(["language" => "$language"], "player_config", $pn, "settings"));
         }
     }
 

@@ -9,7 +9,7 @@ version: "1.0.0"
 is.enabled: "true"
 
 # Scoreboard Title
-display.name: "{bold}{red}Ghostly Network"
+display.name: "{bold}{red}Ghostly {white}Network"
 
 # Scoreboard Lines
 lines:
@@ -21,6 +21,6 @@ lines:
   - ""
   - "{white}Rank: {gray}{player.get.rank}"
   - ""
-  - "{red}GhostlyMC.live"
+  - "{gray}GhostlyMC.live"
   - "{red}{gray}"
 ...

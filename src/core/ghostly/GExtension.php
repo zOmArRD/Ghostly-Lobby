@@ -38,7 +38,7 @@ final class GExtension
         new SQLStore();
 
         self::$serverManager->init();
-        //self::$entityManager = new EntityManager();
+        self::$entityManager = new EntityManager();
     }
 
     /**

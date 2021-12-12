@@ -91,11 +91,15 @@ class Server
         });
     }
 
+    /**
+     * @todo Add if the server is under maintenance.
+     * @return void
+     */
     public function update(): void
     {
         $players = count(GExtension::getServerPM()->getOnlinePlayers());
         $isWhitelist = GExtension::getServerPM()->hasWhitelist() ? 1 : 0;
-        AsyncQueue::runAsync(new UpdateRowQuery(["players" => $players, "isWhitelisted" => $isWhitelist], "server", $this->getName(), "network_servers"));
+        AsyncQueue::runAsync(new UpdateRowQuery(["players" => $players, "is_whitelisted" => $isWhitelist], "server", $this->getName(), "network_servers"));
     }
 
     public function getName(): string
@@ -135,6 +139,6 @@ class Server
 
     public function setOffline(): void
     {
-        AsyncQueue::runAsync(new UpdateRowQuery(["isOnline" => 0, "players" => 0], "server", $this->getName(), "network_servers"));
+        AsyncQueue::runAsync(new UpdateRowQuery(["is_online" => 0, "players" => 0], "server", $this->getName(), "network_servers"));
     }
 }

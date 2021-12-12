@@ -12,7 +12,10 @@ declare(strict_types=1);
 namespace core\ghostly\modules\npc;
 
 use core\ghostly\modules\npc\entity\HumanEntity;
+use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\world\World;
 
 final class EntityManager
 {
@@ -30,9 +33,9 @@ final class EntityManager
      */
     public function register(): void
     {
-        foreach ([HumanEntity::class] as $class) {
-            EntityFactory::getInstance()->register($class);
-        }
+        EntityFactory::getInstance()->register(HumanEntity::class, function (World $world, CompoundTag $nbt): HumanEntity {
+            return new HumanEntity(EntityDataHelper::parseLocation($nbt, $world), HumanEntity::parseSkinNBT($nbt), $nbt);
+        }, ['HumanEntity']);
     }
 
     /**

@@ -21,7 +21,7 @@ use pocketmine\player\Player;
 final class GhostlyPlayer extends Player
 {
     /** @var array */
-    public static array $playerData;
+    public static array $player_config;
     /** @var bool */
     private bool $loaded = false;
     /** @var Scoreboard */
@@ -35,11 +35,7 @@ final class GhostlyPlayer extends Player
         }
 
         if ($currentTick % 20 === 0) {
-            try {
-                $this->getScoreboardSession()->set();
-            } catch (Exception $ex) {
-                Ghostly::$logger->error("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
-            }
+            $this->getScoreboardSession()->set();
         }
         return parent::onUpdate($currentTick);
     }

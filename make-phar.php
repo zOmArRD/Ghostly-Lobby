@@ -8,7 +8,6 @@
  * Copyright © 2021 Greek Network - All Rights Reserved.
  */
 $file_phar = 'Ghostly-Lobby.phar';
-
 if (file_exists($file_phar)) {
     echo "Phar file already exists!";
     echo PHP_EOL;
@@ -23,7 +22,7 @@ if (file_exists($file_phar)) {
 $files = [];
 $dir = getcwd() . DIRECTORY_SEPARATOR;
 
-$exclusions = [".idea", ".gitignore", "composer.json", "composer.lock", "make-phar.php", ".git", "vendor"];
+$exclusions = ["composer.phar", "README.md", ".idea", ".gitignore", "composer.json", "composer.lock", "make-phar.php", ".git", "vendor"];
 
 foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir)) as $path => $file) {
     $bool = true;
