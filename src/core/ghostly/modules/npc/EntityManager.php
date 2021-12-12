@@ -21,15 +21,14 @@ final class EntityManager
 
     public function __construct()
     {
-        $this->__register();
-
+        $this->register();
         $this->human = new Human();
     }
 
     /**
      * @return void
      */
-    public function __register(): void
+    public function register(): void
     {
         foreach ([HumanEntity::class] as $class) {
             EntityFactory::getInstance()->register($class);

@@ -13,8 +13,6 @@ namespace core\ghostly;
 
 use core\ghostly\events\EventsManager;
 use core\ghostly\modules\invmenu\InvMenuHandler;
-use core\ghostly\modules\mysql\AsyncQueue;
-use core\ghostly\modules\mysql\query\UpdateRowQuery;
 use core\ghostly\network\player\skin\SkinAdapter;
 use core\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
@@ -28,9 +26,6 @@ final class Ghostly extends PluginBase
 
     /** @var PluginLogger */
     public static PluginLogger $logger;
-
-    /** @var string|null */
-    public ?string $prefix;
 
     /**
      * @return Ghostly
@@ -54,7 +49,7 @@ final class Ghostly extends PluginBase
      */
     protected function onEnable(): void
     {
-        $this->prefix = PREFIX;
+        $prefix = PREFIX;
 
         /* Mojang Skin Support*/
         SkinAdapterSingleton::set(new SkinAdapter());
@@ -86,13 +81,13 @@ final class Ghostly extends PluginBase
                                                               \$$$$$$  |                       
                                                                \______/         
                                                                
-         $this->prefix §fCreated by zOmArRD :)                                                                     
+         $prefix §fCreated by zOmArRD :)                                                                     
 INFO
         );
     }
 
     protected function onDisable(): void
     {
-        AsyncQueue::runAsync(new UpdateRowQuery(["isOnline" => 0, "players" => 0], "server", GExtension::getServerManager()->getCurrentServer()->getName(), "servers"));
+        GExtension::getServerManager()->getCurrentServer()->setOffline();
     }
 }

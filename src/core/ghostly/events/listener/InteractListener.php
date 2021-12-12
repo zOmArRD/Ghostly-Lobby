@@ -42,7 +42,9 @@ class InteractListener implements Listener
         $player = $event->getOrigin()->getPlayer();
         $pk = $event->getPacket();
 
-        if (!$player instanceof GhostlyPlayer && !$pk instanceof InventoryTransactionPacket) return;
+        if (!$pk instanceof InventoryTransactionPacket) return;
+
+        if (!$player instanceof GhostlyPlayer) return;
 
         try {
             $trData = $pk->trData;
@@ -60,7 +62,7 @@ class InteractListener implements Listener
                 if (!isset($this->itemDelay[$player->getName()]) or time() - $this->itemDelay[$player->getName()] >= $cool_down) {
                     switch (true) {
                         case $item->equals(ItemsManager::get("item.navigator")):
-                            //FUNCTION HERE
+                            $player->sendMessage("interact");
                             break;
                     }
                     $this->itemDelay[$player->getName()] = time();

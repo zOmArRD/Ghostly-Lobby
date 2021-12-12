@@ -44,7 +44,7 @@ final class AsyncQueue
     {
         $callable = self::$callbacks[spl_object_hash($query)] ?? null;
         if (is_callable($callable)) {
-            $callable($query);
+            $callable($query["rows"]);
         }
     }
 }

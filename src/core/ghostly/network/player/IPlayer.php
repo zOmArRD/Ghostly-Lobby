@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace core\ghostly\network\player;
 
-trait IPlayer
+class IPlayer
 {
     /** @var GhostlyPlayer */
     public GhostlyPlayer $player;

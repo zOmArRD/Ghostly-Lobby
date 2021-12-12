@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace core\ghostly;
 
+use core\ghostly\modules\mysql\data\SQLStore;
+use core\ghostly\modules\npc\EntityManager;
 use core\ghostly\network\resources\ResourcesManager;
 use core\ghostly\network\server\ServerManager;
 use pocketmine\plugin\PluginManager;
@@ -26,13 +28,25 @@ final class GExtension
     /** @var ResourcesManager */
     private static ResourcesManager $resourcesManager;
 
+    /** @var EntityManager */
+    private static EntityManager $entityManager;
+
     public static function init(): void
     {
-        self::$serverManager = new ServerManager();
         self::$resourcesManager = new ResourcesManager();
+        self::$serverManager = new ServerManager();
+        new SQLStore();
 
-        self::$resourcesManager->init();
         self::$serverManager->init();
+        //self::$entityManager = new EntityManager();
+    }
+
+    /**
+     * @return EntityManager
+     */
+    public static function getEntityManager(): EntityManager
+    {
+        return self::$entityManager;
     }
 
     public static function getResourcesManager(): ResourcesManager

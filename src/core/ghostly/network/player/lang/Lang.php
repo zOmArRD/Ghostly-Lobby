@@ -13,6 +13,8 @@ namespace core\ghostly\network\player\lang;
 
 use core\ghostly\GExtension;
 use core\ghostly\modules\form\SimpleForm;
+use core\ghostly\modules\mysql\AsyncQueue;
+use core\ghostly\modules\mysql\query\UpdateRowQuery;
 use core\ghostly\network\player\GhostlyPlayer;
 use core\ghostly\network\player\IPlayer;
 use core\ghostly\network\utils\TextUtils;
@@ -22,20 +24,13 @@ use pocketmine\utils\Config;
 /**
  * DON'T USE THIS FOR NOW
  */
-final class Lang
+final class Lang extends IPlayer
 {
-    use IPlayer;
-
     /** @var array */
     public static array $users = [];
 
     /** @var Config[] */
     public static array $lang = [], $config;
-
-    public function __construct(GhostlyPlayer $player)
-    {
-        $this->setPlayer($player);
-    }
 
     /**
      * This function applies the language to the player.
@@ -43,10 +38,10 @@ final class Lang
     public function apply(): void
     {
         $pn = $this->getPlayerName();
-        /*if (isset(GhostlyPlayer::$playerSettings[$pn])) {
-            $data = GhostlyPlayer::$playerSettings[$pn];
+        if (isset(GhostlyPlayer::$playerData[$pn])) {
+            $data = GhostlyPlayer::$playerData[$pn];
             if ($data["language"] !== null && $data["language"] !== "null") $this->set($data["language"], false);
-        }*/
+        }
     }
 
     public function showForm(int $type = 1): void
@@ -74,7 +69,6 @@ final class Lang
         try {
             foreach (Lang::$config as $lang) $form->addButton("§f" . $lang["name"], $lang["image.type"], $lang["image.link"], $lang["ISOCode"]);
         } catch (Exception $ex) {
-            $player->sendMessage(PREFIX . "");
             if (GExtension::getServerPM()->isOp($playerName)) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
 
@@ -106,10 +100,10 @@ final class Lang
     {
         $pn = $this->getPlayerName();
         self::$users[$pn] = $language;
-        /*if ($safe) {
-            GhostlyPlayer::$playerSettings[$pn]["language"] = $language;
-            MySQLUtils::UpdateRowQuery(["language" => "$language"], $pn, "settings");
-        }*/
+        if ($safe) {
+            GhostlyPlayer::$playerData[$pn]["language"] = $language;
+            AsyncQueue::runAsync(new UpdateRowQuery(["language" => "$language"], "player", $pn, "settings"));
+        }
     }
 
     /**
