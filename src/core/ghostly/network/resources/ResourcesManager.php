@@ -13,9 +13,6 @@ namespace core\ghostly\network\resources;
 
 use core\ghostly\GExtension;
 use core\ghostly\Ghostly;
-use core\ghostly\modules\mysql\AsyncQueue;
-use core\ghostly\modules\mysql\query\InsertQuery;
-use core\ghostly\modules\npc\EntityManager;
 use core\ghostly\network\player\lang\Lang;
 use core\ghostly\network\utils\TextUtils;
 use pocketmine\utils\Config;
@@ -28,6 +25,11 @@ final class ResourcesManager
 {
     /** @var array|string[] */
     private array $listFiles = ['config.yml' => "1.0.0", 'scoreboard.yml' => "1.0.0", 'network.data.yml' => "1.0.0"];
+
+    public function __construct()
+    {
+        $this->init();
+    }
 
     public function init(): void
     {
@@ -71,10 +73,6 @@ final class ResourcesManager
             GExtension::getWorldManager()->getWorldByName($levelName)->setTime(World::TIME_NOON);
             GExtension::getWorldManager()->getWorldByName($levelName)->stopTime();
         }
-
-        $this->checkTables();
-        new EntityManager();
-
         Ghostly::$logger->notice("Resource management has ended!");
     }
 
@@ -95,11 +93,5 @@ final class ResourcesManager
     public static function getFile(string $file, int $type = Config::YAML): Config
     {
         return new Config(GExtension::getDataFolder() . "$file", $type);
-    }
-
-    private function checkTables(): void
-    {
-        Ghostly::$logger->info(PREFIX . "parsing the database tables");
-        AsyncQueue::runAsync(new InsertQuery("CREATE TABLE IF NOT EXISTS servers(server TEXT, players INT DEFAULT 0, isOnline SMALLINT DEFAULT 0, isWhitelisted SMALLINT DEFAULT 0);"));
     }
 }

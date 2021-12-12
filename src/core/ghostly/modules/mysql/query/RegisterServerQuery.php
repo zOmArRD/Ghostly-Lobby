@@ -34,12 +34,15 @@ class RegisterServerQuery extends AsyncQuery
      */
     public function query(mysqli $mysqli): void
     {
-        $result = $mysqli->query("SELECT * FROM servers WHERE server='$this->serverName';");
+        $result = $mysqli->query("SELECT * FROM network_servers WHERE server='$this->serverName';");
+
         $assoc = $result->fetch_assoc();
-        if (is_null($assoc)) {
-            $mysqli->query("INSERT INTO servers(server, isOnline, isWhitelisted, players) VALUES ('$this->serverName', 1, 0, 0);");
+
+        if (!is_array($assoc)) {
+            $mysqli->query("INSERT INTO network_servers(server, is_online, is_maintenance, is_whitelisted, players) VALUES ('$this->serverName', 1, 0, 0, 0);");
             return;
         }
-        $mysqli->query("UPDATE servers SET isOnline = 1 WHERE server='$this->serverName';");
+
+        $mysqli->query("UPDATE network_servers SET is_online = 1 WHERE server='$this->serverName';");
     }
 }

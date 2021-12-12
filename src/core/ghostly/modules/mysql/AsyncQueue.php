@@ -31,7 +31,7 @@ final class AsyncQueue
         $query->pass = MySQL['password'];
         $query->db = MySQL['database'];
 
-        if (isset($callable)) self::$callbacks[spl_object_hash($query)] = $callable;
+        self::$callbacks[spl_object_hash($query)] = $callable;
         Server::getInstance()->getAsyncPool()->submitTask($query);
     }
 
@@ -44,7 +44,7 @@ final class AsyncQueue
     {
         $callable = self::$callbacks[spl_object_hash($query)] ?? null;
         if (is_callable($callable)) {
-            $callable($query);
+            $callable($query["rows"]);
         }
     }
 }

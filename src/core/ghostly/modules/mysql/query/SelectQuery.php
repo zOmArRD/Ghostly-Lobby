@@ -12,13 +12,14 @@ declare(strict_types=1);
 namespace core\ghostly\modules\mysql\query;
 
 use core\ghostly\modules\mysql\AsyncQuery;
-use Exception;
 use mysqli;
 
 class SelectQuery extends AsyncQuery
 {
     /** @var string */
     public string $query;
+
+    public mixed $rows;
 
     /**
      * @param string $sqlQuery
@@ -36,17 +37,21 @@ class SelectQuery extends AsyncQuery
     public function query(mysqli $mysqli): void
     {
         $result = $mysqli->query($this->query);
-
         $rows = [];
 
-        try {
-            if ($result !== false) {
-                while ($row = $result->fetch_assoc()) $rows[] = $row;
-
-                $this->setResult($rows);
-            }
-        } catch (Exception $exception) {
-            var_dump($exception->getMessage());
+        if ($result !== false) {
+            while ($row = $result->fetch_assoc()) $rows[] = $row;
+            $this->rows = serialize($rows);
         }
+    }
+
+    public function onCompletion(): void
+    {
+        if ($this->rows === null) {
+            return;
+        }
+
+        $this->rows = unserialize($this->rows);
+        parent::onCompletion();
     }
 }

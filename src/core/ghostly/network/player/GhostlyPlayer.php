@@ -20,15 +20,16 @@ use pocketmine\player\Player;
 
 final class GhostlyPlayer extends Player
 {
+    /** @var array */
+    public static array $playerData;
     /** @var bool */
     private bool $loaded = false;
-
     /** @var Scoreboard */
     private Scoreboard $scoreboardSession;
 
     public function onUpdate(int $currentTick): bool
     {
-        if ($this->loaded !== true) {
+        if ($this->isLoaded() !== true) {
             $this->initGhostlyPlayer();
             return parent::onUpdate($currentTick);
         }
@@ -44,13 +45,19 @@ final class GhostlyPlayer extends Player
     }
 
     /**
-     * Very important function in the core structure
+     * @return bool
      */
+    public function isLoaded(): bool
+    {
+        return $this->loaded;
+    }
+
     public function initGhostlyPlayer(): void
     {
+        new IPlayer($this);
         new ItemsManager($this);
-        $this->scoreboardSession = new Scoreboard($this);
 
+        $this->scoreboardSession = new Scoreboard($this);
         $this->loaded = true;
     }
 

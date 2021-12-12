@@ -16,7 +16,6 @@ use core\ghostly\Ghostly;
 use core\ghostly\modules\mysql\AsyncQueue;
 use core\ghostly\modules\mysql\query\RegisterServerQuery;
 use core\ghostly\modules\mysql\query\SelectQuery;
-use core\ghostly\modules\mysql\query\UpdateRowQuery;
 use core\ghostly\network\resources\ResourcesManager;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\Config;
@@ -32,22 +31,12 @@ final class ServerManager
     /** @var Server */
     private static Server $currentServer;
 
-    /**
-     * @param string $server
-     *
-     * @return string
-     */
     public static function getStatus(string $server): string
     {
         $server = self::getServer($server);
         return $server !== null ? $server->getStatus() : "";
     }
 
-    /**
-     * @param string $target
-     *
-     * @return Server|null
-     */
     public static function getServer(string $target): ?Server
     {
         $servers = GExtension::getServerManager()->getServers();
@@ -58,9 +47,6 @@ final class ServerManager
         return null;
     }
 
-    /**
-     * @return Server[]
-     */
     public function getServers(): array
     {
         return self::$servers;
@@ -82,18 +68,12 @@ final class ServerManager
         Ghostly::$logger->info("Registering the server in the database");
         sleep(1); // IDK
         $this->reloadServers();
-        GExtension::getTaskScheduler()->scheduleRepeatingTask(new ClosureTask(function () use ($currentServerName): void {
-            $players = count(GExtension::getServerPM()->getOnlinePlayers());
-            $isWhitelist = GExtension::getServerPM()->hasWhitelist() ? 1 : 0;
-            AsyncQueue::runAsync(new UpdateRowQuery(["players" => $players, "isWhitelisted" => $isWhitelist], "server", $currentServerName, "servers"));
-
+        GExtension::getTaskScheduler()->scheduleDelayedRepeatingTask(new ClosureTask(function () use ($currentServerName): void {
+            GExtension::getServerManager()->getCurrentServer()->update();
             foreach (self::getServers() as $server) $server->sync();
-        }), self::REFRESH_TICKS);
+        }), 40, self::REFRESH_TICKS);
     }
 
-    /**
-     * @return Config
-     */
     private function getConfig(): Config
     {
         return ResourcesManager::getFile("network.data.yml");
@@ -114,14 +94,12 @@ final class ServerManager
 
         /** @var string $currentServerName */
         $currentServerName = self::getConfig()->get('current.server')['name'];
-        AsyncQueue::runAsync(new SelectQuery("SELECT * FROM servers"), function (SelectQuery $query) use ($currentServerName){
+        AsyncQueue::runAsync(new SelectQuery("SELECT * FROM network_servers"), function ($rows) use ($currentServerName) {
 
-            if (!is_array($query->getResult())) {
-                return;
-            }
+            //if (!is_array($query->getResult())) return;
 
-            foreach ($query->getResult() as $row) {
-                $server = new Server($row["server"], (int)$row["players"], (bool)$row["isOnline"], (bool)$row["isWhitelisted"]);
+            foreach (/*$query->getResult()*/$rows as $row) {
+                $server = new Server($row['server'], (int)$row['players'], (bool)$row['is_online'], (bool)$row['is_maintenance'], (bool)$row['is_whitelisted']);
                 if ($row["server"] === $currentServerName) {
                     self::$currentServer = $server;
                     Ghostly::$logger->info(PREFIX . "The server ($currentServerName) has been registered in the database.");
@@ -133,19 +111,11 @@ final class ServerManager
         });
     }
 
-    /**
-     * @return Server
-     */
     public function getCurrentServer(): Server
     {
         return self::$currentServer;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Server|null
-     */
     public function getServerByName(string $name): ?Server
     {
         foreach (self::getServers() as $server) {

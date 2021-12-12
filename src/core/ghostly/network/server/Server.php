@@ -11,8 +11,10 @@ declare(strict_types=1);
 
 namespace core\ghostly\network\server;
 
+use core\ghostly\GExtension;
 use core\ghostly\modules\mysql\AsyncQueue;
 use core\ghostly\modules\mysql\query\SelectQuery;
+use core\ghostly\modules\mysql\query\UpdateRowQuery;
 
 class Server
 {
@@ -23,39 +25,47 @@ class Server
     public int $players;
 
     /** @var bool */
-    public bool $isOnline, $isWhitelisted;
+    public bool $is_online, $is_whitelisted, $is_maintenance;
 
-    /**
-     * @param string $server
-     * @param int    $players
-     * @param bool   $isOnline
-     * @param bool   $isWhitelisted
-     */
-    public function __construct(string $server = "Unknown", int $players = 0, bool $isOnline = false, bool $isWhitelisted = false)
+    public function __construct(string $name, int $players = 0, bool $is_online = false, bool $is_maintenance = false, bool $is_whitelisted = false)
     {
-        $this->update($server, $players, $isOnline, $isWhitelisted);
-    }
-
-    /**
-     * @param string $server
-     * @param int    $players
-     * @param bool   $isOnline
-     * @param bool   $isWhitelisted
-     */
-    public function update(string $server = "Unknown", int $players = 0, bool $isOnline = false, bool $isWhitelisted = false): void
-    {
-        $this->setName($server);
+        $this->setName($name);
         $this->setPlayers($players);
-        $this->setIsOnline($isOnline);
-        $this->setIsWhitelisted($isWhitelisted);
+        $this->setIsOnline($is_online);
+        $this->setIsMaintenance($is_maintenance);
+        $this->setIsWhitelisted($is_whitelisted);
     }
 
     /**
-     * @param bool $isWhitelisted
+     * @param bool $is_maintenance
      */
-    public function setIsWhitelisted(bool $isWhitelisted): void
+    public function setIsMaintenance(bool $is_maintenance): void
     {
-        $this->isWhitelisted = $isWhitelisted;
+        $this->is_maintenance = $is_maintenance;
+    }
+
+    /**
+     * @param bool $is_whitelisted
+     */
+    public function setIsWhitelisted(bool $is_whitelisted): void
+    {
+        $this->is_whitelisted = $is_whitelisted;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIsMaintenance(): bool
+    {
+        return $this->is_maintenance;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIsWhitelisted(): bool
+    {
+        return $this->is_whitelisted;
     }
 
     /**
@@ -65,87 +75,66 @@ class Server
      */
     public function sync(): void
     {
-        AsyncQueue::runAsync(new SelectQuery("SELECT * FROM servers WHERE server='$this->name';"), function ($rows) {
+        AsyncQueue::runAsync(new SelectQuery("SELECT * FROM network_servers WHERE server='$this->name';"), function ($rows) {
             $row = $rows[0];
             if ($row !== null) {
-                $this->setIsOnline((bool)$row["isOnline"]);
+                $this->setIsOnline((bool)$row["is_online"]);
                 $this->setPlayers((int)$row["players"]);
-                $this->setIsWhitelisted((bool)$row["isWhitelisted"]);
+                $this->setIsWhitelisted((bool)$row["is_whitelisted"]);
+                $this->setIsMaintenance((bool)$row["is_maintenance"]);
             } else {
                 $this->setIsOnline(false);
                 $this->setPlayers(0);
                 $this->setIsWhitelisted(false);
+                $this->setIsMaintenance(false);
             }
         });
     }
 
-    /**
-     * @return string
-     */
+    public function update(): void
+    {
+        $players = count(GExtension::getServerPM()->getOnlinePlayers());
+        $isWhitelist = GExtension::getServerPM()->hasWhitelist() ? 1 : 0;
+        AsyncQueue::runAsync(new UpdateRowQuery(["players" => $players, "isWhitelisted" => $isWhitelist], "server", $this->getName(), "network_servers"));
+    }
+
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return void
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return bool
-     */
-    public function isWhitelisted(): bool
-    {
-        return $this->isWhitelisted;
-    }
-
-    /**
-     * @return string
-     */
     public function getStatus(): string
     {
-        return $this->isOnline() ? ("§a" . "PLAYING: §f" . $this->getPlayers()) : ("§c" . "OFFLINE");
+        return $this->isIsOnline() ? ("§a" . "PLAYING: §f" . $this->getPlayers()) : ("§c" . "OFFLINE");
     }
 
-    /**
-     * @return bool
-     */
-    public function isOnline(): bool
+    public function isIsOnline(): bool
     {
-        return $this->isOnline;
+        return $this->is_online;
     }
 
-    /**
-     * @param bool $isOnline
-     *
-     * @return void
-     */
-    public function setIsOnline(bool $isOnline): void
+    public function setIsOnline(bool $is_online): void
     {
-        $this->isOnline = $isOnline;
+        $this->is_online = $is_online;
     }
 
-    /**
-     * @return int
-     */
     public function getPlayers(): int
     {
         return $this->players;
     }
 
-    /**
-     * @param int $players
-     *
-     * @return void
-     */
     public function setPlayers(int $players): void
     {
         $this->players = $players;
+    }
+
+    public function setOffline(): void
+    {
+        AsyncQueue::runAsync(new UpdateRowQuery(["isOnline" => 0, "players" => 0], "server", $this->getName(), "network_servers"));
     }
 }

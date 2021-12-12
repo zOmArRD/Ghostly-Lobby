@@ -11,23 +11,15 @@ declare(strict_types=1);
 
 namespace core\ghostly\items;
 
-use core\ghostly\network\player\GhostlyPlayer;
 use core\ghostly\network\player\IPlayer;
 use pocketmine\block\Block;
 use pocketmine\entity\Attribute;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
-use pocketmine\network\mcpe\protocol\LevelChunkPacket;
 
-final class ItemsManager
+final class ItemsManager extends IPlayer
 {
-    use IPlayer;
-
-    public function __construct(GhostlyPlayer $player)
-    {
-        $this->setPlayer($player);
-    }
 
     /**
      * @param string $item
