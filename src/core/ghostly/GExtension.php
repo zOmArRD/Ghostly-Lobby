@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace core\ghostly;
 
+use core\ghostly\commands\CommandManager;
 use core\ghostly\modules\mysql\data\SQLStore;
 use core\ghostly\modules\npc\EntityManager;
 use core\ghostly\network\resources\ResourcesManager;
@@ -39,6 +40,7 @@ final class GExtension
 
         self::$serverManager->init();
         self::$entityManager = new EntityManager();
+        new CommandManager();
     }
 
     /**

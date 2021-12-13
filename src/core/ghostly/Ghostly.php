@@ -60,7 +60,6 @@ final class Ghostly extends PluginBase
         /* Administrator of all Task. */
         new TaskManager();
 
-        /* InvMenu Register Lol */
         if (!InvMenuHandler::isRegistered()) {
             InvMenuHandler::register($this);
         }

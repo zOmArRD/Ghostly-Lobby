@@ -21,5 +21,8 @@ interface ISubCommand
      *
      * @return void
      */
-    public function onSubcommand(CommandSender $sender, array $args): void;
+    public function executeSub(
+        CommandSender $sender,
+        array         $args
+    ): void;
 }

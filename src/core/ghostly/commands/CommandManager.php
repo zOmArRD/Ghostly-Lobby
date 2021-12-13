@@ -13,34 +13,25 @@ namespace core\ghostly\commands;
 
 use core\ghostly\commands\npc\NpcCmd;
 use core\ghostly\GExtension;
-use pocketmine\command\Command as PMCommand;
+use pocketmine\command\SimpleCommandMap;
 
 final class CommandManager
 {
     public function __construct()
     {
-        $this->init();
+        $this->setDefaultsCommands();
     }
 
-    /**
-     * @param string    $prefix
-     * @param PMCommand $command
-     *
-     * @return void
-     */
-    private function register(string $prefix, PMCommand $command): void
+    private function setDefaultsCommands(): void
     {
-        GExtension::getServerPM()->getCommandMap()->register($prefix, $command);
+        $this->getCommandMap()->
+        registerAll("bukkit", [
+            new NpcCmd("npc")
+        ]);
     }
 
-    /**
-     * @todo finish
-     * @return void
-     */
-    public function init(): void
+    private function getCommandMap(): SimpleCommandMap
     {
-        foreach (["npc" => new NpcCmd()] as $prefix => $command) {
-            $this->register($prefix, $command);
-        }
+        return GExtension::getServerPM()->getCommandMap();
     }
 }

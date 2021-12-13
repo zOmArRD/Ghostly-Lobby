@@ -4,3 +4,7 @@ api: 4.0.0
 description: Ghostly Lobby Server
 version: 2.5.0
 author: zOmArRD
+
+permissions:
+  ghostly.command.npc:
+    default: op

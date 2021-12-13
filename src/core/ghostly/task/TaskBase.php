@@ -24,7 +24,10 @@ abstract class TaskBase
      *
      * @return TaskHandler
      */
-    public function registerTask(Task $task, int $period): TaskHandler
+    public function registerTask(
+        Task $task,
+        int  $period
+    ): TaskHandler
     {
         return $this->getTaskScheduler()->scheduleRepeatingTask($task, $period);
     }

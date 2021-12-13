@@ -13,10 +13,11 @@ namespace core\ghostly\commands;
 
 abstract class Command extends \pocketmine\command\Command
 {
-    /** @var array */
     public static array $subCmd;
 
-    public function registerSubCommands(): void{}
+    public function registerSubCommands(): void
+    {
+    }
 
     public function getSubcommand(string $prefix): ?string
     {

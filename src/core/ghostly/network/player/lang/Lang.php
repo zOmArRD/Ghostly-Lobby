@@ -44,6 +44,20 @@ final class Lang extends IPlayer
         }
     }
 
+    /**
+     * @param string $language
+     * @param bool   $safe
+     */
+    public function set(string $language, bool $safe): void
+    {
+        $pn = $this->getPlayerName();
+        self::$users[$pn] = $language;
+        if ($safe) {
+            GhostlyPlayer::$player_config[$pn]["language"] = $language;
+            AsyncQueue::runAsync(new UpdateRowQuery(["language" => "$language"], "player_config", $pn, "settings"));
+        }
+    }
+
     public function showForm(int $type = 1): void
     {
         $player = $this->getPlayer();
@@ -90,20 +104,6 @@ final class Lang extends IPlayer
     public function get(): string
     {
         return self::$users[$this->getPlayerName()] ?? $this->getPlayer()->getLocale();
-    }
-
-    /**
-     * @param string $language
-     * @param bool   $safe
-     */
-    public function set(string $language, bool $safe): void
-    {
-        $pn = $this->getPlayerName();
-        self::$users[$pn] = $language;
-        if ($safe) {
-            GhostlyPlayer::$player_config[$pn]["language"] = $language;
-            AsyncQueue::runAsync(new UpdateRowQuery(["language" => "$language"], "player_config", $pn, "settings"));
-        }
     }
 
     /**
