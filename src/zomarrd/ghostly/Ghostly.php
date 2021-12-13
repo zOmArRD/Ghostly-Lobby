@@ -11,12 +11,11 @@ declare(strict_types=1);
 
 namespace zomarrd\ghostly;
 
-use core\ghostly\task\TaskManager;
+use zomarrd\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\plugin\{PluginBase, PluginLogger};
 use ReflectionException;
 use zomarrd\ghostly\events\EventsManager;
-use zomarrd\ghostly\modules\invmenu\InvMenuHandler;
 use zomarrd\ghostly\network\player\skin\SkinAdapter;
 
 final class Ghostly extends PluginBase
@@ -59,10 +58,6 @@ final class Ghostly extends PluginBase
 
         /* Administrator of all Task. */
         new TaskManager();
-
-        if (!InvMenuHandler::isRegistered()) {
-            InvMenuHandler::register($this);
-        }
 
         self::$logger->notice(PREFIX . "The Lobby system has been fully loaded!");
         self::$logger->notice("§c" . <<<INFO
