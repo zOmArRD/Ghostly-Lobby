@@ -11,10 +11,12 @@
   ],
   "require": {
     "pocketmine/pocketmine-mp": "4.0.2",
-    "ext-mysqli": "*",
-    "phpstan/phpstan": "1.2.0"
+    "ext-mysqli": "*"
   },
   "scripts": {
     "make-phar": "@php make-phar.php"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.2"
   }
 }
