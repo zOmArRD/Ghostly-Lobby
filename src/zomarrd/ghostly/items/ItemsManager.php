@@ -29,9 +29,9 @@ final class ItemsManager extends IPlayer
     public static function get(string $item): Attribute|Block|Item|null
     {
         return match ($item) {
-            "item.navigator" => self::load(ItemIds::COMPASS, "§cServer Selector §7(Click)"),
-            "item.cosmetics" => self::load(ItemIds::ENDER_CHEST, "§cCosmetics §7(Click)"),
-            "item.ls" => self::load(ItemIds::NETHER_STAR, "§cLobby Selector §7(Click)"),
+            'item.navigator' => self::load(ItemIds::COMPASS, '§cServer Selector §7(Click)'),
+            'item.cosmetics' => self::load(ItemIds::ENDER_CHEST, '§cCosmetics §7(Click)'),
+            'item.ls' => self::load(ItemIds::NETHER_STAR, '§cLobby Selector §7(Click)'),
             default => ItemFactory::air(),
         };
 

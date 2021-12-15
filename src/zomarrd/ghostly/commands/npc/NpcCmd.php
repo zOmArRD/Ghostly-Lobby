@@ -15,7 +15,7 @@ use pocketmine\command\CommandSender;
 use zomarrd\ghostly\commands\Command;
 use zomarrd\ghostly\commands\ISubCommand;
 use zomarrd\ghostly\network\player\lang\TranslationsKeys;
-use zomarrd\ghostly\network\player\permission\DefaultPermissionNames;
+use zomarrd\ghostly\network\player\permission\PermissionNames;
 
 final class NpcCmd extends Command
 {
@@ -28,9 +28,9 @@ final class NpcCmd extends Command
     public function __construct(string $name)
     {
         $this->setPermissionMessage(TranslationsKeys::COMMAND_NOEXIST);
-        $this->setPermission(DefaultPermissionNames::COMMAND_NPC);
-        parent::__construct($name, "NPC Command", "/npc help");
-        $this->registerSubCommands();
+        $this->setPermission(PermissionNames::COMMAND_NPC);
+        parent::__construct($name, 'NPC Command', '/npc help');
+        $this->registerSubCmd();
     }
 
     /**
@@ -38,9 +38,9 @@ final class NpcCmd extends Command
      *
      * @return void
      */
-    public function registerSubCommands(): void
+    public function registerSubCmd(): void
     {
-        foreach (["help" => new NHelp(), "create" => new NCreate()] as $prefix => $subCmd) {
+        foreach (['help' => new NHelp(), 'create' => new NCreate()] as $prefix => $subCmd) {
             self::$subCmd[$prefix] = $subCmd;
         }
     }
@@ -67,14 +67,14 @@ final class NpcCmd extends Command
         }
 
         if (!isset($args[0])) {
-            self::$subCmd[$this->getSubcommand("help")]->executeSub($sender, []);
+            self::$subCmd[$this->getSubcommand('help')]->executeSub($sender, []);
             return;
         }
 
         $prefix = $args[0];
 
         if ($this->getSubcommand($prefix) === null) {
-            self::$subCmd[$this->getSubcommand("help")]->executeSub($sender, []);
+            self::$subCmd[$this->getSubcommand('help')]->executeSub($sender, []);
             return;
         }
 
@@ -91,8 +91,8 @@ final class NpcCmd extends Command
     public function getSubcommand(string $prefix): ?string
     {
         return match ($prefix) {
-            "help" => "help",
-            "create" => "create",
+            'help' => 'help',
+            'create' => 'create',
             default => null,
         };
     }

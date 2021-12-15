@@ -15,10 +15,18 @@ abstract class Command extends \pocketmine\command\Command
 {
     public static array $subCmd;
 
-    public function registerSubCommands(): void
+    /**
+     * @return void
+     */
+    public function registerSubCmd(): void
     {
     }
 
+    /**
+     * @param string $prefix
+     *
+     * @return string|null
+     */
     public function getSubcommand(string $prefix): ?string
     {
         return null;

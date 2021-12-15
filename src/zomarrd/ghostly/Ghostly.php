@@ -14,7 +14,6 @@ namespace zomarrd\ghostly;
 use zomarrd\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\plugin\{PluginBase, PluginLogger};
-use ReflectionException;
 use zomarrd\ghostly\events\EventsManager;
 use zomarrd\ghostly\network\player\skin\SkinAdapter;
 
@@ -34,17 +33,21 @@ final class Ghostly extends PluginBase
         return self::$ghostly;
     }
 
+    /**
+     * Called when the plugin is loaded, before calling onEnable()
+     */
     protected function onLoad(): void
     {
-        date_default_timezone_set("America/New_York");
+        date_default_timezone_set('America/New_York');
         self::$logger = $this->getLogger();
         self::$ghostly = $this;
 
         GExtension::init();
+        parent::onLoad();
     }
 
     /**
-     * @throws ReflectionException
+     * Called when the plugin is enabled
      */
     protected function onEnable(): void
     {
@@ -59,8 +62,8 @@ final class Ghostly extends PluginBase
         /* Administrator of all Task. */
         new TaskManager();
 
-        self::$logger->notice(PREFIX . "The Lobby system has been fully loaded!");
-        self::$logger->notice("§c" . <<<INFO
+        self::$logger->notice(PREFIX . 'The Lobby system has been fully loaded!');
+        self::$logger->notice('§c' . <<<INFO
 
 
          $$$$$$\  $$\                             $$\     $$\           $$\      $$\  $$$$$$\  
@@ -78,10 +81,16 @@ final class Ghostly extends PluginBase
          $prefix §fCreated by zOmArRD :)                                                                     
 INFO
         );
+        parent::onEnable();
     }
 
+    /**
+     * Called when the plugin is disabled
+     * Use this to free open things and finish actions
+     */
     protected function onDisable(): void
     {
         GExtension::getServerManager()->getCurrentServer()->setOffline();
+        parent::onDisable();
     }
 }

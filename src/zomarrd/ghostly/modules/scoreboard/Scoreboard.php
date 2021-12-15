@@ -24,11 +24,14 @@ final class Scoreboard extends ScoreboardAPI
     /** @var string[] This is to replace blanks */
     private const EMPTY_CACHE = ["§0\e", "§1\e", "§2\e", "§3\e", "§4\e", "§5\e", "§6\e", "§7\e", "§8\e", "§9\e", "§a\e", "§b\e", "§c\e", "§d\e", "§e\e"];
 
-    public function set(): void
+    /**
+     * @return void
+     */
+    public function setScore(): void
     {
         /* TODO: add verification of player settings via MySQL */
-        if ($this->getScoreboardFile()->get("is.enabled") !== "true") return;
-        $this->new("ghostly.lobby", TextUtils::colorize($this->getScoreboardFile()->get("display.name")));
+        if ($this->getScoreboardFile()->get('is.enabled') !== 'true') return;
+        $this->new('ghostly.lobby', TextUtils::colorize($this->getScoreboardFile()->get('display.name')));
         $this->update();
     }
 
@@ -37,7 +40,7 @@ final class Scoreboard extends ScoreboardAPI
      */
     private function getScoreboardFile(): Config
     {
-        return ResourcesManager::getFile("scoreboard.yml");
+        return ResourcesManager::getFile('scoreboard.yml');
     }
 
     /**
@@ -45,8 +48,8 @@ final class Scoreboard extends ScoreboardAPI
      */
     private function update(): void
     {
-        if (!is_array($this->getScoreboardFile()->get("lines")))return;
-        foreach ($this->getScoreboardFile()->get("lines") as $scLine => $string) {
+        if (!is_array($this->getScoreboardFile()->get('lines')))return;
+        foreach ($this->getScoreboardFile()->get('lines') as $scLine => $string) {
             $line = $scLine +1;
             $msg = $this->replaceData($line, (string)$string);
             $this->setLine($line, $msg);
@@ -61,36 +64,36 @@ final class Scoreboard extends ScoreboardAPI
      */
     public function replaceData(int $line, string $message): string
     {
-        if (empty($message)) return self::EMPTY_CACHE[$line] ?? "";
+        if (empty($message)) return self::EMPTY_CACHE[$line] ?? '';
         $msg = $message;
 
         $data = [
-            "{black}" => TextFormat::BLACK,
-            "{dark.blue}" => TextFormat::DARK_BLUE,
-            "{dark.green}" => TextFormat::DARK_GREEN,
-            "{dark.aqua}" => TextFormat::DARK_AQUA,
-            "{dark.red}" => TextFormat::DARK_RED,
-            "{dark.purple}" => TextFormat::DARK_PURPLE,
-            "{gold}" => TextFormat::GOLD,
-            "{gray}" => TextFormat::GRAY,
-            "{dark.gray}" => TextFormat::DARK_GRAY,
-            "{blue}" => TextFormat::BLUE,
-            "{green}" => TextFormat::GREEN,
-            "{aqua}" => TextFormat::AQUA,
-            "{red}" => TextFormat::RED,
-            "{light.purple}" => TextFormat::LIGHT_PURPLE,
-            "{yellow}" => TextFormat::YELLOW,
-            "{white}" => TextFormat::WHITE,
-            "{obfuscated}" => TextFormat::OBFUSCATED,
-            "{bold}" => TextFormat::BOLD,
-            "{strikethrough}" => TextFormat::STRIKETHROUGH,
-            "{underline}" => TextFormat::UNDERLINE,
-            "{italic}" => TextFormat::ITALIC,
-            "{reset}" => TextFormat::RESET,
-            "{eol}" => TextFormat::EOL,
-            "{player.get.name}" => $this->getPlayerName(),
-            "{date}" => date("d/m/y"),
-            "{time}" => date("G:ia"),
+            '{black}' => TextFormat::BLACK,
+            '{dark.blue}' => TextFormat::DARK_BLUE,
+            '{dark.green}' => TextFormat::DARK_GREEN,
+            '{dark.aqua}' => TextFormat::DARK_AQUA,
+            '{dark.red}' => TextFormat::DARK_RED,
+            '{dark.purple}' => TextFormat::DARK_PURPLE,
+            '{gold}' => TextFormat::GOLD,
+            '{gray}' => TextFormat::GRAY,
+            '{dark.gray}' => TextFormat::DARK_GRAY,
+            '{blue}' => TextFormat::BLUE,
+            '{green}' => TextFormat::GREEN,
+            '{aqua}' => TextFormat::AQUA,
+            '{red}' => TextFormat::RED,
+            '{light.purple}' => TextFormat::LIGHT_PURPLE,
+            '{yellow}' => TextFormat::YELLOW,
+            '{white}' => TextFormat::WHITE,
+            '{obfuscated}' => TextFormat::OBFUSCATED,
+            '{bold}' => TextFormat::BOLD,
+            '{strikethrough}' => TextFormat::STRIKETHROUGH,
+            '{underline}' => TextFormat::UNDERLINE,
+            '{italic}' => TextFormat::ITALIC,
+            '{reset}' => TextFormat::RESET,
+            '{eol}' => TextFormat::EOL,
+            '{player.get.name}' => $this->getPlayerName(),
+            '{date}' => date('d/m/y'),
+            '{time}' => date('G:ia'),
         ];
 
         $keys = array_keys($data);

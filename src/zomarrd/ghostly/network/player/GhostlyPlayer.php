@@ -18,22 +18,24 @@ use zomarrd\ghostly\modules\scoreboard\Scoreboard;
 
 final class GhostlyPlayer extends Player
 {
-    /** @var array */
     public static array $player_config;
-    /** @var bool */
     private bool $loaded = false;
-    /** @var Scoreboard */
     private Scoreboard $scoreboardSession;
 
+    /**
+     * @param int $currentTick
+     *
+     * @return bool
+     */
     public function onUpdate(int $currentTick): bool
     {
         if ($this->isLoaded() !== true) {
-            $this->initGhostlyPlayer();
+            $this->initPlayer();
             return parent::onUpdate($currentTick);
         }
 
         if ($currentTick % 20 === 0) {
-            $this->getScoreboardSession()->set();
+            $this->getScoreboardSession()->setScore();
         }
         return parent::onUpdate($currentTick);
     }
@@ -46,7 +48,10 @@ final class GhostlyPlayer extends Player
         return $this->loaded;
     }
 
-    public function initGhostlyPlayer(): void
+    /**
+     * @return void
+     */
+    public function initPlayer(): void
     {
         new IPlayer($this);
         new ItemsManager($this);
@@ -55,11 +60,17 @@ final class GhostlyPlayer extends Player
         $this->loaded = true;
     }
 
+    /**
+     * @return Scoreboard
+     */
     public function getScoreboardSession(): Scoreboard
     {
         return $this->scoreboardSession;
     }
 
+    /**
+     * @return void
+     */
     public function setLobbyItems(): void
     {
         $inventory = $this->getInventory();

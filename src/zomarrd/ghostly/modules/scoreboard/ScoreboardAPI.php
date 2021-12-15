@@ -24,6 +24,9 @@ abstract class ScoreboardAPI extends IPlayer
     /** @var array */
     public array $lines = [], $objectiveName = [];
 
+    /**
+     * @return void
+     */
     public function removeObjectiveName(): void
     {
         unset($this->objectiveName[$this->getPlayerName()]);
@@ -37,8 +40,8 @@ abstract class ScoreboardAPI extends IPlayer
         $packet->objectiveName = $objectiveName;
         $packet->displayName = $displayName;
         $packet->sortOrder = 0;
-        $packet->displaySlot = "sidebar";
-        $packet->criteriaName = "dummy";
+        $packet->displaySlot = 'sidebar';
+        $packet->criteriaName = 'dummy';
         $this->setObjectiveName($objectiveName);
         $this->getPlayer()->getNetworkSession()->sendDataPacket($packet);
     }
@@ -48,6 +51,9 @@ abstract class ScoreboardAPI extends IPlayer
         return isset($this->objectiveName[$this->getPlayer()->getName()]);
     }
 
+    /**
+     * @return void
+     */
     public function remove(): void
     {
         $packet = new RemoveObjectivePacket();
@@ -55,16 +61,30 @@ abstract class ScoreboardAPI extends IPlayer
         $this->getPlayer()->getNetworkSession()->sendDataPacket($packet);
     }
 
+    /**
+     * @return string
+     */
     public function getObjectiveName(): string
     {
         return $this->objectiveName[$this->getPlayerName()];
     }
 
+    /**
+     * @param string $objectiveName
+     *
+     * @return void
+     */
     public function setObjectiveName(string $objectiveName): void
     {
         $this->objectiveName[$this->getPlayerName()] = $objectiveName;
     }
 
+    /**
+     * @param int    $score
+     * @param string $message
+     *
+     * @return void
+     */
     public function setLine(int $score, string $message): void
     {
         if (!$this->isObjectiveName()) return;

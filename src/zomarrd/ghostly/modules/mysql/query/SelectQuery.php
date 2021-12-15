@@ -16,9 +16,7 @@ use zomarrd\ghostly\modules\mysql\AsyncQuery;
 
 class SelectQuery extends AsyncQuery
 {
-    /** @var string */
     public string $query;
-
     public mixed $rows;
 
     /**
@@ -45,6 +43,9 @@ class SelectQuery extends AsyncQuery
         }
     }
 
+    /**
+     * @return void
+     */
     public function onCompletion(): void
     {
         if ($this->rows === null) {

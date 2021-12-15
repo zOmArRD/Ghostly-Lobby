@@ -33,7 +33,7 @@ class UpdateRowQuery extends AsyncQuery
         $this->conditionValue = $conditionValue;
 
         if ($table == null) {
-            Ghostly::$logger->error("Unable to update the changes in the database");
+            Ghostly::$logger->error('Unable to update the changes in the database');
             return;
         }
         $this->table = $table;
@@ -47,7 +47,7 @@ class UpdateRowQuery extends AsyncQuery
     public function query(mysqli $mysqli): void
     {
         $updates = [];
-        foreach (unserialize($this->updates) as $k => $v) $updates[] = "$k='$v'";
-        $mysqli->query("UPDATE $this->table SET " . implode(",", $updates) . " WHERE $this->conditionKey='$this->conditionValue';");
+        foreach (unserialize($this->updates) as $key => $value) $updates[] = "$key='$value'";
+        $mysqli->query("UPDATE $this->table SET " . implode(',', $updates) . " WHERE $this->conditionKey='$this->conditionValue';");
     }
 }

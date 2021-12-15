@@ -16,6 +16,9 @@ use pocketmine\scheduler\TaskHandler;
 use pocketmine\scheduler\TaskScheduler;
 use zomarrd\ghostly\GExtension;
 
+/**
+ *
+ */
 abstract class TaskBase
 {
     /**

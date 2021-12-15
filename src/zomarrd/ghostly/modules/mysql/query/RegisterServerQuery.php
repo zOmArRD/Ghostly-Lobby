@@ -16,7 +16,6 @@ use zomarrd\ghostly\modules\mysql\AsyncQuery;
 
 class RegisterServerQuery extends AsyncQuery
 {
-    /** @var string */
     public string $serverName;
 
     /**

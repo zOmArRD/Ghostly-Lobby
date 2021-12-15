@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace zomarrd\ghostly;
 
-use core\ghostly\network\server\ServerManager;
+use zomarrd\ghostly\network\server\ServerManager;
 use pocketmine\plugin\PluginManager;
 use pocketmine\scheduler\TaskScheduler;
 use pocketmine\Server as PMServer;
@@ -32,6 +32,9 @@ final class GExtension
     /** @var EntityManager */
     private static EntityManager $entityManager;
 
+    /**
+     * @return void
+     */
     public static function init(): void
     {
         self::$resourcesManager = new ResourcesManager();
@@ -51,31 +54,49 @@ final class GExtension
         return self::$entityManager;
     }
 
+    /**
+     * @return ResourcesManager
+     */
     public static function getResourcesManager(): ResourcesManager
     {
         return self::$resourcesManager;
     }
 
+    /**
+     * @return ServerManager
+     */
     public static function getServerManager(): ServerManager
     {
         return self::$serverManager;
     }
 
+    /**
+     * @return PluginManager
+     */
     public static function getPluginManager(): PluginManager
     {
         return self::getGhostly()->getServer()->getPluginManager();
     }
 
+    /**
+     * @return Ghostly
+     */
     private static function getGhostly(): Ghostly
     {
         return Ghostly::getGhostly();
     }
 
+    /**
+     * @return TaskScheduler
+     */
     public static function getTaskScheduler(): TaskScheduler
     {
         return self::getGhostly()->getScheduler();
     }
 
+    /**
+     * @return WorldManager
+     */
     public static function getWorldManager(): WorldManager
     {
         return self::getServerPM()->getWorldManager();

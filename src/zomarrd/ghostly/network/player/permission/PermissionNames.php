@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace zomarrd\ghostly\network\player\permission;
 
-final class DefaultPermissionNames
+final class PermissionNames
 {
-    const COMMAND_NPC = "ghostly.command.npc";
+    public const COMMAND_NPC = 'ghostly.command.npc';
 }

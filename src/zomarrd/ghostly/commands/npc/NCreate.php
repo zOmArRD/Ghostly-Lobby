@@ -34,7 +34,7 @@ final class NCreate implements ISubCommand
         }
 
         if (!isset($args[0])) {
-            $sender->sendMessage(PREFIX . "§cUse: §7/npc create ");
+            $sender->sendMessage(PREFIX . '§cUse: §7/npc create ');
             return;
         }
 

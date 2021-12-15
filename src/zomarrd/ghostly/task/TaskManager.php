@@ -20,7 +20,7 @@ final class TaskManager extends TaskBase
     }
 
     /**
-     * @todo finalize this.
+     * @return void
      */
     private function load(): void
     {

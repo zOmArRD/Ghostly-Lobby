@@ -11,24 +11,50 @@ declare(strict_types=1);
 
 namespace zomarrd\ghostly\events;
 
+use pocketmine\event\Listener;
+use pocketmine\plugin\PluginManager;
 use zomarrd\ghostly\events\listener\InteractListener;
 use zomarrd\ghostly\events\listener\PlayerListener;
 use zomarrd\ghostly\events\listener\WorldListener;
+use zomarrd\ghostly\GExtension;
 use zomarrd\ghostly\Ghostly;
 
-final class EventsManager extends Events
+final class EventsManager
 {
     public function __construct()
     {
-        $this->loadEvents();
+        $this->registerAll([
+            new PlayerListener(),
+            new WorldListener(),
+            new InteractListener()
+        ]);
     }
 
     /**
-     * In this function you add the events to the foreach array to register them.
+     * @param array $events
+     *
+     * @return void
      */
-    public function loadEvents(): void
+    public function registerAll(array $events): void
     {
-        Ghostly::$logger->info(PREFIX . "§a" . "loading the Events...");
-        foreach ([new PlayerListener(), new WorldListener(), new InteractListener()] as $listener) $this->register($listener);
+        foreach ($events as $event) {
+            $this->register($event);
+        }
+    }
+
+    /**
+     * @param Listener $event
+     */
+    public function register(Listener $event): void
+    {
+        $this->getPluginManager()->registerEvents($event, Ghostly::getGhostly());
+    }
+
+    /**
+     * @return PluginManager
+     */
+    private function getPluginManager(): PluginManager
+    {
+        return GExtension::getPluginManager();
     }
 }

@@ -19,17 +19,23 @@ final class CommandManager
 {
     public function __construct()
     {
-        $this->setDefaultsCommands();
+        $this->registerCommands();
     }
 
-    private function setDefaultsCommands(): void
+    /**
+     * @return void
+     */
+    private function registerCommands(): void
     {
         $this->getCommandMap()->
-        registerAll("bukkit", [
-            new NpcCmd("npc")
+        registerAll('bukkit', [
+            new NpcCmd('npc')
         ]);
     }
 
+    /**
+     * @return SimpleCommandMap
+     */
     private function getCommandMap(): SimpleCommandMap
     {
         return GExtension::getServerPM()->getCommandMap();

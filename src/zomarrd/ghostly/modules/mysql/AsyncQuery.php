@@ -17,15 +17,15 @@ use pocketmine\scheduler\AsyncTask;
 abstract class AsyncQuery extends AsyncTask
 {
     /** @var string */
-    public string $host, $user, $pass, $db;
+    public string $host, $user, $pass, $database;
 
     /**
      * @return void
      */
     public function onRun(): void
     {
-        $this->query($mysqli = new mysqli($this->host, $this->user, $this->pass, $this->db));
-        if ($mysqli->connect_errno) die(PREFIX . "Could not connect to the database!");
+        $this->query($mysqli = new mysqli($this->host, $this->user, $this->pass, $this->database));
+        if ($mysqli->connect_errno) die(PREFIX . 'Could not connect to the database!');
         $mysqli->close();
     }
 
@@ -42,5 +42,6 @@ abstract class AsyncQuery extends AsyncTask
     public function onCompletion(): void
     {
         AsyncQueue::submitAsync($this);
+        parent::onCompletion();
     }
 }

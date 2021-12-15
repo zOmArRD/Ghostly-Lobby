@@ -28,36 +28,36 @@ final class TextUtils
     {
         $m = $text;
 
-        $colors = ["{black}" => TextFormat::BLACK,
-            "{dark.blue}" => TextFormat::DARK_BLUE,
-            "{dark.green}" => TextFormat::DARK_GREEN,
-            "{dark.aqua}" => TextFormat::DARK_AQUA,
-            "{dark.red}" => TextFormat::DARK_RED,
-            "{dark.purple}" => TextFormat::DARK_PURPLE,
-            "{gold}" => TextFormat::GOLD,
-            "{gray}" => TextFormat::GRAY,
-            "{dark.gray}" => TextFormat::DARK_GRAY,
-            "{blue}" => TextFormat::BLUE,
-            "{green}" => TextFormat::GREEN,
-            "{aqua}" => TextFormat::AQUA,
-            "{red}" => TextFormat::RED,
-            "{light.purple}" => TextFormat::LIGHT_PURPLE,
-            "{yellow}" => TextFormat::YELLOW,
-            "{white}" => TextFormat::WHITE,
-            "{obfuscated}" => TextFormat::OBFUSCATED,
-            "{bold}" => TextFormat::BOLD,
-            "{strikethrough}" => TextFormat::STRIKETHROUGH,
-            "{underline}" => TextFormat::UNDERLINE,
-            "{italic}" => TextFormat::ITALIC,
-            "{reset}" => TextFormat::RESET,
-            "{eol}" => TextFormat::EOL];
+        $colors = ['{black}' => TextFormat::BLACK,
+            '{dark.blue}' => TextFormat::DARK_BLUE,
+            '{dark.green}' => TextFormat::DARK_GREEN,
+            '{dark.aqua}' => TextFormat::DARK_AQUA,
+            '{dark.red}' => TextFormat::DARK_RED,
+            '{dark.purple}' => TextFormat::DARK_PURPLE,
+            '{gold}' => TextFormat::GOLD,
+            '{gray}' => TextFormat::GRAY,
+            '{dark.gray}' => TextFormat::DARK_GRAY,
+            '{blue}' => TextFormat::BLUE,
+            '{green}' => TextFormat::GREEN,
+            '{aqua}' => TextFormat::AQUA,
+            '{red}' => TextFormat::RED,
+            '{light.purple}' => TextFormat::LIGHT_PURPLE,
+            '{yellow}' => TextFormat::YELLOW,
+            '{white}' => TextFormat::WHITE,
+            '{obfuscated}' => TextFormat::OBFUSCATED,
+            '{bold}' => TextFormat::BOLD,
+            '{strikethrough}' => TextFormat::STRIKETHROUGH,
+            '{underline}' => TextFormat::UNDERLINE,
+            '{italic}' => TextFormat::ITALIC,
+            '{reset}' => TextFormat::RESET,
+            '{eol}' => TextFormat::EOL];
 
         $keys = array_keys($colors);
         $values = array_values($colors);
 
         for ($i = 0; $i < count($keys); $i++) $m = str_replace($keys[$i], (string)$values[$i], $m);
 
-        return $m ?? "";
+        return $m ?? '';
     }
 
     /**

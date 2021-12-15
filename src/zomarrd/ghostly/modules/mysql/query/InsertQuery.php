@@ -16,10 +16,6 @@ use zomarrd\ghostly\modules\mysql\AsyncQuery;
 
 class InsertQuery extends AsyncQuery
 {
-    /** @var mixed */
-    public mixed $res;
-
-    /** @var string */
     public string $query;
 
     /**

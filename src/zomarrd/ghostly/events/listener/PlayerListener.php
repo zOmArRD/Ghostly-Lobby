@@ -23,7 +23,7 @@ final class PlayerListener implements Listener
 {
     public function __construct()
     {
-        Ghostly::$logger->info(PREFIX . "§b" . "PlayerListener registered");
+        Ghostly::$logger->info(PREFIX . '§b' . 'PlayerListener registered');
     }
 
     /**
@@ -42,18 +42,28 @@ final class PlayerListener implements Listener
      */
     public function onPlayerJoin(PlayerJoinEvent $event): void
     {
-        $event->setJoinMessage("");
+        $event->setJoinMessage('');
         $player = $event->getPlayer();
 
         if (!$player instanceof GhostlyPlayer) return;
         $player->setLobbyItems();
     }
 
+    /**
+     * @param PlayerQuitEvent $event
+     *
+     * @return void
+     */
     public function onPlayerLeave(PlayerQuitEvent $event): void
     {
-        $event->setQuitMessage("");
+        $event->setQuitMessage('');
     }
 
+    /**
+     * @param EntityDamageEvent $event
+     *
+     * @return void
+     */
     public function entityDamage(EntityDamageEvent $event): void
     {
         $event->cancel();

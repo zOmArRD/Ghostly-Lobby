@@ -24,12 +24,12 @@ final class AsyncQueue
      *
      * @return void
      */
-    static public function runAsync(AsyncQuery $query, ?callable $callable = null): void
+    public static function runAsync(AsyncQuery $query, ?callable $callable = null): void
     {
         $query->host = MySQL['host'];
         $query->user = MySQL['user'];
         $query->pass = MySQL['password'];
-        $query->db = MySQL['database'];
+        $query->database = MySQL['database'];
 
         self::$callbacks[spl_object_hash($query)] = $callable;
         Server::getInstance()->getAsyncPool()->submitTask($query);
@@ -40,11 +40,11 @@ final class AsyncQueue
      *
      * @return void
      */
-    static public function submitAsync(AsyncQuery $query): void
+    public static function submitAsync(AsyncQuery $query): void
     {
         $callable = self::$callbacks[spl_object_hash($query)] ?? null;
         if (is_callable($callable)) {
-            $callable($query["rows"]);
+            $callable($query['rows']);
         }
     }
 }

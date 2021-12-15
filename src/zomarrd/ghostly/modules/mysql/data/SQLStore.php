@@ -17,16 +17,19 @@ use zomarrd\ghostly\modules\mysql\query\InsertQuery;
 class SQLStore
 {
     /** @var string Create the table where the player's data is stored. */
-    private const CREATE_CONFIG = "CREATE TABLE IF NOT EXISTS player_config(xuid VARCHAR(50), player VARCHAR(16), language VARCHAR(10), setSzomarrdboard SMALLINT DEFAULT 1, chestGui SMALLINT DEFAULT 0);";
+    private const CREATE_CONFIG = 'CREATE TABLE IF NOT EXISTS player_config(xuid VARCHAR(50), player VARCHAR(16), language VARCHAR(10), setSzomarrdboard SMALLINT DEFAULT 1, chestGui SMALLINT DEFAULT 0);';
 
     /** @var string Create the table of servers for the network. */
-    private const CREATE_SERVERS = "CREATE TABLE IF NOT EXISTS network_servers(server VARCHAR(15), players INT, is_online SMALLINT, is_maintenance SMALLINT, is_whitelisted SMALLINT);";
+    private const CREATE_SERVERS = 'CREATE TABLE IF NOT EXISTS network_servers(server VARCHAR(15), players INT, is_online SMALLINT, is_maintenance SMALLINT, is_whitelisted SMALLINT);';
 
     public function __construct()
     {
         $this->init();
     }
 
+    /**
+     * @return void
+     */
     public function init(): void
     {
         foreach ([self::CREATE_CONFIG, self::CREATE_SERVERS] as $query) {

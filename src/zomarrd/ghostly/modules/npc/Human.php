@@ -27,7 +27,7 @@ final class Human
      *
      * @return void
      */
-    public function spawn(string $npcId, GhostlyPlayer $player, string $nameTag = "", bool $spawnToAll = true): void
+    public function spawn(string $npcId, GhostlyPlayer $player, string $nameTag = '', bool $spawnToAll = true): void
     {
         $location = $player->getLocation();
         $skin = $player->getSkin();

@@ -37,10 +37,10 @@ final class Lang extends IPlayer
      */
     public function apply(): void
     {
-        $pn = $this->getPlayerName();
-        if (isset(GhostlyPlayer::$player_config[$pn])) {
-            $data = GhostlyPlayer::$player_config[$pn];
-            if ($data["language"] !== null && $data["language"] !== "null") $this->set($data["language"], false);
+        $playerName = $this->getPlayerName();
+        if (isset(GhostlyPlayer::$player_config[$playerName])) {
+            $data = GhostlyPlayer::$player_config[$playerName];
+            if ($data['language'] !== null && $data['language'] !== 'null') $this->set($data['language'], false);
         }
     }
 
@@ -53,45 +53,50 @@ final class Lang extends IPlayer
         $pn = $this->getPlayerName();
         self::$users[$pn] = $language;
         if ($safe) {
-            GhostlyPlayer::$player_config[$pn]["language"] = $language;
-            AsyncQueue::runAsync(new UpdateRowQuery(["language" => "$language"], "player_config", $pn, "settings"));
+            GhostlyPlayer::$player_config[$pn]['language'] = $language;
+            AsyncQueue::runAsync(new UpdateRowQuery(['language' => "$language"], 'player_config', $pn, 'settings'));
         }
     }
 
+    /**
+     * @param int $type
+     *
+     * @return void
+     */
     public function showForm(int $type = 1): void
     {
         $player = $this->getPlayer();
         $playerName = $this->getPlayerName();
         $form = new SimpleForm(function (GhostlyPlayer $player, $data) {
             if (isset($data)) {
-                if ($data == "back") {
+                if ($data == 'back') {
                     /*todo: return to another form*/
                     return;
-                } elseif ($data == "close") return;
+                } elseif ($data == 'close') return;
 
-                if ($this->get() !== $data) {
+                if ($this->getLanguage() !== $data) {
                     $this->set($data, true);
                     /*todo: update the inventory of the player*/
 
-                    $player->sendMessage(PREFIX . TextUtils::colorize($this->getString("message.lang.set.done")));
-                } else $player->sendMessage(PREFIX . TextUtils::colorize($this->getString("message.lang.set.fail")));
+                    $player->sendMessage(PREFIX . TextUtils::colorize($this->getString('message.lang.set.done')));
+                } else $player->sendMessage(PREFIX . TextUtils::colorize($this->getString('message.lang.set.fail')));
             }
         });
 
-        $form->setTitle(TextUtils::colorize($this->getString("form.title.lang.selector")));
+        $form->setTitle(TextUtils::colorize($this->getString('form.title.lang.selector')));
 
         try {
-            foreach (Lang::$config as $lang) $form->addButton("§f" . $lang["name"], $lang["image.type"], $lang["image.link"], $lang["ISOCode"]);
+            foreach (Lang::$config as $lang) $form->addButton('§f' . $lang['name'], $lang['image.type'], $lang['image.link'], $lang['ISOCode']);
         } catch (Exception $ex) {
             if (GExtension::getServerPM()->isOp($playerName)) $player->sendMessage("Error in line: {$ex->getLine()}, File: {$ex->getFile()} \n Error: {$ex->getMessage()}");
         }
 
         switch ($type) {
             case 1:
-                $form->addButton("form.button.back", $form::IMAGE_TYPE_PATH, "", "back");
+                $form->addButton('form.button.back', $form::IMAGE_TYPE_PATH, '', 'back');
                 break;
             default:
-                $form->addButton("form.button.close", $form::IMAGE_TYPE_PATH, "textures/gui/newgui/anvil-crossout", "close");
+                $form->addButton('form.button.close', $form::IMAGE_TYPE_PATH, 'textures/gui/newgui/anvil-crossout', 'close');
                 break;
         }
 
@@ -101,7 +106,7 @@ final class Lang extends IPlayer
     /**
      * @return string Returns the language of the player.
      */
-    public function get(): string
+    public function getLanguage(): string
     {
         return self::$users[$this->getPlayerName()] ?? $this->getPlayer()->getLocale();
     }
@@ -113,7 +118,7 @@ final class Lang extends IPlayer
      */
     public function getString(string $id): string
     {
-        $str = self::$lang[$this->get()]->get("strings");
-        return $str["$id"] ?? TextUtils::colorize($str["message.error"]);
+        $str = self::$lang[$this->getLanguage()]->get('strings');
+        return $str["$id"] ?? TextUtils::colorize($str['message.error']);
     }
 }

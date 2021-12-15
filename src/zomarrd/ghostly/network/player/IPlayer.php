@@ -16,22 +16,36 @@ class IPlayer
     /** @var GhostlyPlayer */
     public GhostlyPlayer $player;
 
+    /**
+     * @param GhostlyPlayer $player
+     */
     public function __construct(GhostlyPlayer $player)
     {
         $this->setPlayer($player);
     }
 
-    function getPlayerName(): string
+    /**
+     * @return string
+     */
+    public function getPlayerName(): string
     {
         return $this->getPlayer()->getName();
     }
 
-    function getPlayer(): GhostlyPlayer
+    /**
+     * @return GhostlyPlayer
+     */
+    public function getPlayer(): GhostlyPlayer
     {
         return $this->player;
     }
 
-    function setPlayer(GhostlyPlayer $player): void
+    /**
+     * @param GhostlyPlayer $player
+     *
+     * @return void
+     */
+    public function setPlayer(GhostlyPlayer $player): void
     {
         $this->player = $player;
     }

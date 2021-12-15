@@ -17,16 +17,16 @@ use zomarrd\ghostly\commands\ISubCommand;
 final class NHelp implements ISubCommand
 {
 
+
     /**
      * @param CommandSender $sender
      * @param array         $args
      *
      * @return void
-     * @todo finish
      */
     public function executeSub(CommandSender $sender, array $args): void
     {
-        $sender->sendMessage(PREFIX . "§bList of subcommands for npc system:");
+        $sender->sendMessage(PREFIX . '§bList of subcommands for npc system:');
         foreach (array_keys(NpcCmd::getSubCmd()) as $command) {
             $sender->sendMessage("§7- §a/npc $command");
         }

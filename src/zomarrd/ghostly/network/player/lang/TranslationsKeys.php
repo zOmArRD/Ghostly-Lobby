@@ -14,25 +14,25 @@ namespace zomarrd\ghostly\network\player\lang;
 final class TranslationsKeys
 {
     /* @global string */
-    const ERROR = "message.error";
-    const NO_PERMS = "message.noperms";
+    public const ERROR = 'message.error';
+    public const NO_PERMS = 'message.noperms';
 
     /* @form buttons section */
-    const BUTTON_CLOSE = "form.button.close";
-    const BUTTON_BACK = "form.button.back";
-    const BUTTON_JOIN = "form.button.join";
-    const BUTTON_ENABLE = "form.button.enable";
-    const BUTTON_DISABLE = "form.button.disable";
-    const BUTTON_LOCKED = "form.button.locked";
-    const BUTTON_UNLOCKED = "form.button.unlocked";
+    public const BUTTON_CLOSE = 'form.button.close';
+    public const BUTTON_BACK = 'form.button.back';
+    public const BUTTON_JOIN = 'form.button.join';
+    public const BUTTON_ENABLE = 'form.button.enable';
+    public const BUTTON_DISABLE = 'form.button.disable';
+    public const BUTTON_LOCKED = 'form.button.locked';
+    public const BUTTON_UNLOCKED = 'form.button.unlocked';
 
     /* @lang section */
-    const FORM_TITLE_LANG = "form.title.lang.selector";
-    const LANG_SET_DONE = "message.lang.set.done";
-    const LANG_SET_FAIL = "message.lang.set.fail";
+    public const FORM_TITLE_LANG = 'form.title.lang.selector';
+    public const LANG_SET_DONE = 'message.lang.set.done';
+    public const LANG_SET_FAIL = 'message.lang.set.fail';
 
     /* @command section */
-    const COMMAND_NOEXIST = "command.noexist";
+    public const COMMAND_NOEXIST = 'command.noexist';
 
-    const ONLY_PLAYER = PREFIX . "This function can only be performed by player";
+    public const ONLY_PLAYER = PREFIX . 'This function can only be performed by player';
 }

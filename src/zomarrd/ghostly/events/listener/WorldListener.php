@@ -22,29 +22,44 @@ class WorldListener implements Listener
 {
     public function __construct()
     {
-        Ghostly::$logger->info(PREFIX . "§b" . "WordListener registered");
+        Ghostly::$logger->info(PREFIX . '§b' . 'WordListener registered');
     }
 
-    public function leavesDE(LeavesDecayEvent $event): void
+    /**
+     * @param LeavesDecayEvent $event
+     *
+     * @return void
+     */
+    public function leavesDecayEvent(LeavesDecayEvent $event): void
     {
         $event->cancel();
     }
 
-    public function blockBreak(BlockBreakEvent $event): void
+    /**
+     * @param BlockBreakEvent $event
+     *
+     * @return void
+     */
+    public function blockBreakEvent(BlockBreakEvent $event): void
     {
         $player = $event->getPlayer();
 
-        $lvn = SP['is.enabled'] == "true" ? SP['world']['name'] : $player->getWorld()->getFolderName();
+        $levelName = SpawnOptions['is.enabled'] == 'true' ? SpawnOptions['world']['name'] : $player->getWorld()->getFolderName();
 
-        if ($player->getWorld()->getFolderName() === $lvn) if (!GExtension::getServerPM()->isOp($player->getName())) $event->cancel();
+        if ($player->getWorld()->getFolderName() === $levelName) if (!GExtension::getServerPM()->isOp($player->getName())) $event->cancel();
     }
 
-    public function blockPlace(BlockPlaceEvent $event): void
+    /**
+     * @param BlockPlaceEvent $event
+     *
+     * @return void
+     */
+    public function blockPlaceEvent(BlockPlaceEvent $event): void
     {
         $player = $event->getPlayer();
 
-        $lvn = SP['is.enabled'] == "true" ? SP['world']['name'] : $player->getWorld()->getFolderName();
+        $levelName = SpawnOptions['is.enabled'] == 'true' ? SpawnOptions['world']['name'] : $player->getWorld()->getFolderName();
 
-        if ($player->getWorld()->getFolderName() === $lvn) if (!GExtension::getServerPM()->isOp($player->getName())) $event->cancel();
+        if ($player->getWorld()->getFolderName() === $levelName) if (!GExtension::getServerPM()->isOp($player->getName())) $event->cancel();
     }
 }
