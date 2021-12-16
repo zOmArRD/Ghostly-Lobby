@@ -12,9 +12,9 @@
 
 **Server Management System**
 
-- [ ] MySQL API
-- [ ] Server API
-- [ ] Efficiency
+- [x] MySQL API
+- [x] Server API
+- [x] Efficiency
 
 **Language System**
 
