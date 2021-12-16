@@ -13,6 +13,7 @@ namespace zomarrd\ghostly\events;
 
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginManager;
+use zomarrd\ghostly\events\listener\EntityListener;
 use zomarrd\ghostly\events\listener\InteractListener;
 use zomarrd\ghostly\events\listener\PlayerListener;
 use zomarrd\ghostly\events\listener\WorldListener;
@@ -26,7 +27,8 @@ final class EventsManager
         $this->registerAll([
             new PlayerListener(),
             new WorldListener(),
-            new InteractListener()
+            new InteractListener(),
+            new EntityListener()
         ]);
     }
 

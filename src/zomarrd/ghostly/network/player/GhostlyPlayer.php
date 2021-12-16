@@ -13,6 +13,7 @@ namespace zomarrd\ghostly\network\player;
 
 use pocketmine\item\Item;
 use pocketmine\player\Player;
+use zomarrd\ghostly\GExtension;
 use zomarrd\ghostly\items\ItemsManager;
 use zomarrd\ghostly\modules\scoreboard\Scoreboard;
 
@@ -94,5 +95,13 @@ final class GhostlyPlayer extends Player
     {
         $inventory = $this->getInventory();
         $inventory?->setItem($index, $item);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOp(): bool
+    {
+        return GExtension::getServerPM()->isOp($this->getName());
     }
 }

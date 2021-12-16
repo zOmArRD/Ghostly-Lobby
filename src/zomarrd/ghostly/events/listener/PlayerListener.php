@@ -21,11 +21,6 @@ use zomarrd\ghostly\network\player\GhostlyPlayer;
 
 final class PlayerListener implements Listener
 {
-    public function __construct()
-    {
-        Ghostly::$logger->info(PREFIX . '§b' . 'PlayerListener registered');
-    }
-
     /**
      * @param PlayerCreationEvent $event
      *

@@ -43,7 +43,6 @@ final class GExtension
 
         self::$serverManager->init();
         self::$entityManager = new EntityManager();
-        new CommandManager();
     }
 
     /**
@@ -102,11 +101,17 @@ final class GExtension
         return self::getServerPM()->getWorldManager();
     }
 
+    /**
+     * @return PMServer
+     */
     public static function getServerPM(): PMServer
     {
         return self::getGhostly()->getServer();
     }
 
+    /**
+     * @return string
+     */
     public static function getDataFolder(): string
     {
         return self::getGhostly()->getDataFolder();

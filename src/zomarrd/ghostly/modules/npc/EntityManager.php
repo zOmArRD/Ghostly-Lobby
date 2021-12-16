@@ -15,7 +15,10 @@ use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\world\World;
+use zomarrd\ghostly\modules\form\Form;
+use zomarrd\ghostly\modules\form\SimpleForm;
 use zomarrd\ghostly\modules\npc\entity\HumanEntity;
+use zomarrd\ghostly\network\player\GhostlyPlayer;
 
 final class EntityManager
 {
@@ -44,5 +47,23 @@ final class EntityManager
     public function getHuman(): Human
     {
         return $this->human;
+    }
+
+    /**
+     * @param HumanEntity   $entity
+     * @param GhostlyPlayer $player
+     *
+     * @return void
+     */
+    public function showHumanEntityForm(HumanEntity $entity, GhostlyPlayer $player): void
+    {
+        $form = new SimpleForm(function (GhostlyPlayer $player, $data){
+            var_dump($data);
+        });
+
+        $form->setTitle("Test");
+        $form->setContent("test form");
+        $form->addButton("aaa", $form::IMAGE_TYPE_NULL, "", "test");
+        $player->sendForm($form);
     }
 }

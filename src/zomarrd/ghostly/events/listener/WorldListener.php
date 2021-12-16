@@ -18,13 +18,8 @@ use pocketmine\event\Listener;
 use zomarrd\ghostly\GExtension;
 use zomarrd\ghostly\Ghostly;
 
-class WorldListener implements Listener
+final class WorldListener implements Listener
 {
-    public function __construct()
-    {
-        Ghostly::$logger->info(PREFIX . '§b' . 'WordListener registered');
-    }
-
     /**
      * @param LeavesDecayEvent $event
      *

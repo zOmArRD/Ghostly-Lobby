@@ -14,29 +14,18 @@ namespace zomarrd\ghostly\events\listener;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\network\mcpe\JwtException;
-use pocketmine\network\mcpe\JwtUtils;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
-use pocketmine\network\mcpe\protocol\LoginPacket;
-use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
-use pocketmine\network\mcpe\protocol\types\login\ClientData;
-use pocketmine\network\mcpe\raklib\RakLibInterface;
-use pocketmine\network\PacketHandlingException;
-use ReflectionClass;
-use ReflectionException;
+use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
 use zomarrd\ghostly\GExtension;
-use zomarrd\ghostly\Ghostly;
-use zomarrd\ghostly\items\ItemsManager;
+use zomarrd\ghostly\modules\npc\entity\HumanEntity;
+use zomarrd\ghostly\modules\npc\event\HumanEntityHitEvent;
 use zomarrd\ghostly\network\player\GhostlyPlayer;
 
-class InteractListener implements Listener
+final class InteractListener implements Listener
 {
     private array $itemDelay;
-
-    public function __construct()
-    {
-        Ghostly::$logger->info('§b' . 'InteractListener registered');
-    }
+    /** @var array */
+    private array $hitEntity;
 
     /**
      * @param PlayerInteractEvent $event
@@ -58,66 +47,50 @@ class InteractListener implements Listener
         $player = $event->getOrigin()->getPlayer();
         $packet = $event->getPacket();
 
-        switch (true) {
-            case $packet instanceof LoginPacket:
-                $clientData = $this->parseClientData($packet->clientDataJwt);
+        /*case $packet instanceof InventoryTransactionPacket:
+            if (!$player instanceof GhostlyPlayer) return;
+            $trData = $packet->trData;
+            if ($trData instanceof UseItemTransactionData) switch ($trData->getActionType()) {
+                case UseItemTransactionData::ACTION_CLICK_BLOCK:
+                case UseItemTransactionData::ACTION_CLICK_AIR:
+                case UseItemTransactionData::ACTION_BREAK_BLOCK:
+                    $itemInHand = $player->getInventory()->getItemInHand();
+                    $cool_down = 1.5;
 
-                foreach (GExtension::getServerPM()->getNetwork()->getInterfaces() as $interface) {
-                    if ($interface instanceof RakLibInterface) {
-                        $class = new ReflectionClass($interface);
-                        var_dump($class->getProperties());
-                    }
-                }
-                /*$property = $class->getProperty("ip");
-                $property->setAccessible(true);
-                $property->setValue($class, $clientData->PlatformOfflineId);*/
-                break;
-            case $packet instanceof InventoryTransactionPacket:
-                if (!$player instanceof GhostlyPlayer) return;
-                $trData = $packet->trData;
-                if ($trData instanceof UseItemTransactionData) switch ($trData->getActionType()) {
-                    case UseItemTransactionData::ACTION_CLICK_BLOCK:
-                    case UseItemTransactionData::ACTION_CLICK_AIR:
-                    case UseItemTransactionData::ACTION_BREAK_BLOCK:
-                        $itemInHand = $player->getInventory()->getItemInHand();
-                        $cool_down = 1.5;
-
-                        if (!isset($this->itemDelay[$player->getName()]) or time() - $this->itemDelay[$player->getName()] >= $cool_down) {
-                            switch (true) {
-                                case $itemInHand->equals(ItemsManager::get('item.navigator')):
-                                    $player->sendMessage('interact');
-                                    break;
-                            }
-                            $this->itemDelay[$player->getName()] = time();
+                    if (!isset($this->itemDelay[$player->getName()]) or time() - $this->itemDelay[$player->getName()] >= $cool_down) {
+                        switch (true) {
+                            case $itemInHand->equals(ItemsManager::get('item.navigator')):
+                                $player->sendMessage('interact');
+                                var_dump($player->getNetworkSession()->getIp());
+                                break;
                         }
-                        break;
-                }
-                break;
-        }
-    }
+                        $this->itemDelay[$player->getName()] = time();
+                    }
+                    break;
+            }
+            break;*/
+        if (true == $packet instanceof InventoryTransactionPacket) {
+            if (!$player instanceof GhostlyPlayer) return;
+            $playerName = $player->getName();
+            $trData = $packet->trData;
 
-    /**
-     * @param string $clientDataJwt
-     *
-     * @return ClientData
-     */
-    protected function parseClientData(string $clientDataJwt): ClientData
-    {
-        try {
-            [, $clientDataClaims,] = JwtUtils::parse($clientDataJwt);
-        } catch (JwtException $e) {
-            throw PacketHandlingException::wrap($e);
-        }
+            if ($trData instanceof UseItemOnEntityTransactionData) switch ($trData->getActionType()) {
+                case UseItemOnEntityTransactionData::ACTION_ATTACK:
+                case UseItemOnEntityTransactionData::ACTION_INTERACT:
+                case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
+                    $target = $player->getWorld()->getEntity($trData->getActorRuntimeId());
+                    if (!$target instanceof HumanEntity) return;
+                    $timeToNexHit = 2;
 
-        $mapper = new \JsonMapper();
-        $mapper->bEnforceMapType = false; //TODO: we don't really need this as an array, but right now we don't have enough models
-        $mapper->bExceptionOnMissingData = true;
-        $mapper->bExceptionOnUndefinedProperty = true;
-        try {
-            $clientData = $mapper->map($clientDataClaims, new ClientData());
-        } catch (\JsonMapper_Exception $e) {
-            throw PacketHandlingException::wrap($e);
+                    if (!isset($this->hitEntity[$playerName]) or time() - $this->hitEntity[$playerName] >= $timeToNexHit) {
+
+                        $custom_event = new HumanEntityHitEvent($target, $player);
+                        $custom_event->call();
+
+                        $this->hitEntity[$player->getName()] = time();
+                    }
+                    break;
+            }
         }
-        return $clientData;
     }
 }

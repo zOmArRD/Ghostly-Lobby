@@ -24,7 +24,7 @@ final class TextUtils
      * @return string The text with the color applied.
      * @example TextUtils::replaceColor("{green}Hi Sir, how are u today");
      */
-    public static function colorize(string $text): string
+    public static function colorize(string $text = ''): string
     {
         $m = $text;
 
@@ -57,7 +57,7 @@ final class TextUtils
 
         for ($i = 0; $i < count($keys); $i++) $m = str_replace($keys[$i], (string)$values[$i], $m);
 
-        return $m ?? '';
+        return $m;
     }
 
     /**

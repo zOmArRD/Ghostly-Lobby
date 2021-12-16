@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace zomarrd\ghostly;
 
+use CortexPE\Commando\exception\HookAlreadyRegistered;
+use CortexPE\Commando\PacketHooker;
+use zomarrd\ghostly\commands\entity\EntityCommand;
 use zomarrd\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\plugin\{PluginBase, PluginLogger};
@@ -48,6 +51,8 @@ final class Ghostly extends PluginBase
 
     /**
      * Called when the plugin is enabled
+     *
+     * @throws HookAlreadyRegistered
      */
     protected function onEnable(): void
     {
@@ -61,6 +66,12 @@ final class Ghostly extends PluginBase
 
         /* Administrator of all Task. */
         new TaskManager();
+
+        if(!PacketHooker::isRegistered()) {
+            PacketHooker::register($this);
+        }
+
+        $this->getServer()->getCommandMap()->register('bukkit', new EntityCommand($this, 'entity'));
 
         self::$logger->notice(PREFIX . 'The Lobby system has been fully loaded!');
         self::$logger->notice('§c' . <<<INFO

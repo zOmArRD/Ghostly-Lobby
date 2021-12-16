@@ -81,7 +81,7 @@ final class ServerManager
         Ghostly::$logger->info('Registering the server in the database');
         sleep(1); // IDK
         $this->reloadServers();
-        GExtension::getTaskScheduler()->scheduleDelayedRepeatingTask(new ClosureTask(function () use ($currentServerName): void {
+        GExtension::getTaskScheduler()->scheduleDelayedRepeatingTask(new ClosureTask(function (): void {
             GExtension::getServerManager()->getCurrentServer()->update();
             foreach (self::getServers() as $server) $server->sync();
         }), 40, self::REFRESH_TICKS);

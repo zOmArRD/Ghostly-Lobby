@@ -27,7 +27,7 @@ final class Human
      *
      * @return void
      */
-    public function spawn(string $npcId, GhostlyPlayer $player, string $nameTag = '', bool $spawnToAll = true): void
+    public function spawn(string $npcId, GhostlyPlayer $player, bool $spawnToAll = true, string $nameTag = ''): void
     {
         $location = $player->getLocation();
         $skin = $player->getSkin();
@@ -39,7 +39,8 @@ final class Human
         $human = new HumanEntity($location, new Skin("$npcId", $skin->getSkinData(), $skin->getCapeData(), $skin->getGeometryName(), $skin->getGeometryData()));
 
         $human->setNameTag($nameTag);
-        $human->setNameTagAlwaysVisible();
+        $human->setNameTagAlwaysVisible(true);
+        $human->setNameTagVisible(true);
         $human->setImmobile();
 
         if ($spawnToAll) {
