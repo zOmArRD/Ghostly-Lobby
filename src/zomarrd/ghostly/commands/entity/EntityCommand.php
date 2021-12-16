@@ -17,7 +17,7 @@ use pocketmine\plugin\Plugin;
 use zomarrd\ghostly\network\player\lang\TranslationsKeys;
 use zomarrd\ghostly\network\player\permission\PermissionNames;
 
-class EntityCommand extends BaseCommand
+final class EntityCommand extends BaseCommand
 {
     /**
      * @param Plugin $plugin
@@ -38,9 +38,24 @@ class EntityCommand extends BaseCommand
         $this->registerSubCommand(
             new EntityCreate(
                 'create',
-                'Create test'
+                'Create an entity'
             )
         );
+
+		$this->registerSubCommand(
+			new EntityEditing(
+				'setediting',
+				'Switch to entity edit mode'
+			)
+		);
+
+		$this->registerSubCommand(
+			new EntityKill(
+				'kill',
+				'Delete entities, purge them all LOL',
+				['purge']
+			)
+		);
     }
 
     /**

@@ -36,13 +36,10 @@ final class Human
             if ($entity->getSkin()->getSkinId() === $npcId) $entity->kill();
         }
 
-        $human = new HumanEntity($location, new Skin("$npcId", $skin->getSkinData(), $skin->getCapeData(), $skin->getGeometryName(), $skin->getGeometryData()));
+        $human = new HumanEntity($location, new Skin($npcId, $skin->getSkinData(), $skin->getCapeData(), $skin->getGeometryName(), $skin->getGeometryData()));
 
-        $human->setNameTag($nameTag);
-        $human->setNameTagAlwaysVisible(true);
-        $human->setNameTagVisible(true);
+		$human->setNameTag("§r" . $nameTag);
         $human->setImmobile();
-
         if ($spawnToAll) {
             $human->spawnToAll();
         } else {

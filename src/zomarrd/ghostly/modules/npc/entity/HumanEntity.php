@@ -26,5 +26,7 @@ final class HumanEntity extends PMHuman
     public function __construct(Location $location, Skin $skin, ?CompoundTag $nbt = null)
     {
         parent::__construct($location, $skin, $nbt);
+		$this->setNameTagAlwaysVisible();
+		$this->setNameTagVisible();
     }
 }

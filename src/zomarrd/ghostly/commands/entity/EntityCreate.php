@@ -15,8 +15,10 @@ use CortexPE\Commando\args\BooleanArgument;
 use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\BaseSubCommand;
+use CortexPE\Commando\exception\ArgumentOrderException;
 use pocketmine\command\CommandSender;
 use zomarrd\ghostly\GExtension;
+use zomarrd\ghostly\modules\npc\EntityManager;
 use zomarrd\ghostly\modules\npc\Human;
 use zomarrd\ghostly\network\player\GhostlyPlayer;
 use zomarrd\ghostly\network\player\lang\TranslationsKeys;
@@ -35,7 +37,7 @@ final class EntityCreate extends BaseSubCommand
             $this->registerArgument(2, new RawStringArgument("nameTag", true));
         } catch (\Exception) {
         }
-    }
+	}
 
     /**
      * @param CommandSender $sender
@@ -60,11 +62,11 @@ final class EntityCreate extends BaseSubCommand
     }
 
 
-    /**
-     * @return Human
-     */
+	/**
+	 * @return Human
+	 */
     private function getHuman(): Human
     {
-        return GExtension::getEntityManager()->getHuman();
+        return EntityManager::getHuman();
     }
 }

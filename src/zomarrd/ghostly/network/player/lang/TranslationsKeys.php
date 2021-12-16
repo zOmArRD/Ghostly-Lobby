@@ -25,6 +25,7 @@ final class TranslationsKeys
     public const BUTTON_DISABLE = 'form.button.disable';
     public const BUTTON_LOCKED = 'form.button.locked';
     public const BUTTON_UNLOCKED = 'form.button.unlocked';
+	public const BUTTON_UNRECOGNIZED = PREFIX . 'Apparently this option is not available§c!';
 
     /* @lang section */
     public const FORM_TITLE_LANG = 'form.title.lang.selector';

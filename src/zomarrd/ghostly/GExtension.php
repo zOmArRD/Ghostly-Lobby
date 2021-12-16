@@ -29,9 +29,6 @@ final class GExtension
     /** @var ResourcesManager */
     private static ResourcesManager $resourcesManager;
 
-    /** @var EntityManager */
-    private static EntityManager $entityManager;
-
     /**
      * @return void
      */
@@ -42,15 +39,7 @@ final class GExtension
         new SQLStore();
 
         self::$serverManager->init();
-        self::$entityManager = new EntityManager();
-    }
-
-    /**
-     * @return EntityManager
-     */
-    public static function getEntityManager(): EntityManager
-    {
-        return self::$entityManager;
+        new EntityManager();
     }
 
     /**

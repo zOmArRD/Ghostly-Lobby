@@ -20,7 +20,7 @@ use zomarrd\ghostly\modules\scoreboard\Scoreboard;
 final class GhostlyPlayer extends Player
 {
     public static array $player_config;
-    private bool $loaded = false;
+    private bool $loaded = false, $isEditingAnEntity = false;
     private Scoreboard $scoreboardSession;
 
     /**
@@ -68,6 +68,29 @@ final class GhostlyPlayer extends Player
     {
         return $this->scoreboardSession;
     }
+
+	/**
+	 * @return bool
+	 */
+	public function isEditingAnEntity(): bool
+	{
+		return $this->isEditingAnEntity;
+	}
+
+	/**
+	 * @param bool $isEditingAnEntity
+	 */
+	public function setIsEditingAnEntity(bool $isEditingAnEntity): void
+	{
+		$this->isEditingAnEntity = $isEditingAnEntity;
+		$result = $isEditingAnEntity ?? false;
+		if ($isEditingAnEntity) {
+			$this->sendMessage(PREFIX . '§a' . 'You activated the mode of editing an entity, when interacting with the entity a menu will open.');
+		} else {
+			$this->sendMessage(PREFIX . '§a' .'You have disabled the mode of editing an entity!');
+
+		}
+	}
 
     /**
      * @return void
