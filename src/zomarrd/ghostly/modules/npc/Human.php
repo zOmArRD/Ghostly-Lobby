@@ -38,7 +38,7 @@ final class Human
 
         $human = new HumanEntity($location, new Skin($npcId, $skin->getSkinData(), $skin->getCapeData(), $skin->getGeometryName(), $skin->getGeometryData()));
 
-		$human->setNameTag("§r" . $nameTag);
+		$human->setNameTag('§r' . $nameTag);
         $human->setImmobile();
         if ($spawnToAll) {
             $human->spawnToAll();

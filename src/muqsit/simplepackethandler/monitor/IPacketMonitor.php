@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace muqsit\simplepackethandler\monitor;
 
 use Closure;
-use pocketmine\network\mcpe\NetworkSession;
 
 interface IPacketMonitor{
 

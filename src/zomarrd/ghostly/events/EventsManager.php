@@ -22,41 +22,41 @@ use zomarrd\ghostly\Ghostly;
 
 final class EventsManager
 {
-    public function __construct()
-    {
-        $this->registerAll([
-            new PlayerListener(),
-            new WorldListener(),
-            new InteractListener(),
-            new EntityListener()
-        ]);
-    }
+	public function __construct()
+	{
+		$this->registerAll([
+			new PlayerListener(),
+			new WorldListener(),
+			new InteractListener(),
+			new EntityListener()
+		]);
+	}
 
-    /**
-     * @param array $events
-     *
-     * @return void
-     */
-    public function registerAll(array $events): void
-    {
-        foreach ($events as $event) {
-            $this->register($event);
-        }
-    }
+	/**
+	 * @param array $events
+	 *
+	 * @return void
+	 */
+	private function registerAll(array $events): void
+	{
+		foreach ($events as $event) {
+			$this->register($event);
+		}
+	}
 
-    /**
-     * @param Listener $event
-     */
-    public function register(Listener $event): void
-    {
-        $this->getPluginManager()->registerEvents($event, Ghostly::getGhostly());
-    }
+	/**
+	 * @param Listener $event
+	 */
+	private function register(Listener $event): void
+	{
+		$this->getPluginManager()->registerEvents($event, Ghostly::getGhostly());
+	}
 
-    /**
-     * @return PluginManager
-     */
-    private function getPluginManager(): PluginManager
-    {
-        return GExtension::getPluginManager();
-    }
+	/**
+	 * @return PluginManager
+	 */
+	private function getPluginManager(): PluginManager
+	{
+		return GExtension::getPluginManager();
+	}
 }

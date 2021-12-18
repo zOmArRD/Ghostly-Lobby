@@ -35,12 +35,12 @@ final class Scoreboard extends ScoreboardAPI
         $this->update();
     }
 
-    /**
-     * @return Config
-     */
+	/**
+	 * @return Config
+	 */
     private function getScoreboardFile(): Config
     {
-        return ResourcesManager::getFile('scoreboard.yml');
+        return ResourcesManager::getScoreboardConfig();
     }
 
     /**

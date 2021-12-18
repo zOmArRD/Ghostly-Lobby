@@ -1,0 +1,22 @@
+{
+	"version": "1.0.0",
+	"current_server": {
+		"is_enabled": true,
+		"name": "Lobby-1",
+		"current_version": "v1.18.x"
+	},
+	"player_spawn": {
+		"is_enabled": true,
+		"world": {
+			"name": "world",
+			"min_void": 20
+		},
+		"pos": {
+			"x": null,
+			"y": null,
+			"z": null,
+			"yaw": null,
+			"pitch": null
+		}
+	}
+}

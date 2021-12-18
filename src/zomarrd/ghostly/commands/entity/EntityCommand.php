@@ -19,28 +19,38 @@ use zomarrd\ghostly\network\player\permission\PermissionNames;
 
 final class EntityCommand extends BaseCommand
 {
-    /**
-     * @param Plugin $plugin
-     * @param string $name
-     */
-    public function __construct(Plugin $plugin, string $name)
-    {
-        $this->setPermission(PermissionNames::COMMAND_NPC);
-        $this->setPermissionMessage(TranslationsKeys::COMMAND_NOEXIST);
-        parent::__construct($plugin, $name, 'Lobby entity manager', ['npc']);
-    }
+	/**
+	 * @param Plugin $plugin
+	 * @param string $name
+	 */
+	public function __construct(Plugin $plugin, string $name)
+	{
+		$this->setPermission(PermissionNames::COMMAND_NPC);
+		$this->setPermissionMessage(TranslationsKeys::COMMAND_NOEXIST);
+		parent::__construct($plugin, $name, 'Lobby entity manager', ['npc']);
+	}
 
-    /**
-     * This is where all the arguments, permissions, sub-commands, etc would be registered
-     */
-    protected function prepare(): void
-    {
-        $this->registerSubCommand(
-            new EntityCreate(
-                'create',
-                'Create an entity'
-            )
-        );
+	/**
+	 * @param CommandSender                   $sender
+	 * @param string                          $aliasUsed
+	 * @param array|array<string,mixed|array> $args
+	 */
+	public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
+	{
+		$this->sendUsage();
+	}
+
+	/**
+	 * This is where all the arguments, permissions, sub-commands, etc would be registered
+	 */
+	protected function prepare(): void
+	{
+		$this->registerSubCommand(
+			new EntityCreate(
+				'create',
+				'Create an entity'
+			)
+		);
 
 		$this->registerSubCommand(
 			new EntityEditing(
@@ -56,15 +66,5 @@ final class EntityCommand extends BaseCommand
 				['purge']
 			)
 		);
-    }
-
-    /**
-     * @param CommandSender                   $sender
-     * @param string                          $aliasUsed
-     * @param array|array<string,mixed|array> $args
-     */
-    public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
-    {
-        $this->sendUsage();
-    }
+	}
 }

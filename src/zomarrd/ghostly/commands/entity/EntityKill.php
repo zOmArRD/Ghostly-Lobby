@@ -24,18 +24,6 @@ final class EntityKill extends BaseSubCommand
 {
 
 	/**
-	 * This is where all the arguments, permissions, sub-commands, etc would be registered
-	 */
-	protected function prepare(): void
-	{
-		try {
-			$this->registerArgument(0, new BooleanArgument("isAll"));
-			$this->registerArgument(0, new RawStringArgument("EntityId"));
-		} catch (\Exception) {
-		}
-	}
-
-	/**
 	 * @param CommandSender $sender
 	 * @param string        $aliasUsed
 	 * @param array         $args
@@ -64,6 +52,17 @@ final class EntityKill extends BaseSubCommand
 
 		EntityManager::getHuman()->kill($args["EntityId"]);
 		$sender->sendMessage(PREFIX . 'you have purgued the entity ' . $args["EntityId"] . '!');
+	}
 
+	/**
+	 * This is where all the arguments, permissions, sub-commands, etc would be registered
+	 */
+	protected function prepare(): void
+	{
+		try {
+			$this->registerArgument(0, new BooleanArgument("isAll"));
+			$this->registerArgument(0, new RawStringArgument("EntityId"));
+		} catch (\Exception) {
+		}
 	}
 }

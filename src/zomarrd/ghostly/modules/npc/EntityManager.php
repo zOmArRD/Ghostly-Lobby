@@ -15,7 +15,6 @@ use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\world\World;
-use pocketmine\world\WorldManager;
 use zomarrd\ghostly\GExtension;
 use zomarrd\ghostly\modules\form\SimpleForm;
 use zomarrd\ghostly\modules\npc\entity\HumanEntity;
@@ -43,15 +42,6 @@ final class EntityManager
 		}, ['HumanEntity']);
 
 	}
-
-    /**
-     * @return Human
-     */
-    public static function getHuman(): Human
-    {
-        return self::$human;
-    }
-
 
 	/**
 	 * @return void
@@ -100,5 +90,13 @@ final class EntityManager
 		$form->addButton('Close', $form::IMAGE_TYPE_NULL, '', 'close');
 
 		$player->sendForm($form);
+    }
+
+    /**
+     * @return Human
+     */
+    public static function getHuman(): Human
+    {
+        return self::$human;
     }
 }

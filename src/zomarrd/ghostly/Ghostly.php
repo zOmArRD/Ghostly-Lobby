@@ -13,68 +13,68 @@ namespace zomarrd\ghostly;
 
 use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
-use zomarrd\ghostly\commands\entity\EntityCommand;
-use zomarrd\ghostly\task\TaskManager;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\plugin\{PluginBase, PluginLogger};
+use zomarrd\ghostly\commands\CommandManager;
 use zomarrd\ghostly\events\EventsManager;
 use zomarrd\ghostly\network\player\skin\SkinAdapter;
+use zomarrd\ghostly\task\TaskManager;
 
 final class Ghostly extends PluginBase
 {
-    /** @var Ghostly */
-    public static Ghostly $ghostly;
+	/** @var Ghostly */
+	public static Ghostly $ghostly;
 
-    /** @var PluginLogger */
-    public static PluginLogger $logger;
+	/** @var PluginLogger */
+	public static PluginLogger $logger;
 
-    /**
-     * @return Ghostly
-     */
-    public static function getGhostly(): Ghostly
-    {
-        return self::$ghostly;
-    }
+	/**
+	 * @return Ghostly
+	 */
+	public static function getGhostly(): Ghostly
+	{
+		return self::$ghostly;
+	}
 
-    /**
-     * Called when the plugin is loaded, before calling onEnable()
-     */
-    protected function onLoad(): void
-    {
-        date_default_timezone_set('America/New_York');
-        self::$logger = $this->getLogger();
-        self::$ghostly = $this;
+	/**
+	 * Called when the plugin is loaded, before calling onEnable()
+	 */
+	protected function onLoad(): void
+	{
+		date_default_timezone_set('America/New_York');
+		self::$logger = $this->getLogger();
+		self::$ghostly = $this;
 
-        GExtension::init();
-        parent::onLoad();
-    }
+		GExtension::init();
+		parent::onLoad();
+	}
 
-    /**
-     * Called when the plugin is enabled
-     *
-     * @throws HookAlreadyRegistered
-     */
-    protected function onEnable(): void
-    {
-        $prefix = PREFIX;
+	/**
+	 * Called when the plugin is enabled
+	 *
+	 * @throws HookAlreadyRegistered
+	 */
+	protected function onEnable(): void
+	{
+		$prefix = PREFIX;
 
-        /* Mojang Skin Support*/
-        SkinAdapterSingleton::set(new SkinAdapter());
+		/* Mojang Skin Support*/
+		SkinAdapterSingleton::set(new SkinAdapter());
 
-        /* It is in charge of registering the plugin events. */
-        new EventsManager();
+		/* It is in charge of registering the plugin events. */
+		new EventsManager();
 
-        /* Administrator of all Task. */
-        new TaskManager();
+		/* Administrator of all Task. */
+		new TaskManager();
 
-        if(!PacketHooker::isRegistered()) {
-            PacketHooker::register($this);
-        }
+		if (!PacketHooker::isRegistered()) {
+			PacketHooker::register($this);
+		}
 
-        $this->getServer()->getCommandMap()->register('bukkit', new EntityCommand($this, 'entity'));
+		new CommandManager($this);
 
-        self::$logger->notice(PREFIX . 'The Lobby system has been fully loaded!');
-        self::$logger->notice('§c' . <<<INFO
+		self::$logger->notice(PREFIX . 'The Lobby system has been fully loaded!');
+		self::$logger->notice('§c' . <<<INFO
 
 
          $$$$$$\  $$\                             $$\     $$\           $$\      $$\  $$$$$$\  
@@ -91,17 +91,19 @@ final class Ghostly extends PluginBase
                                                                
          $prefix §fCreated by zOmArRD :)                                                                     
 INFO
-        );
-        parent::onEnable();
-    }
+		);
+		parent::onEnable();
+	}
 
-    /**
-     * Called when the plugin is disabled
-     * Use this to free open things and finish actions
-     */
-    protected function onDisable(): void
-    {
-        GExtension::getServerManager()->getCurrentServer()->setOffline();
-        parent::onDisable();
-    }
+	/**
+	 * Called when the plugin is disabled
+	 * Use this to free open things and finish actions
+	 */
+	protected function onDisable(): void
+	{
+		if (GExtension::getServerManager()->getCurrentServer() !== null) {
+			GExtension::getServerManager()->getCurrentServer()->setOffline();
+		}
+		parent::onDisable();
+	}
 }

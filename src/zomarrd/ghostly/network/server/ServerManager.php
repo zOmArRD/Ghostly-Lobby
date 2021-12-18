@@ -39,7 +39,7 @@ final class ServerManager
     public static function getStatus(string $server): string
     {
         $server = self::getServer($server);
-        return $server !== null ? $server->getStatus() : '';
+        return $server !== null ? $server->getStatus() : "";
     }
 
     /**
@@ -74,11 +74,11 @@ final class ServerManager
      */
     public function init(): void
     {
-        if ($this->getConfig()->get('current.server')['is.enabled'] !== 'true') return;
+        if ($this->getConfig()->get("current_server")["is_enabled"] !== true) return;
         /** @var string $currentServerName */
-        $currentServerName = $this->getConfig()->get('current.server')['name'];
+        $currentServerName = $this->getConfig()->get("current_server")["name"];
         AsyncQueue::runAsync(new RegisterServerQuery($currentServerName));
-        Ghostly::$logger->info('Registering the server in the database');
+        Ghostly::$logger->info("Registering the server in the database");
         sleep(1); // IDK
         $this->reloadServers();
         GExtension::getTaskScheduler()->scheduleDelayedRepeatingTask(new ClosureTask(function (): void {
@@ -92,7 +92,7 @@ final class ServerManager
      */
     private function getConfig(): Config
     {
-        return ResourcesManager::getFile('network.data.yml');
+        return ResourcesManager::getNetworkConfig();
     }
 
     /**
@@ -104,17 +104,17 @@ final class ServerManager
      */
     public function reloadServers(): void
     {
-        if ($this->getConfig()->get('current.server')['is.enabled'] !== 'true') return;
+        if ($this->getConfig()->get("current_server")["is_enabled"] !== true) return;
 
         self::$servers = [];
 
         /** @var string $currentServerName */
-        $currentServerName = self::getConfig()->get('current.server')['name'];
-        AsyncQueue::runAsync(new SelectQuery('SELECT * FROM network_servers'), function ($rows) use ($currentServerName) {
+        $currentServerName = self::getConfig()->get("current_server")["name"];
+        AsyncQueue::runAsync(new SelectQuery("SELECT * FROM network_servers"), function ($rows) use ($currentServerName) {
 
             foreach ($rows as $row) {
-                $server = new Server($row['server'], (int)$row['players'], (bool)$row['is_online'], (bool)$row['is_maintenance'], (bool)$row['is_whitelisted']);
-                if ($row['server'] === $currentServerName) {
+                $server = new Server($row["server"], (int)$row["players"], (bool)$row["is_online"], (bool)$row["is_maintenance"], (bool)$row["is_whitelisted"]);
+                if ($row["server"] === $currentServerName) {
                     self::$currentServer = $server;
                     Ghostly::$logger->info(PREFIX . "The server ($currentServerName) has been registered in the database.");
                 } else {
@@ -125,12 +125,15 @@ final class ServerManager
         });
     }
 
-    /**
-     * @return Server
-     */
-    public function getCurrentServer(): Server
+	/**
+	 * @return Server|null
+	 */
+    public function getCurrentServer(): ?Server
     {
-        return self::$currentServer;
+		if (isset(self::$currentServer)) {
+			return self::$currentServer;
+		}
+		return null;
     }
 
     /**

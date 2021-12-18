@@ -30,7 +30,6 @@ declare(strict_types=1);
 namespace CortexPE\Commando;
 
 
-use CortexPE\Commando\args\BaseArgument;
 use CortexPE\Commando\constraint\BaseConstraint;
 use CortexPE\Commando\exception\InvalidErrorCode;
 use CortexPE\Commando\traits\ArgumentableTrait;

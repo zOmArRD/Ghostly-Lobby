@@ -18,32 +18,32 @@ use pocketmine\network\mcpe\protocol\types\skin\SkinData;
 
 final class SkinAdapter extends LegacySkinAdapter
 {
-    /** @var array */
-    private array $personaSkins = [];
+	/** @var array */
+	private array $personaSkins = [];
 
-    /**
-     * @param SkinData $data
-     *
-     * @return Skin
-     * @throws Exception
-     */
-    public function fromSkinData(SkinData $data): Skin
-    {
-        if ($data->isPersona()) {
-            $id = $data->getSkinId();
-            $this->personaSkins[$id] = $data;
-            return new Skin($id, str_repeat(random_bytes(3) . "\xff", 2048));
-        }
-        return parent::fromSkinData($data);
-    }
+	/**
+	 * @param SkinData $data
+	 *
+	 * @return Skin
+	 * @throws Exception
+	 */
+	public function fromSkinData(SkinData $data): Skin
+	{
+		if ($data->isPersona()) {
+			$id = $data->getSkinId();
+			$this->personaSkins[$id] = $data;
+			return new Skin($id, str_repeat(random_bytes(3) . "\xff", 2048));
+		}
+		return parent::fromSkinData($data);
+	}
 
-    /**
-     * @param Skin $skin
-     *
-     * @return SkinData
-     */
-    public function toSkinData(Skin $skin): SkinData
-    {
-        return $this->personaSkins[$skin->getSkinId()] ?? parent::toSkinData($skin);
-    }
+	/**
+	 * @param Skin $skin
+	 *
+	 * @return SkinData
+	 */
+	public function toSkinData(Skin $skin): SkinData
+	{
+		return $this->personaSkins[$skin->getSkinId()] ?? parent::toSkinData($skin);
+	}
 }

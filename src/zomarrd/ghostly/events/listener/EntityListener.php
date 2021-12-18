@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace zomarrd\ghostly\events\listener;
 
 use pocketmine\event\Listener;
-use zomarrd\ghostly\GExtension;
 use zomarrd\ghostly\modules\npc\EntityManager;
 use zomarrd\ghostly\modules\npc\event\HumanEntityHitEvent;
 

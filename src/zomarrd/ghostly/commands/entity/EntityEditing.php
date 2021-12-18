@@ -23,17 +23,6 @@ final class EntityEditing extends BaseSubCommand
 {
 
 	/**
-	 * This is where all the arguments, permissions, sub-commands, etc would be registered
-	 */
-	protected function prepare(): void
-	{
-		try {
-			$this->registerArgument(0, new BooleanArgument("setEditing"));
-		} catch (Exception) {
-		}
-	}
-
-	/**
 	 * @param CommandSender $sender
 	 * @param string        $aliasUsed
 	 * @param array         $args
@@ -53,5 +42,16 @@ final class EntityEditing extends BaseSubCommand
 		}
 
 		$sender->setIsEditingAnEntity($args["setEditing"]);
+	}
+
+	/**
+	 * This is where all the arguments, permissions, sub-commands, etc would be registered
+	 */
+	protected function prepare(): void
+	{
+		try {
+			$this->registerArgument(0, new BooleanArgument("setEditing"));
+		} catch (Exception) {
+		}
 	}
 }

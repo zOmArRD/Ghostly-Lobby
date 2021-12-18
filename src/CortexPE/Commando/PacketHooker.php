@@ -8,20 +8,16 @@ use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\store\SoftEnumStore;
 use CortexPE\Commando\traits\IArgumentable;
 use muqsit\simplepackethandler\SimplePacketHandler;
-use pocketmine\command\CommandMap;
 use pocketmine\command\CommandSender;
 use pocketmine\event\EventPriority;
 use pocketmine\event\Listener;
-use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 use pocketmine\plugin\Plugin;
 use pocketmine\Server;
-use function array_unique;
 use function array_unshift;
-use function array_values;
 
 class PacketHooker implements Listener
 {
