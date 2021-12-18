@@ -13,10 +13,16 @@ namespace zomarrd\ghostly;
 
 use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
+use pocketmine\event\Listener;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\plugin\{PluginBase, PluginLogger};
 use zomarrd\ghostly\commands\CommandManager;
+use zomarrd\ghostly\commands\entity\EntityCommand;
 use zomarrd\ghostly\events\EventsManager;
+use zomarrd\ghostly\listener\EntityListener;
+use zomarrd\ghostly\listener\InteractListener;
+use zomarrd\ghostly\listener\PlayerListener;
+use zomarrd\ghostly\listener\WorldListener;
 use zomarrd\ghostly\network\player\skin\SkinAdapter;
 use zomarrd\ghostly\task\TaskManager;
 
@@ -62,7 +68,12 @@ final class Ghostly extends PluginBase
 		SkinAdapterSingleton::set(new SkinAdapter());
 
 		/* It is in charge of registering the plugin events. */
-		new EventsManager();
+		$this->loadListener([
+			new EntityListener(),
+			new InteractListener(),
+			new PlayerListener(),
+			new WorldListener()
+		]);
 
 		/* Administrator of all Task. */
 		new TaskManager();
@@ -71,7 +82,9 @@ final class Ghostly extends PluginBase
 			PacketHooker::register($this);
 		}
 
-		new CommandManager($this);
+		$this->getServer()->getCommandMap()->registerAll('bukkit', [
+			new EntityCommand($this, 'entity')
+		]);
 
 		self::$logger->notice(PREFIX . 'The Lobby system has been fully loaded!');
 		self::$logger->notice('§c' . <<<INFO
@@ -92,7 +105,19 @@ final class Ghostly extends PluginBase
          $prefix §fCreated by zOmArRD :)                                                                     
 INFO
 		);
-		parent::onEnable();
+	}
+
+	/**
+	 * @param array $listeners
+	 *
+	 * @return void
+	 */
+	private function loadListener(array $listeners)
+	{
+		$manager = $this->getServer()->getPluginManager();
+		foreach ($listeners as $listener) {
+			$manager->registerEvents($listener, $this);
+		}
 	}
 
 	/**
@@ -102,6 +127,5 @@ INFO
 	protected function onDisable(): void
 	{
 		GExtension::getServerManager()->getCurrentServer()?->setOnline(false);
-		parent::onDisable();
 	}
 }

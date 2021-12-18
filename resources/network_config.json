@@ -6,7 +6,7 @@
 		"current_version": "v1.18.x"
 	},
 	"player_spawn": {
-		"is_enabled": true,
+		"is_enabled": false,
 		"world": {
 			"name": "world",
 			"min_void": 20

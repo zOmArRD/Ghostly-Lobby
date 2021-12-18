@@ -18,22 +18,12 @@ use zomarrd\ghostly\modules\mysql\query\UpdateRowQuery;
 
 class Server
 {
-	/**
-	 * @param string $name
-	 * @param int    $players
-	 * @param bool   $online
-	 * @param bool   $maintenance
-	 * @param bool   $whitelisted
-	 */
 	public function __construct(
 		private string $name,
 		private int    $players = 0,
 		private bool   $online = false,
-		private bool   $maintenance = false,
 		private bool   $whitelisted = false
-	)
-	{
-	}
+	){}
 
 	/**
 	 * Synchronize server data from database.
@@ -100,16 +90,6 @@ class Server
 	}
 
 	/**
-	 * @param bool $maintenance
-	 *
-	 * @return void
-	 */
-	public function setMaintenance(bool $maintenance): void
-	{
-		$this->maintenance = $maintenance;
-	}
-
-	/**
 	 * @return void
 	 * @todo Add if the server is under maintenance.
 	 */
@@ -154,13 +134,6 @@ class Server
 		$this->name = $name;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isMaintenance(): bool
-	{
-		return $this->maintenance;
-	}
 
 	/**
 	 * @return bool

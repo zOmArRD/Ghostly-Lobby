@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace zomarrd\ghostly\events\listener;
+namespace zomarrd\ghostly\listener;
 
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;

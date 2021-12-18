@@ -113,7 +113,7 @@ final class ServerManager
 		AsyncQueue::runAsync(new SelectQuery('SELECT * FROM network_servers'), function ($rows) use ($currentServerName) {
 
 			foreach ($rows as $row) {
-				$server = new Server($row['server'], (int)$row['players'], (bool)$row['is_online'], (bool)$row['is_maintenance'], (bool)$row['is_whitelisted']);
+				$server = new Server($row['server'], (int)$row['players'], (bool)$row['is_online'], (bool)$row['is_whitelisted']);
 				if ($row['server'] === $currentServerName) {
 					self::$currentServer = $server;
 				} else {

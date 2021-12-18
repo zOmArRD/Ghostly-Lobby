@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace zomarrd\ghostly\events\listener;
+namespace zomarrd\ghostly\listener;
 
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -38,7 +38,7 @@ final class WorldListener implements Listener
 	{
 		$player = $event->getPlayer();
 
-		$levelName = SpawnOptions['is.enabled'] == 'true' ? SpawnOptions['world']['name'] : $player->getWorld()->getFolderName();
+		$levelName = SpawnOptions['is_enabled'] == 'true' ? SpawnOptions['world']['name'] : $player->getWorld()->getFolderName();
 
 		if ($player->getWorld()->getFolderName() === $levelName) if (!GExtension::getServerPM()->isOp($player->getName())) $event->cancel();
 	}
@@ -52,7 +52,7 @@ final class WorldListener implements Listener
 	{
 		$player = $event->getPlayer();
 
-		$levelName = SpawnOptions['is.enabled'] == 'true' ? SpawnOptions['world']['name'] : $player->getWorld()->getFolderName();
+		$levelName = SpawnOptions['is_enabled'] == 'true' ? SpawnOptions['world']['name'] : $player->getWorld()->getFolderName();
 
 		if ($player->getWorld()->getFolderName() === $levelName) if (!GExtension::getServerPM()->isOp($player->getName())) $event->cancel();
 	}

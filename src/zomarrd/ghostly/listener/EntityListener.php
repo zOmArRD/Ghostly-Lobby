@@ -9,9 +9,10 @@
  */
 declare(strict_types=1);
 
-namespace zomarrd\ghostly\events\listener;
+namespace zomarrd\ghostly\listener;
 
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerEntityInteractEvent;
 use zomarrd\ghostly\modules\npc\EntityManager;
 use zomarrd\ghostly\modules\npc\event\HumanEntityHitEvent;
 
@@ -32,5 +33,17 @@ final class EntityListener implements Listener
 				EntityManager::showHumanEntityForm($entity, $player);
 			}
 		}
+	}
+
+	/**
+	 * @param PlayerEntityInteractEvent $event
+	 *
+	 * @return void
+	 */
+	public function onInteractEntity(PlayerEntityInteractEvent $event): void
+	{
+		$entity = $event->getEntity();
+
+		var_dump("aaa");
 	}
 }

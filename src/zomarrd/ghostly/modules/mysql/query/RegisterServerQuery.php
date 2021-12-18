@@ -38,7 +38,7 @@ class RegisterServerQuery extends AsyncQuery
         $assoc = $result->fetch_assoc();
 
         if (!is_array($assoc)) {
-            $mysqli->query("INSERT INTO network_servers(server, is_online, is_maintenance, is_whitelisted, players) VALUES ('$this->serverName', 1, 0, 0, 0);");
+            $mysqli->query("INSERT INTO network_servers(server, is_online, is_whitelisted, players) VALUES ('$this->serverName', 1, 0, 0);");
             return;
         }
 

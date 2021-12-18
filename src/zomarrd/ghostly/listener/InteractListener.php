@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace zomarrd\ghostly\events\listener;
+namespace zomarrd\ghostly\listener;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -37,8 +37,18 @@ final class InteractListener implements Listener
 	public function legacyInteract(PlayerInteractEvent $event): void
 	{
 		$player = $event->getPlayer();
-
 		if (!GExtension::getServerPM()->isOp($player->getName())) $event->cancel();
+
+		$itemInHand = $player->getInventory()->getItemInHand();
+		$cool_down = 1.5;
+		if (!isset($this->itemDelay[$player->getName()]) or time() - $this->itemDelay[$player->getName()] >= $cool_down) {
+			switch (true) {
+				case $itemInHand->equals(ItemsManager::get('item.navigator')):
+					var_dump("test event");
+					break;
+			}
+			$this->itemDelay[$player->getName()] = time();
+		}
 	}
 
 	/**
@@ -53,47 +63,42 @@ final class InteractListener implements Listener
 			case $packet instanceof InventoryTransactionPacket:
 				if (!$player instanceof GhostlyPlayer) return;
 				$trData = $packet->trData;
+				$playerName = $player->getName();
+
 				if ($trData instanceof UseItemTransactionData) switch ($trData->getActionType()) {
-					//case UseItemTransactionData::ACTION_CLICK_BLOCK:
+					case UseItemTransactionData::ACTION_CLICK_BLOCK:
 					case UseItemTransactionData::ACTION_CLICK_AIR:
-						//case UseItemTransactionData::ACTION_BREAK_BLOCK:
+					//case UseItemTransactionData::ACTION_BREAK_BLOCK:
 						$itemInHand = $player->getInventory()->getItemInHand();
 						$cool_down = 1.5;
-
 						if (!isset($this->itemDelay[$player->getName()]) or time() - $this->itemDelay[$player->getName()] >= $cool_down) {
 							switch (true) {
 								case $itemInHand->equals(ItemsManager::get('item.navigator')):
-									$player->sendMessage('interact');
+									var_dump("test packet");
 									break;
 							}
 							$this->itemDelay[$player->getName()] = time();
 						}
 						break;
 				}
+				if ($trData instanceof UseItemOnEntityTransactionData) switch ($trData->getActionType()) {
+					case UseItemOnEntityTransactionData::ACTION_ATTACK:
+					case UseItemOnEntityTransactionData::ACTION_INTERACT:
+					case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
+						$target = $player->getWorld()->getEntity($trData->getActorRuntimeId());
+						if (!$target instanceof HumanEntity) return;
+						$timeToNexHit = 2;
+
+						if (!isset($this->hitEntity[$playerName]) or time() - $this->hitEntity[$playerName] >= $timeToNexHit) {
+
+							$custom_event = new HumanEntityHitEvent($target, $player);
+							$custom_event->call();
+
+							$this->hitEntity[$player->getName()] = time();
+						}
+						break;
+				}
 				break;
-		}
-		if (true == $packet instanceof InventoryTransactionPacket) {
-			if (!$player instanceof GhostlyPlayer) return;
-			$playerName = $player->getName();
-			$trData = $packet->trData;
-
-			if ($trData instanceof UseItemOnEntityTransactionData) switch ($trData->getActionType()) {
-				case UseItemOnEntityTransactionData::ACTION_ATTACK:
-				case UseItemOnEntityTransactionData::ACTION_INTERACT:
-				case UseItemOnEntityTransactionData::ACTION_ITEM_INTERACT:
-					$target = $player->getWorld()->getEntity($trData->getActorRuntimeId());
-					if (!$target instanceof HumanEntity) return;
-					$timeToNexHit = 2;
-
-					if (!isset($this->hitEntity[$playerName]) or time() - $this->hitEntity[$playerName] >= $timeToNexHit) {
-
-						$custom_event = new HumanEntityHitEvent($target, $player);
-						$custom_event->call();
-
-						$this->hitEntity[$player->getName()] = time();
-					}
-					break;
-			}
 		}
 	}
 }
