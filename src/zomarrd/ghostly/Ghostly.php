@@ -101,9 +101,7 @@ INFO
 	 */
 	protected function onDisable(): void
 	{
-		if (GExtension::getServerManager()->getCurrentServer() !== null) {
-			GExtension::getServerManager()->getCurrentServer()->setOffline();
-		}
+		GExtension::getServerManager()->getCurrentServer()?->setOnline(false);
 		parent::onDisable();
 	}
 }
