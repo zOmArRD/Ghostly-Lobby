@@ -15,6 +15,7 @@ use pocketmine\plugin\PluginManager;
 use pocketmine\scheduler\TaskScheduler;
 use pocketmine\Server as PMServer;
 use pocketmine\world\WorldManager;
+use zomarrd\ghostly\modules\bossbar\BossBarAPI;
 use zomarrd\ghostly\modules\mysql\data\SQLStore;
 use zomarrd\ghostly\modules\npc\EntityManager;
 use zomarrd\ghostly\network\resources\ResourcesManager;
@@ -28,6 +29,8 @@ final class GExtension
 	/** @var ResourcesManager */
 	private static ResourcesManager $resourcesManager;
 
+	private static BossBarAPI $bossbar;
+
 	/**
 	 * @return void
 	 */
@@ -39,6 +42,15 @@ final class GExtension
 
 		self::$serverManager->init();
 		new EntityManager();
+		self::$bossbar = (new BossBarAPI())->setTitle('§c§lGhostly §f» §k§6!§r§l§aNEW BETA§k§6!§r')->setPercentage(100);
+	}
+
+	/**
+	 * @return BossBarAPI
+	 */
+	public static function getBossbar(): BossBarAPI
+	{
+		return self::$bossbar;
 	}
 
 	/**

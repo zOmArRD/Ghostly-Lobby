@@ -16,10 +16,10 @@ use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
+use zomarrd\ghostly\lang\TranslationsKeys;
 use zomarrd\ghostly\modules\npc\EntityManager;
 use zomarrd\ghostly\modules\npc\Human;
 use zomarrd\ghostly\network\player\GhostlyPlayer;
-use zomarrd\ghostly\network\player\lang\TranslationsKeys;
 
 final class EntityCreate extends BaseSubCommand
 {

@@ -16,8 +16,8 @@ use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\BaseSubCommand;
 use Exception;
 use pocketmine\command\CommandSender;
+use zomarrd\ghostly\lang\TranslationsKeys;
 use zomarrd\ghostly\network\player\GhostlyPlayer;
-use zomarrd\ghostly\network\player\lang\TranslationsKeys;
 
 final class EntityEditing extends BaseSubCommand
 {

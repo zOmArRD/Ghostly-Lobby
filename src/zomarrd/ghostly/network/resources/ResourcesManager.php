@@ -15,7 +15,7 @@ use pocketmine\utils\Config;
 use pocketmine\world\World;
 use zomarrd\ghostly\GExtension;
 use zomarrd\ghostly\Ghostly;
-use zomarrd\ghostly\network\player\lang\Lang;
+use zomarrd\ghostly\lang\Lang;
 use zomarrd\ghostly\network\utils\TextUtils;
 
 /**
@@ -24,10 +24,10 @@ use zomarrd\ghostly\network\utils\TextUtils;
 final class ResourcesManager
 {
 	/** @var array|string[] */
-	private array $listFiles = ["config.yml" => "1.0.0", "scoreboard.yml" => "1.0.0", "network_config.json" => "1.0.0"];
+	private array $listFiles = ['config.yml' => '1.0.0', 'network_config.json' => '1.5'];
 
 	/** @var Config */
-	private static Config $networkConfig, $scoreboardConfig;
+	private static Config $networkConfig;
 
 	public function __construct()
 	{
@@ -36,50 +36,49 @@ final class ResourcesManager
 
 	public function init(): void
 	{
-		Ghostly::$logger->notice("Resource management has started!");
+		Ghostly::$logger->notice('Resource management has started!');
 		@mkdir(self::getDataFolder());
 
 		foreach ($this->listFiles as $file => $version) {
 			self::getGhostly()->saveResource($file);
 
 			$tFile = self::getFile($file);
-			if ($tFile->get("version") !== $version) {
+			if ($tFile->get('version') !== $version) {
 				Ghostly::$logger->error("The config.yml are not compatible with the plugin, the old config are in /resources/{$file}");
-				rename(self::getDataFolder() . $file, self::getDataFolder() . $file . ".old");
+				rename(self::getDataFolder() . $file, self::getDataFolder() . $file . '.old');
 				self::getGhostly()->saveResource($file);
 			}
 			unset($tFile);
 		}
 
-		self::$networkConfig = self::getFile("network_config.json");
-		self::$scoreboardConfig = self::getFile("scoreboard.yml");
+		self::$networkConfig = self::getFile('network_config.json');
 
-		$cFile = self::getFile("config.yml");
+		$cFile = self::getFile('config.yml');
 
-		define("PREFIX", TextUtils::colorize($cFile->get("prefix")));
-		define("MySQL", $cFile->get("database"));
-		define("SpawnOptions", self::getNetworkConfig()->get("player_spawn"));
+		define('PREFIX', TextUtils::colorize($cFile->get('prefix')));
+		define('MySQL', $cFile->get('database'));
+		define('SpawnOptions', self::getNetworkConfig()->get('player_spawn'));
 
-		Lang::$config = $cFile->get("language.available");
+		Lang::$config = $cFile->get('language.available');
 		unset($cFile);
 
 		foreach (Lang::$config as $lang) {
-			$iso = $lang["ISOCode"];
+			$iso = $lang['ISOCode'];
 			self::getGhostly()->saveResource("lang/$iso.yml");
 			Lang::$lang[$iso] = self::getFile("lang/$iso.yml");
-			Ghostly::$logger->info(PREFIX . "§a" . "The $iso language has been registered.");
+			Ghostly::$logger->info(PREFIX . '§a' . "The $iso language has been registered.");
 		}
 
-		if (SpawnOptions["is_enabled"] === true) {
-			$levelName = SpawnOptions["world"]["name"];
+		if (SpawnOptions['is_enabled'] === true) {
+			$levelName = SpawnOptions['world']['name'];
 			if (!GExtension::getWorldManager()->isWorldLoaded($levelName)) {
 				GExtension::getWorldManager()->loadWorld($levelName);
-				Ghostly::$logger->info(PREFIX . "§a" . "The world ($levelName) has been loaded.");
+				Ghostly::$logger->info(PREFIX . '§a' . "The world ($levelName) has been loaded.");
 			}
 			GExtension::getWorldManager()->getWorldByName($levelName)->setTime(World::TIME_NOON);
 			GExtension::getWorldManager()->getWorldByName($levelName)->stopTime();
 		}
-		Ghostly::$logger->notice("Resource management has ended!");
+		Ghostly::$logger->notice('Resource management has ended!');
 	}
 
 	/**
@@ -114,13 +113,5 @@ final class ResourcesManager
 	public static function getNetworkConfig(): Config
 	{
 		return self::$networkConfig;
-	}
-
-	/**
-	 * @return Config
-	 */
-	public static function getScoreboardConfig(): Config
-	{
-		return self::$scoreboardConfig;
 	}
 }

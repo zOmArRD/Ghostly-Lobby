@@ -30,8 +30,8 @@ final class Scoreboard extends ScoreboardAPI
     public function setScore(): void
     {
         /* TODO: add verification of player settings via MySQL */
-        if ($this->getScoreboardFile()->get('is.enabled') !== 'true') return;
-        $this->new('ghostly.lobby', TextUtils::colorize($this->getScoreboardFile()->get('display.name')));
+        if (!$this->getScoreboardFile()->get('scoreboard')['is_enabled']) return;
+        $this->new('ghostly.lobby', TextUtils::colorize($this->getScoreboardFile()->get('scoreboard')['display_name']));
         $this->update();
     }
 
@@ -40,7 +40,7 @@ final class Scoreboard extends ScoreboardAPI
 	 */
     private function getScoreboardFile(): Config
     {
-        return ResourcesManager::getScoreboardConfig();
+        return ResourcesManager::getNetworkConfig();
     }
 
     /**
@@ -48,8 +48,8 @@ final class Scoreboard extends ScoreboardAPI
      */
     private function update(): void
     {
-        if (!is_array($this->getScoreboardFile()->get('lines')))return;
-        foreach ($this->getScoreboardFile()->get('lines') as $scLine => $string) {
+        if (!is_array($this->getScoreboardFile()->get('scoreboard')['lines']))return;
+        foreach ($this->getScoreboardFile()->get('scoreboard')['lines'] as $scLine => $string) {
             $line = $scLine +1;
             $msg = $this->replaceData($line, (string)$string);
             $this->setLine($line, $msg);

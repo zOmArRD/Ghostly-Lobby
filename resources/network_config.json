@@ -1,5 +1,5 @@
 {
-	"version": "1.0.0",
+	"version": "1.5",
 	"current_server": {
 		"is_enabled": true,
 		"name": "Lobby-1",
@@ -18,5 +18,21 @@
 			"yaw": null,
 			"pitch": null
 		}
+	},
+	"scoreboard": {
+		"is_enabled": true,
+		"display_name": "§c§lGhostly §fNetwork",
+		"lines": [
+			"§c\uE001",
+			" §8{date}",
+			"",
+			" §cNetwork:",
+			"  §f25§c/§f1000",
+			"",
+			" §cRank: §7Owner",
+			"",
+			" §fGhostlyMC.live",
+			"\uE001"
+		]
 	}
 }

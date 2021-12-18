@@ -36,6 +36,8 @@ final class Human
             if ($entity->getSkin()->getSkinId() === $npcId) $entity->kill();
         }
 
+		if ($player->getSkin()->getSkinData())
+
         $human = new HumanEntity($location, new Skin($npcId, $skin->getSkinData(), $skin->getCapeData(), $skin->getGeometryName(), $skin->getGeometryData()));
 
 		$human->setNameTag('§r' . $nameTag);

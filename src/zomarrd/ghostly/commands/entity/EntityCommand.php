@@ -14,7 +14,7 @@ namespace zomarrd\ghostly\commands\entity;
 use CortexPE\Commando\BaseCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\plugin\Plugin;
-use zomarrd\ghostly\network\player\lang\TranslationsKeys;
+use zomarrd\ghostly\lang\TranslationsKeys;
 use zomarrd\ghostly\network\player\permission\PermissionNames;
 
 final class EntityCommand extends BaseCommand

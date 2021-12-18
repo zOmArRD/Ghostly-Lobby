@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace zomarrd\ghostly\network\player\lang;
+namespace zomarrd\ghostly\lang;
 
 final class TranslationsKeys
 {

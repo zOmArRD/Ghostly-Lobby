@@ -16,6 +16,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use zomarrd\ghostly\GExtension;
 use zomarrd\ghostly\network\player\GhostlyPlayer;
 
 final class PlayerListener implements Listener
@@ -41,6 +42,7 @@ final class PlayerListener implements Listener
 		$player = $event->getPlayer();
 
 		if (!$player instanceof GhostlyPlayer) return;
+		GExtension::getBossbar()->addPlayer($player);
 		$player->setLobbyItems();
 	}
 
